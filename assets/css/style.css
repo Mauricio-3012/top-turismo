@@ -322,6 +322,86 @@ opacity: 0.7;
   background-color: #050505;
 }
 
+/* ==========================
+   Perfil / Dashboard do usuário
+   ========================== */
+
+.card {
+  background-color: var(--card-bg);
+  color: var(--text);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+  background-color: var(--card-bg);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 60px 0;
+  margin-top: 80px;
+}
+
+.dark-mode .profile-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.profile-img-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+}
+
+.profile-img-container i {
+  font-size: 100px;
+  color: var(--btn-bg);
+}
+
+.edit-photo-btn {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: var(--primary);
+  color: white;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg);
+  transition: 0.3s;
+}
+
+.edit-photo-btn:hover {
+  background-color: var(--btn-bg);
+}
+
+.list-group-item {
+  background-color: var(--card-bg);
+  color: var(--text);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 15px 20px;
+  transition: 0.3s;
+}
+
+.list-group-item.active {
+  background-color: var(--btn-bg) !important;
+  border-color: var(--btn-bg) !important;
+}
+
+.list-group-item:hover:not(.active) {
+  background-color: var(--primary);
+  color: white;
+}
+
+.reserva-card {
+  border-left: 5px solid var(--btn-bg);
+  transition: 0.3s;
+}
+
+.reserva-card:hover {
+  transform: translateX(5px);
+}
+
 .footer-principal {
   background-color: var(--primary-hover);
   color: #ffffff;
