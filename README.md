@@ -68,9 +68,8 @@
       <li>Implementar novas funcionalidades com JavaScript (ES6+)</li>
       <li>Melhorar a responsividade para dispositivos móveis</li>
       <li>Adicionar validações do formulário de reservas</li>
-      <li>Adicionar novas funcionalidades com PHP</li>
+      <li>Adicionar funcionalidades de back-end com PHP</li>
       <li>Implementar banco de dados com MySQL</li>
-      <li></li>
     </ul>
   </div>
 </section>
