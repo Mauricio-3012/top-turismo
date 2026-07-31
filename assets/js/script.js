@@ -21,6 +21,40 @@ function setTheme(theme) {
   }
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+    // Seleciona todos os inputs de busca da página (header e seção de destinos)
+    const inputsBusca = document.querySelectorAll(".busca-caixa input");
+    
+    // Seleciona todos os cards de destinos (as colunas do Bootstrap)
+    const cardsDestinos = document.querySelectorAll("#destinos .row > div");
+
+    inputsBusca.forEach(input => {
+        input.addEventListener("input", (e) => {
+            const termoBusca = e.target.value.toLowerCase().trim();
+
+            // Sincroniza o valor de todos os campos de busca na tela
+            inputsBusca.forEach(inEl => {
+                if (inEl !== e.target) {
+                    inEl.value = e.target.value;
+                }
+            });
+
+            // Filtra os cards
+            cardsDestinos.forEach(card => {
+                const titulo = card.querySelector(".nome-destino-overlay")?.textContent.toLowerCase() || "";
+                const descricao = card.querySelector(".descricao-destino")?.textContent.toLowerCase() || "";
+
+                // Verifica se o título ou a descrição contêm o termo buscado
+                if (titulo.includes(termoBusca) || descricao.includes(termoBusca)) {
+                    card.style.display = ""; // Exibe a coluna
+                } else {
+                    card.style.display = "none"; // Oculta a coluna
+                }
+            });
+        });
+    });
+});
+
 // form reserva
 const form = document.getElementById("reservaForm");
 const btnConfirmar = document.getElementById("btnConfirmar");
@@ -116,3 +150,6 @@ novaReserva.addEventListener("click", () => {
   form.classList.remove("d-none");
   resultado.classList.add("d-none");
 });
+
+// busca de destinos
+
