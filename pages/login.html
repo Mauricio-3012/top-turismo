@@ -21,15 +21,17 @@
                 <h1 class="titulo-principal">Olá!</h1>
                 <p class="subtitulo">Acesse sua conta para continuar.</p>
 
-                <form>
+                <p id="mensagem-erro" style="color: red; display: none;"></p>
+
+                <form method="POST" action="../php/login.php">
                     <div class="campo-entrada">
                         <label>E-mail</label>
-                        <input type="email" placeholder="Digite seu e-mail" required>
+                        <input type="email" name="email" placeholder="Digite seu e-mail" required>
                     </div>
-                    
+
                     <div class="campo-entrada">
                         <label>Senha</label>
-                        <input type="password" placeholder="Digite sua senha" required>
+                        <input type="password" name="senha" placeholder="Digite sua senha" required>
                     </div>
 
                     <button type="submit" class="botao-continuar">Entrar</button>
@@ -40,10 +42,19 @@
                 </div>
             </div>
         </section>
-        
+
         <section class="secao-hero-imagem">
             <a href="../index.html" class="botao-fechar-tela" title="Sair">✕</a>
         </section>
     </main>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("erro")) {
+            const msg = document.getElementById("mensagem-erro");
+            msg.textContent = "E-mail ou senha incorretos.";
+            msg.style.display = "block";
+        }
+    </script>
 </body>
 </html>
