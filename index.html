@@ -20,12 +20,14 @@
                     <a href="index.html" class="text-a ms-2 logo-texto">TopTurismo</a>
                 </div>
 
-                <ul class="navbar-nav flex-row gap-4 ms-4 d-none d-lg-flex">
-                    <li class="nav-item"><a class="nav-link text-white" href="#destinos">Destinos</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#reservar">Fazer Reserva</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#sobre-nos">Sobre nós</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#contato">Contato</a></li>
-                </ul>
+                <div class="flex-grow-1 d-none d-lg-flex justify-content-center">
+                    <ul class="navbar-nav flex-row gap-4">
+                        <li class="nav-item"><a class="nav-link text-white" href="#destinos">Destinos</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="#reservar">Fazer Reserva</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="#sobre-nos">Sobre nós</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="#contato">Contato</a></li>
+                    </ul>
+                </div>
 
                 <div class="d-flex align-items-center ms-auto gap-3">
                     <div class="dropdown">
@@ -120,7 +122,7 @@
             </div>
         </section>
 
-        <section class="secao-intro py-5"> <!-- Seção introdutoria -->
+        <section class="secao-intro py-5"> <!--Seção introdutoria-->
             <div class="container text-center">
                 <div class="row justify-content-center">
                     <div class="col-md-8 mb-5">
@@ -156,11 +158,11 @@
             </div>
         </section>
 
-        <section id="sobre-nos" class="py-5">
+        <section id="sobre-nos" class="py-5"> <!--Seção sobre nós-->
             <div class="container">
                 <div class="row align-items-center g-4">
                     <div class="col-md-6">
-                        <img src="./assets/imagens/foz-do-iguacu-card.png" class="img-fluid rounded"
+                        <img src="./assets/imagens/sobre-nos.jpg" class="img-fluid rounded"
                             alt="Sobre a TopTurismo">
                     </div>
                     <div class="col-md-6">
@@ -666,9 +668,10 @@
                     <div class="col-md-8">
                         <p class="lead mb-4">Garanta a melhor experiência para o seu próximo destino.</p>
 
-                        <a class="btn btn-lg text-white btn-custom px-5 py-3 mb-4" href="./pages/reservas.html">
-                            FAZER RESERVA
-                        </a>
+                        <button class="btn-custom btn btn-lg text-white btn-custom px-5 py-3 mb-4" data-bs-toggle="modal"
+                                            data-bs-target="#loginModal">
+                                            Reservar
+                                        </button>
                     </div>
                 </div>
             </div>
@@ -713,7 +716,7 @@
     <div class="modal fade" id="loginModal">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content text-black text-center p-4">
-                <a type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"></a>
+                <button type="button" class="btn btn-close position-absolute top-0 end-0 m-3 p-3" data-bs-dismiss="modal"></button>
                 <div class="modal-body">
                     <i class="bi bi-lock-fill fs-1 text-black mb-3"></i>
                     <h5 class="mb-3">Faça login ou cadastre-se para reservar</h5>
