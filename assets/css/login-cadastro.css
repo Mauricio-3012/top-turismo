@@ -136,7 +136,11 @@ body, html {
 }
 .extra{
     text-align: center; 
-    margin-top: 40px;
+    margin-top: 20px;
+}
+.extra p{
+    text-align: center; 
+    margin-top: 10px;
 }
 .extra a{
     color: #ff7020; 

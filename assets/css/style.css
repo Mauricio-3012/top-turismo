@@ -37,12 +37,6 @@ body {
   background-color: var(--primary-hover) !important;
 }
 
-.busca-container {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
 .text-a {
   color: #fff;
   text-decoration: none;
@@ -96,6 +90,10 @@ body {
 .dropdown-item:hover,
 .dropdown-menu:hover {
   color: var(--btn-bg);
+}
+
+section[id] {
+    scroll-margin-top: 90px;
 }
 
 .img-opacidade {

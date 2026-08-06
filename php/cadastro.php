@@ -4,7 +4,7 @@ $erro = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     require "conexao.php";
 
-    // pega os dados enviados pelo formulário
+    // pega os dados enviados pelo usuario no formulário
     $nome = $_POST["nome"];
     $cpf = $_POST["cpf"];
     $data_nascimento = $_POST["data_nascimento"];
@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($senha !== $confirmar_senha) {
         $erro = "As senhas não coincidem.";
     } else {
-        // criptografa a senha antes de salvar
+        // criptografa a senha
         $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
 
         $sql = "INSERT INTO usuarios (nome, cpf, data_nascimento, genero, email, telefone, senha, tipo)
