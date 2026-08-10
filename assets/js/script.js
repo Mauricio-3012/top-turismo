@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then(() => {
       const itensLogado = `
-        <li><a class="dropdown-item" href="${linkDashboard}"><i class="bi bi-speedometer2 me-2"></i>Meu Painel</a></li>
+        <li><a class="dropdown-item" href="${linkDashboard}"><i class="bi bi-person-fill me-2"></i>Meu Perfil</a></li>
         <li><a class="dropdown-item" href="${linkLogout}"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
       `;
       if (menuDesktop) menuDesktop.innerHTML = itensLogado;
