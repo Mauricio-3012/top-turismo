@@ -187,3 +187,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+const mensagemErroLogin = document.getElementById("mensagem-erro");
+if (mensagemErroLogin) {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("erro") === "1") {
+    mensagemErroLogin.innerText = "E-mail ou senha inválidos.";
+    mensagemErroLogin.style.display = "block";
+  }
+}
