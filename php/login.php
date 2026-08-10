@@ -17,7 +17,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $usuario = $resultado->fetch_assoc();
 
     if ($usuario && password_verify($senha, $usuario["senha"])) {
-        // login correto: guarda os dados na sessão
         $_SESSION["usuario_id"] = $usuario["id"];
         $_SESSION["usuario_nome"] = $usuario["nome"];
         $_SESSION["usuario_tipo"] = $usuario["tipo"];
@@ -25,12 +24,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         header("Location: ../pages/dashboard.html");
         exit;
     } else {
-        // e-mail não encontrado ou senha incorreta
         header("Location: ../pages/login.html?erro=1");
         exit;
     }
 } else {
-    // acesso direto sem enviar o formulário
     header("Location: ../pages/login.html");
     exit;
 }
