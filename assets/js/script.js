@@ -7,6 +7,43 @@ document.addEventListener("DOMContentLoaded", () => {
   setTheme(savedTheme);
 });
 
+// Verifica se o usuário está logado e atualiza o menu (Entrar/Cadastre-se -> Meu Painel/Sair)
+document.addEventListener("DOMContentLoaded", () => {
+  const menuDesktop = document.getElementById("userAuthMenuList");
+  const menuMobile = document.getElementById("userAuthMenuMobileList");
+
+  // Só roda se a página tiver esse menu (nem toda página tem)
+  if (!menuDesktop && !menuMobile) return;
+
+  // Detecta se estamos dentro de /pages/ ou na raiz do site, pra montar os links certos
+  const dentroDePages = window.location.pathname.includes("/pages/");
+  const caminhoPhp = dentroDePages ? "../php/" : "php/";
+  const linkDashboard = dentroDePages ? "dashboard.html" : "./pages/dashboard.html";
+  const linkLogout = caminhoPhp + "logout.php";
+
+  fetch(caminhoPhp + "usuario-logado.php")
+    .then((resposta) => {
+      if (!resposta.ok) throw new Error("Não autenticado");
+      return resposta.json();
+    })
+    .then(() => {
+      const itensLogado = `
+        <li><a class="dropdown-item" href="${linkDashboard}"><i class="bi bi-speedometer2 me-2"></i>Meu Painel</a></li>
+        <li><a class="dropdown-item" href="${linkLogout}"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
+      `;
+      if (menuDesktop) menuDesktop.innerHTML = itensLogado;
+
+      const itensLogadoMobile = `
+        <li class="mb-2"><a href="${linkDashboard}" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item"><i class="bi bi-speedometer2 fs-4"></i> Meu Painel</a></li>
+        <li><a href="${linkLogout}" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item"><i class="bi bi-box-arrow-right fs-4"></i> Sair</a></li>
+      `;
+      if (menuMobile) menuMobile.innerHTML = itensLogadoMobile;
+    })
+    .catch(() => {
+      // Não logado: mantém o menu padrão (Entrar/Cadastre-se) que já está no HTML
+    });
+});
+
 function setTheme(theme) {
   if (theme === "dark") {
     body.classList.add("dark-mode");
