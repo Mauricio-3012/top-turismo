@@ -58,12 +58,12 @@ body {
   border-radius: 20px;
   border: none;
   outline: none;
-  width: 220px;
+  width: 400px;
   transition: 0.3s;
 }
 
 .busca-caixa input:focus {
-  width: 260px;
+  width: 500px;
 }
 
 .user-icon {
@@ -503,9 +503,12 @@ a:hover {
     display: none;
   }
 
-  .busca-caixa input,
-  .busca-caixa input:focus {
+  .busca-caixa input {
     width: 100px;
+  }
+
+  .busca-caixa input:focus {
+    width: 200px;
   }
 
   nav {
