@@ -23,10 +23,10 @@
 
                 <div class="flex-grow-1 d-none d-lg-flex justify-content-center">
                     <ul class="navbar-nav flex-row gap-4">
-                        <li class="nav-item"><a class="nav-link text-white" href="#destinos">Destinos</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="#reservar">Fazer Reserva</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="#sobre-nos">Sobre nós</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="#contato">Contato</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="../index.php#destinos">Destinos</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="../index.php#reservar">Fazer Reserva</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="../index.php#sobre-nos">Sobre nós</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="../index.php#contato">Contato</a></li>
                     </ul>
                 </div>
 
