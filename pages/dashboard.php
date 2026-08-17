@@ -18,7 +18,7 @@
             <div class="container-fluid d-flex align-items-center flex-wrap">
                 <div class="d-flex align-items-center">
                     <img src="../assets/imagens/logo-white.png" width="50" height="50" alt="Logo">
-                    <a href="index.html" class="text-a ms-2 logo-texto">TopTurismo</a>
+                    <a href="index.php" class="text-a ms-2 logo-texto">TopTurismo</a>
                 </div>
 
                 <div class="flex-grow-1 d-none d-lg-flex justify-content-center">
@@ -37,7 +37,7 @@
                             <i class="bi bi-person-circle"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" id="userAuthMenuList">
-                            <li><a class="dropdown-item" href="./pages/login.html"><i
+                            <li><a class="dropdown-item" href="./pages/login.php"><i
                                         class="bi bi-box-arrow-in-right me-2"></i>Sair</a></li>
                         </ul>
                     </div>
@@ -110,6 +110,16 @@
                             <div class="col-12 mt-4">
                                 <button type="submit" class="btn btn-custom px-5 w-100">Salvar Alterações</button>
                             </div>
+                            <hr class="my-4">
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div>
+        <h6 class="fw-bold text-danger mb-1">Excluir Conta</h6>
+        <p class="text-muted small mb-0">Essa ação é permanente e não pode ser desfeita.</p>
+    </div>
+    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalExcluirConta">
+        <i class="bi bi-trash me-1"></i> Excluir minha conta
+    </button>
+</div>
                         </form>
                     </div>
                 </div>
@@ -171,7 +181,7 @@
             .then(resposta => {
                 if (!resposta.ok) {
                     // Não está logado (ou sessão expirou) -> manda pro login
-                    window.location.href = "login.html";
+                    window.location.href = "login.php";
                     throw new Error("Não autenticado");
                 }
                 return resposta.json();
@@ -197,7 +207,7 @@
         <div class="offcanvas-body">
             <ul class="list-unstyled">
                 <li class="mb-2">
-                    <a href="../index.html" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
+                    <a href="../index.php" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
                         <i class="bi bi-house fs-4"></i> Início
                     </a>
                 </li>
@@ -225,7 +235,7 @@
             <hr>
             <ul class="list-unstyled" id="userAuthMenuMobileList">
                 <li class="mb-2">
-                    <a href="./pages/login.html" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
+                    <a href="./pages/login.php" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
                         <i class="bi bi-box-arrow-in-right fs-4"></i> Sair
                     </a>
                 </li>
@@ -234,6 +244,26 @@
     </div>
 
     <script src="../assets/js/script.js"></script>
+
+    <div class="modal fade" id="modalExcluirConta" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <form action="../php/excluir_conta.php" method="POST">
+        <div class="modal-header">
+          <h5 class="modal-title text-danger">Excluir Conta</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p>Tem certeza que deseja excluir sua conta? Essa ação é <strong>permanente</strong>.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-danger">Sim, excluir minha conta</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 </body>
 
 </html>

@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->bind_param("sssssss", $nome, $cpf, $data_nascimento, $genero, $email, $telefone, $senha_hash);
 
         if ($stmt->execute()) {
-           header("Location: ../pages/login.html");
+           header("Location: ../pages/login.php");
             exit;
         } else {
             $erro = "Erro ao cadastrar. Talvez o e-mail ou CPF já estejam em uso.";

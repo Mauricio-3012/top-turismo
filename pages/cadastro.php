@@ -14,7 +14,7 @@
         <section class="secao-login">
             <div class="conteudo-central">
                 <header class="logotipo">
-                    <a href="../index.html">
+                    <a href="../index.php">
                         <img src="../assets/imagens/logo-favicon.ico" alt="Logo">
                         <span>TopTurismo</span>
                     </a>
@@ -75,13 +75,13 @@
                 </form>
 
                 <div class="extra">
-                    Já possui conta? <a href="./login.html">Fazer Login</a>
+                    Já possui conta? <a href="./login.php">Fazer Login</a>
                 </div>
             </div>
         </section>
 
         <section class="secao-hero-imagem">
-            <a href="../index.html" class="botao-fechar-tela" title="Sair">✕</a>
+            <a href="../index.php" class="botao-fechar-tela" title="Sair">✕</a>
         </section>
     </main>
 </body>

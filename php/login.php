@@ -21,14 +21,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $_SESSION["usuario_nome"] = $usuario["nome"];
         $_SESSION["usuario_tipo"] = $usuario["tipo"];
 
-        header("Location: ../pages/dashboard.html");
+        header("Location: ../pages/dashboard.php");
         exit;
     } else {
-        header("Location: ../pages/login.html?erro=1");
+        header("Location: ../pages/login.php?erro=1");
         exit;
     }
 } else {
-    header("Location: ../pages/login.html");
+    header("Location: ../pages/login.php");
     exit;
 }
 ?>

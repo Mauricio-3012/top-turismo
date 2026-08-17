@@ -20,8 +20,8 @@
             <div class="container-fluid d-flex align-items-center flex-wrap">
 
                 <div class="d-flex align-items-center">
-                    <a href="../index.html"><img src="../assets/imagens/logo-white.png" width="50" height="50"></a>
-                    <a href="../index.html" class="text-a ms-2 logo-texto">TopTurismo</a>
+                    <a href="../index.php"><img src="../assets/imagens/logo-white.png" width="50" height="50"></a>
+                    <a href="../index.php" class="text-a ms-2 logo-texto">TopTurismo</a>
                 </div>
 
                 <div class="d-flex align-items-center ms-auto gap-3">
@@ -31,9 +31,9 @@
                             <i class="bi bi-person-circle"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" id="userAuthMenuList">
-                            <li><a class="dropdown-item" href="login.html"><i
+                            <li><a class="dropdown-item" href="login.php"><i
                                         class="bi bi-box-arrow-in-right me-2"></i>Entrar</a></li>
-                            <li><a class="dropdown-item" href="cadastro.html"><i
+                            <li><a class="dropdown-item" href="cadastro.php"><i
                                         class="bi bi-person-plus me-2"></i>Cadastre-se</a></li>
                         </ul>
                     </div>
@@ -67,7 +67,7 @@
     <main class="d-flex justify-content-center align-items-center min-vh-100">
         <form id="reservaForm" class=" shadow-lg w-100 p-3 rounded-3" style="max-width: 700px;">
             <div class="p-2 form-info">
-                <a href="../index.html" class="btn-voltar">
+                <a href="../index.php" class="btn-voltar">
                     <i class="bi bi-arrow-left-circle"></i> Voltar
                 </a>
             </div>
@@ -134,7 +134,7 @@
 
 
         <div id="resultado" class="card mt-4 p-4 d-none">
-            <a href="./reservas.html" class="btn-voltar mb-3">
+            <a href="./reservas.php" class="btn-voltar mb-3">
                 <i class="bi bi-arrow-left-circle"></i> Voltar
             </a>
             <h4 class="mt-3 text-center mb-3">Confirme sua Reserva</h4>

@@ -14,7 +14,7 @@
         <section class="secao-login">
             <div class="conteudo-central">
                 <header class="logotipo">
-                    <a href="../index.html">
+                    <a href="../index.php">
                         <img src="../assets/imagens/logo-favicon.ico" alt="Logo">
                         <span>TopTurismo</span>
                     </a>
@@ -40,15 +40,15 @@
                 </form>
 
                 <div class="extra">
-                    <p class="mb-3">Novo por aqui? <a href="./cadastro.html">Cadastre-se</a></p>
+                    <p class="mb-3">Novo por aqui? <a href="./cadastro.php">Cadastre-se</a></p>
 
-                    <p><a href="./esqueci-senha.html">Esqueci minha senha</a></p>
+                    <p><a href="./esqueci-senha.php">Esqueci minha senha</a></p>
                 </div>
             </div>
         </section>
 
         <section class="secao-hero-imagem">
-            <a href="../index.html" class="botao-fechar-tela" title="Sair">✕</a>
+            <a href="../index.php" class="botao-fechar-tela" title="Sair">✕</a>
         </section>
     </main>
 </body>

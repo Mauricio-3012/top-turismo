@@ -17,7 +17,7 @@
             <div class="container-fluid d-flex align-items-center flex-wrap">
                 <div class="d-flex align-items-center">
                     <img src="./assets/imagens/logo-white.png" width="50" height="50" alt="Logo">
-                    <a href="index.html" class="text-a ms-2 logo-texto">TopTurismo</a>
+                    <a href="index.php" class="text-a ms-2 logo-texto">TopTurismo</a>
                 </div>
 
                 <div class="flex-grow-1 d-none d-lg-flex justify-content-center">
@@ -36,9 +36,9 @@
                             <i class="bi bi-person-circle"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" id="userAuthMenuList">
-                            <li><a class="dropdown-item" href="./pages/login.html"><i
+                            <li><a class="dropdown-item" href="./pages/login.php"><i
                                         class="bi bi-box-arrow-in-right me-2"></i>Entrar</a></li>
-                            <li><a class="dropdown-item" href="./pages/cadastro.html"><i
+                            <li><a class="dropdown-item" href="./pages/cadastro.php"><i
                                         class="bi bi-person-plus me-2"></i>Cadastre-se</a></li>
                         </ul>
                     </div>
@@ -721,9 +721,9 @@
                     <i class="bi bi-lock-fill fs-1 text-black mb-3"></i>
                     <h5 class="mb-3">Faça login ou cadastre-se para reservar</h5>
                     <div class="d-flex justify-content-center gap-2">
-                        <a href="pages/login.html" class="btn btn-custom">
+                        <a href="pages/login.php" class="btn btn-custom">
                             Fazer Login</a>
-                        <a href="pages/cadastro.html" class="btn btn-custom">Cadastrar</a>
+                        <a href="pages/cadastro.php" class="btn btn-custom">Cadastrar</a>
                     </div>
                 </div>
             </div>
@@ -765,12 +765,12 @@
             <hr>
             <ul class="list-unstyled" id="userAuthMenuMobileList">
                 <li class="mb-2">
-                    <a href="./pages/login.html" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
+                    <a href="./pages/login.php" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
                         <i class="bi bi-box-arrow-in-right fs-4"></i> Entrar
                     </a>
                 </li>
                 <li>
-                    <a href="./pages/cadastro.html"
+                    <a href="./pages/cadastro.php"
                         class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
                         <i class="bi bi-person-plus fs-4"></i> Cadastre-se
                     </a>
