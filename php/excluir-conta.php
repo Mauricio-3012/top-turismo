@@ -1,26 +1,40 @@
 <?php
-# Inclui o arquivo de conexão
-include('conexao.php');
-# Executa a função de iniciar sessão do usuário
 session_start();
-# Caso o usuário não esteja logado, redireciona para a página de login
-if (!isset($_SESSION['id_usuario'])) {
-    header("Location: ../pages/login.html");
+include('conexao.php');
+
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: ../pages/login.php");
     exit();
 }
-# Armazena o ID do usuário logado na variável ID
-$id = $_SESSION['id_usuario'];
-# Exclui a conta usando Prepared Statements (Seguro)
-$stmt = $conexao->prepare("DELETE FROM usuarios WHERE id_usuario = ?");
+
+$id = $_SESSION['usuario_id'];
+
+$stmt = $conexao->prepare("DELETE FROM usuarios WHERE id = ?");
 $stmt->bind_param("i", $id);
-if ($stmt->execute()) {
-    # Se excluiu com sucesso, destrói a sessão e desloga o usuário
+$stmt->execute();
+
+// affected_rows confirma que a linha foi de fato apagada, não só que a query rodou
+if ($stmt->affected_rows > 0) {
+    $stmt->close();
+    $conexao->close();
+
+    // Limpeza completa da sessão (igual o logout.php faz)
+    $_SESSION = [];
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), "", time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
+    }
     session_destroy();
-    header("Location: ../../public/index.html");
+
+    header("Location: ../index.php?contaExcluida=1");
     exit();
 } else {
-    echo "Erro ao excluir conta: " . $conexao->error;
+    $stmt->close();
+    $conexao->close();
+    header("Location: ../pages/dashboard.php?erroExcluir=1");
+    exit();
 }
-$stmt->close();
-$conexao->close();
 ?>

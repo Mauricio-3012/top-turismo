@@ -90,37 +90,37 @@
                         <h4 class="fw-bold mb-4" style="color: var(--btn-bg);">
                             <i class="bi bi-person-fill me-2"></i>Meus Dados
                         </h4>
-                        <form class="row g-3 m-0 p-0 bg-transparent">
-                            <div class="col-md-6">
-                                <label class="form-label">Nome Completo</label>
-                                <input type="text" class="form-control" id="campoNome" value="">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">E-mail</label>
-                                <input type="email" class="form-control" id="campoEmail" value="">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Telefone</label>
-                                <input type="text" class="form-control" id="campoTelefone" value="">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Cidade</label>
-                                <input type="text" class="form-control" placeholder="Não informado">
-                            </div>
-                            <div class="col-12 mt-4">
-                                <button type="submit" class="btn btn-custom px-5 w-100">Salvar Alterações</button>
-                            </div>
-                            <hr class="my-4">
+                        <form class="row g-3 m-0 p-0 bg-transparent" action="../php/dashboard.php" method="POST">
+    <div class="col-md-6">
+        <label class="form-label">Nome Completo</label>
+        <input type="text" class="form-control" id="campoNome" name="nome" value="">
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">E-mail</label>
+        <input type="email" class="form-control" id="campoEmail" name="email" value="">
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Telefone</label>
+        <input type="text" class="form-control" id="campoTelefone" name="telefone" value="">
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Cidade</label>
+        <input type="text" class="form-control" placeholder="Não informado">
+    </div>
+    <div class="col-12 mt-4">
+        <button type="submit" class="btn btn-custom px-5 w-100">Salvar Alterações</button>
+    </div>
+</form>
+                        <hr class="my-4">
 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
     <div>
         <h6 class="fw-bold text-danger mb-1">Excluir Conta</h6>
         <p class="text-muted small mb-0">Essa ação é permanente e não pode ser desfeita.</p>
     </div>
-    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalExcluirConta">
+    <button type="button" class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#modalExcluirConta">
         <i class="bi bi-trash me-1"></i> Excluir minha conta
     </button>
 </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -248,7 +248,7 @@
     <div class="modal fade" id="modalExcluirConta" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <form action="../php/excluir_conta.php" method="POST">
+      <form action="../php/excluir-conta.php" method="POST">
         <div class="modal-header">
           <h5 class="modal-title text-danger">Excluir Conta</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -257,8 +257,8 @@
           <p>Tem certeza que deseja excluir sua conta? Essa ação é <strong>permanente</strong>.</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-danger">Sim, excluir minha conta</button>
+          <button type="button" class="btn btn-custom" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-custom">Sim, excluir minha conta</button>
         </div>
       </form>
     </div>
