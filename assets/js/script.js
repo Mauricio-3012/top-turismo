@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Detecta se estamos dentro de /pages/ ou na raiz do site, pra montar os links certos
   const dentroDePages = window.location.pathname.includes("/pages/");
   const caminhoPhp = dentroDePages ? "../php/" : "php/";
-  const linkDashboard = dentroDePages ? "dashboard.html" : "./pages/dashboard.html";
+  const linkDashboard = dentroDePages ? "dashboard.php" : "./pages/dashboard.php";
   const linkLogout = caminhoPhp + "logout.php";
 
   fetch(caminhoPhp + "usuario-logado.php")
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (menuDesktop) menuDesktop.innerHTML = itensLogado;
 
       const itensLogadoMobile = `
-        <li class="mb-2"><a href="${linkDashboard}" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item"><i class="bi bi-speedometer2 fs-4"></i> Meu Painel</a></li>
+        <li class="mb-2"><a href="${linkDashboard}" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item"><i class="bi bi-person-circle fs-4"></i> Meu Painel</a></li>
         <li><a href="${linkLogout}" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item"><i class="bi bi-box-arrow-right fs-4"></i> Sair</a></li>
       `;
       if (menuMobile) menuMobile.innerHTML = itensLogadoMobile;
@@ -101,7 +101,7 @@ const novaReserva = document.getElementById("novaReserva");
 const msgErro = document.getElementById("erro");
 
 // Só executa a lógica de reserva se os elementos existirem na página atual
-// (evita erro em páginas como o index.html, que não têm esse formulário)
+// (evita erro em páginas como o index.php, que não têm esse formulário)
 if (form && btnConfirmar) {
 
   function calcularTotal(distancia, passageiros, assento, transporte) {
