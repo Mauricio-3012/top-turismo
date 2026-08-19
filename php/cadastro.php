@@ -22,10 +22,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
 
         $sql = "INSERT INTO usuarios (nome, cpf, data_nascimento, genero, email, telefone, cidade, senha, tipo)
-                VALUES (?, ?, ?, ?, ?, ?, ?, 'cliente')";
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'cliente')";
 
         $stmt = $conexao->prepare($sql);
-        $stmt->bind_param("sssssss", $nome, $cpf, $data_nascimento, $genero, $email, $telefone, $senha_hash);
+        $stmt->bind_param("ssssssss", $nome, $cpf, $data_nascimento, $genero, $email, $telefone, $cidade, $senha_hash);
 
         if ($stmt->execute()) {
            header("Location: ../pages/login.php");

@@ -64,7 +64,7 @@
             if (!erro || !mensagemErro) return;
 
             const mensagens = {
-                "1": "Não econtramos seu usuário. Tente novamente.",
+                "1": "Não econtramos seu usuário. Verifique seus dados ente novamente.",
                 "2": "Preencha o e-mail e a senha para continuar.",
             };
 

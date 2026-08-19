@@ -94,19 +94,19 @@ if (!isset($_SESSION["usuario_id"])) {
                     <option value="Campo Grande" data-distancia="878">Campo Grande - MS</option>
                     <option value="Curitiba" data-distancia="1.080">Curitiba - PR</option>
                     <option value="Fernando de Noronha" data-distancia="2155">Fernando de Noronha - PE</option>
-                    <option value="Florianópolis" data-distancia="1315">Florianópolis - SC</option>
+                    <option value="Florianopolis" data-distancia="1315">Florianópolis - SC</option>
                     <option value="Fortaleza" data-distancia="1688">Fortaleza - CE</option>
-                    <option value="Foz do Iguaçu" data-distancia="1276">Foz do Iguaçu - PR</option>
-                    <option value="Goiânia" data-distancia="200">Goiânia - GO</option>
+                    <option value="Foz do Iguacu" data-distancia="1276">Foz do Iguaçu - PR</option>
+                    <option value="Goiania" data-distancia="200">Goiânia - GO</option>
                     <option value="Gramado" data-distancia="1540">Gramado - RS</option>
                     <option value="Jericoacoara" data-distancia="1650">Jericoacoara - CE</option>
-                    <option value="Lençóis Maranhenses" data-distancia="1526">Lençóis Maranhenses - MA</option>
-                    <option value="Maceió" data-distancia="1485">Maceió - AL</option>
+                    <option value="Lencois Maranhenses" data-distancia="1526">Lençóis Maranhenses - MA</option>
+                    <option value="Maceio" data-distancia="1485">Maceió - AL</option>
                     <option value="Manaus" data-distancia="1937">Manaus - AM</option>
                     <option value="Porto Alegre" data-distancia="1620">Porto Alegre - RS</option>
                     <option value="Rio de Janeiro" data-distancia="932">Rio de Janeiro - RJ</option>
                     <option value="Salvador" data-distancia="1058">Salvador - BA</option>
-                    <option value="São Paulo" data-distancia="875">São Paulo - SP</option>
+                    <option value="Sao Paulo" data-distancia="875">São Paulo - SP</option>
                 </select>
             </div>
             <div class="mb-2 p-2">

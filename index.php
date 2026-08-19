@@ -576,7 +576,7 @@
                                         <p class="descricao-destino">Vilarejo paradisíaco cercado por dunas, lagoas
                                             cristalinas e um pôr do sol inesquecível. <br>
                                             Brasília → Jericoacoara ≈ 1.650 km.</p>
-                                        <button class="btn btn-custom btn-reservar" data-destino="Jericoacora">
+                                        <button class="btn btn-custom btn-reservar" data-destino="Jericoacoara">
                                             Reservar
                                         </button>
                                     </div>
