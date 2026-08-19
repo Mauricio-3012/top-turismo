@@ -26,8 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sucesso = $stmtSenha->execute() && $sucesso;
         $stmtSenha->close();
     }
-
-    $_SESSION['usuario_nome'] = $nome; // mantém a sessão atualizada
+// mantém a sessão atualizada
+    $_SESSION['usuario_nome'] = $nome;
 
     header("Location: ../pages/dashboard.php?" . ($sucesso ? "sucesso=1" : "erro=1"));
     exit();

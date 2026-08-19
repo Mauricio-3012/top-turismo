@@ -212,22 +212,22 @@
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="#destinos" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
+                    <a href="../index.php#destinos" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
                         <i class="bi bi-geo-alt fs-4"></i> Destinos
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="#reservar" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
+                    <a href="../index.php#reservar" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
                         <i class="bi bi-calendar-check fs-4"></i> Fazer Reserva
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="#sobre-nos" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
+                    <a href="../index.php#sobre-nos" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
                         <i class="bi bi-info-circle fs-4"></i> Sobre nós
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="#contato" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
+                    <a href="../index.php#contato" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
                         <i class="bi bi-telephone fs-4"></i> Contato
                     </a>
                 </li>
