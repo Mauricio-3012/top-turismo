@@ -60,6 +60,11 @@
                         <input type="tel" name="telefone" placeholder="(00) 00000-0000" required>
                     </div>
 
+                    <div class="campo-entrada">
+                        <label>Cidade</label>
+                        <input type="text" name="cidade" placeholder="Sua cidade" required>
+                    </div>
+
                     <div class="grid-2-colunas">
                         <div class="campo-entrada">
                             <label>Senha</label>

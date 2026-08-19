@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+// Só quem estiver logado pode acessar o formulário de reserva.
+if (!isset($_SESSION["usuario_id"])) {
+    header("Location: login.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -193,6 +202,20 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/script.js"></script>
+    <script>
+        // Pré-seleciona o destino escolhido na página principal (?destino=Cidade)
+        document.addEventListener("DOMContentLoaded", () => {
+            const params = new URLSearchParams(window.location.search);
+            const destino = params.get("destino");
+            const selectDestino = document.getElementById("destino");
+
+            if (destino && selectDestino) {
+                const opcaoExiste = Array.from(selectDestino.options)
+                    .some(opcao => opcao.value === destino);
+                if (opcaoExiste) selectDestino.value = destino;
+            }
+        });
+    </script>
 </body>
 
 </html>

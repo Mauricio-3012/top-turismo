@@ -191,6 +191,7 @@
                 document.getElementById("campoNome").value = usuario.nome;
                 document.getElementById("campoEmail").value = usuario.email;
                 document.getElementById("campoTelefone").value = usuario.telefone;
+                document.getElementById("campoCidade").value = usuario.cidade || "";
             })
             .catch(erro => console.error("Erro ao carregar dados do usuário:", erro));
     </script>

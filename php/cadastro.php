@@ -11,6 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $genero = $_POST["genero"];
     $email = $_POST["email"];
     $telefone = $_POST["telefone"];
+    $cidade = $_POST["cidade"];
     $senha = $_POST["senha"];
     $confirmar_senha = $_POST["confirmar_senha"];
 
@@ -20,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // criptografa a senha
         $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO usuarios (nome, cpf, data_nascimento, genero, email, telefone, senha, tipo)
+        $sql = "INSERT INTO usuarios (nome, cpf, data_nascimento, genero, email, telefone, cidade, senha, tipo)
                 VALUES (?, ?, ?, ?, ?, ?, ?, 'cliente')";
 
         $stmt = $conexao->prepare($sql);

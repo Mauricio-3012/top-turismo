@@ -11,7 +11,7 @@ if (!isset($_SESSION["usuario_id"])) {
 
 require "conexao.php";
 
-$stmt = $conexao->prepare("SELECT nome, email, telefone FROM usuarios WHERE id = ?");
+$stmt = $conexao->prepare("SELECT nome, email, telefone, cidade FROM usuarios WHERE id = ?");
 $stmt->bind_param("i", $_SESSION["usuario_id"]);
 $stmt->execute();
 $resultado = $stmt->get_result();

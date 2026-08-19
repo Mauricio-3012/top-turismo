@@ -13,9 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nome = $_POST['nome'] ?? '';
     $email = $_POST['email'] ?? '';
     $telefone = $_POST['telefone'] ?? '';
+    $cidade = $_POST['cidade'] ?? '';
 
-    $stmt = $conexao->prepare("UPDATE usuarios SET nome = ?, email = ?, telefone = ? WHERE id = ?");
-    $stmt->bind_param("sssi", $nome, $email, $telefone, $id);
+    $stmt = $conexao->prepare("UPDATE usuarios SET nome = ?, email = ?, telefone = ?, cidade = ? WHERE id = ?");
+    $stmt->bind_param("ssssi", $nome, $email, $telefone, $cidade, $id);
     $sucesso = $stmt->execute();
     $stmt->close();
 

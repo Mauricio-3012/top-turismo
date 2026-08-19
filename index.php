@@ -211,8 +211,7 @@
                                             Copacabana e o pôr do sol inesquecível no Arpoador.
                                             <br> Brasília → Rio de Janeiro ≈ 932 km.
                                         </p>
-                                        <button class="btn btn-custom" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
+                                        <button class="btn btn-custom btn-reservar" data-destino="Rio de Janeiro">
                                             Reservar
                                         </button>
                                     </div>
@@ -240,8 +239,7 @@
                                         <p class="descricao-destino">Mergulhe na energia da Bahia: do colorido histórico
                                             do Pelourinho à culinária única e as águas mornas da Praia do Forte. <br>
                                             Brasília → Salvador ≈ 1.058 km.</p>
-                                        <button class="btn btn-custom" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
+                                        <button class="btn btn-custom btn-reservar" data-destino="Salvador">
                                             Reservar
                                         </button>
                                     </div>
@@ -269,8 +267,7 @@
                                         <p class="descricao-destino">A capital que nunca para reúne a melhor gastronomia
                                             do país, cultura pulsante e um dos maiores polos financeiros da América
                                             Latina. <br> Brasília → São Paulo ≈ 875 km.</p>
-                                        <button class="btn btn-custom" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
+                                        <button class="btn btn-custom btn-reservar" data-destino="Sao Paulo">
                                             Reservar
                                         </button>
                                     </div>
@@ -298,8 +295,7 @@
                                         <p class="descricao-destino">Prepare-se para a força da natureza nas Cataratas
                                             do Iguaçu, uma das sete maravilhas do mundo, em uma experiência de tirar o
                                             fôlego. <br> Brasília → Foz do Iguaçu ≈ 1.276 km.</p>
-                                        <button class="btn btn-custom" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
+                                        <button class="btn btn-custom btn-reservar" data-destino="Foz do Iguacu">
                                             Reservar
                                         </button>
                                     </div>
@@ -327,8 +323,7 @@
                                         <p class="descricao-destino">Um deserto de areias brancas repleto de lagoas
                                             cristalinas. Um cenário surreal e exclusivo no coração do Nordeste
                                             brasileiro. <br> Brasília → Lençois Maranhenses ≈ 1.526 km.</p>
-                                        <button class="btn btn-custom" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
+                                        <button class="btn btn-custom btn-reservar" data-destino="Lencois Maranhenses">
                                             Reservar
                                         </button>
                                     </div>
@@ -356,8 +351,7 @@
                                         <p class="descricao-destino">A porta de entrada para a maior floresta tropical
                                             do mundo. Conheça o Teatro Amazonas e o encontro mágico das águas. <br>
                                             Brasília → Manaus ≈ 1.937 km.</p>
-                                        <button class="btn btn-custom" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
+                                        <button class="btn btn-custom btn-reservar" data-destino="Manaus">
                                             Reservar
                                         </button>
                                     </div>
@@ -385,8 +379,7 @@
                                         <p class="descricao-destino">A Ilha da Magia combina infraestrutura moderna com
                                             mais de 40 praias paradisíacas, trilhas naturais e o melhor do surfe. <br>
                                             Brasília → Florianópolis ≈ 1.315 km.</p>
-                                        <button class="btn btn-custom" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
+                                        <button class="btn btn-custom btn-reservar" data-destino="Florianopolis">
                                             Reservar
                                         </button>
                                     </div>
@@ -414,8 +407,7 @@
                                         <p class="descricao-destino">A Suíça Brasileira encanta com clima frio,
                                             arquitetura europeia e paisagens inesquecíveis na Serra Gaúcha. <br>
                                             Brasília → Gramado ≈ 1.540 km.</p>
-                                        <button class="btn btn-custom" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
+                                        <button class="btn btn-custom btn-reservar" data-destino="Gramado">
                                             Reservar
                                         </button>
                                     </div>
@@ -443,8 +435,7 @@
                                         <p class="descricao-destino">Referência em urbanismo e qualidade de vida, reúne
                                             parques exuberantes e um inverno encantador.<br>
                                             Brasília → Curitiba ≈ 1.080 km.</p>
-                                        <button class="btn btn-custom" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
+                                        <button class="btn btn-custom btn-reservar" data-destino="Curitiba">
                                             Reservar
                                         </button>
                                     </div>
@@ -473,8 +464,7 @@
                                         <p class="descricao-destino">Um paraíso brasileiro com praias cristalinas, vida
                                             marinha exuberante e paisagens de tirar o fôlego.<br>
                                             Brasília → Fernando de Noronha ≈ 2.155 km.</p>
-                                        <button class="btn btn-custom" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
+                                        <button class="btn btn-custom btn-reservar" data-destino="Fernando de Noronha">
                                             Reservar
                                         </button>
                                     </div>
@@ -502,8 +492,7 @@
                                         <p class="descricao-destino">Porta de entrada para o Pantanal, combina natureza
                                             exuberante, ecoturismo e rica biodiversidade. <br> Brasília → Campo Grande ≈
                                             878 km.</p>
-                                        <button class="btn btn-custom" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
+                                        <button class="btn btn-custom btn-reservar" data-destino="Campo Grande">
                                             Reservar
                                         </button>
                                     </div>
@@ -531,8 +520,7 @@
                                         <p class="descricao-destino">A capital do sol encanta com praias vibrantes,
                                             falésias coloridas e a alegria do povo cearense.<br>
                                             Brasília → Fortaleza ≈ 1.688 km.</p>
-                                        <button class="btn btn-custom" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
+                                        <button class="btn btn-custom btn-reservar" data-destino="Fortaleza">
                                             Reservar
                                         </button>
                                     </div>
@@ -560,8 +548,7 @@
                                         <p class="descricao-destino">Cidade arborizada que une boa gastronomia,
                                             qualidade de vida e clima acolhedor no coração do Brasil. <br>
                                             Brasília → Goiânia ≈ 200 km.</p>
-                                        <button class="btn btn-custom" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
+                                        <button class="btn btn-custom btn-reservar" data-destino="Goiania">
                                             Reservar
                                         </button>
                                     </div>
@@ -589,8 +576,7 @@
                                         <p class="descricao-destino">Vilarejo paradisíaco cercado por dunas, lagoas
                                             cristalinas e um pôr do sol inesquecível. <br>
                                             Brasília → Jericoacoara ≈ 1.650 km.</p>
-                                        <button class="btn btn-custom" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
+                                        <button class="btn btn-custom btn-reservar" data-destino="Jericoacora">
                                             Reservar
                                         </button>
                                     </div>
@@ -618,8 +604,7 @@
                                         <p class="descricao-destino">O Caribe brasileiro impressiona com águas
                                             azul-esverdeadas, piscinas naturais e praias paradisíacas.<br>
                                             Brasília → Maceió ≈ 1.485 km.</p>
-                                        <button class="btn btn-custom" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
+                                        <button class="btn btn-custom btn-reservar" data-destino="Maceio">
                                             Reservar
                                         </button>
                                     </div>
@@ -647,8 +632,7 @@
                                         <p class="descricao-destino">A capital gaúcha reúne tradição, excelente
                                             gastronomia e acesso às famosas vinícolas da Serra.<br>
                                             Brasília → Porto Alegre ≈ 1.620 km.</p>
-                                        <button class="btn btn-custom" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
+                                        <button class="btn btn-custom btn-reservar" data-destino="Porto Alegre">
                                             Reservar
                                         </button>
                                     </div>
@@ -668,10 +652,9 @@
                     <div class="col-md-8">
                         <p class="lead mb-4">Garanta a melhor experiência para o seu próximo destino.</p>
 
-                        <button class="btn-custom btn btn-lg text-white btn-custom px-5 py-3 mb-4" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
-                                            Reservar
-                                        </button>
+                        <button class="btn-custom btn btn-lg text-white btn-custom px-5 py-3 mb-4 btn-reservar" data-destino="">
+                            Reservar
+                        </button>
                     </div>
                 </div>
             </div>
@@ -712,7 +695,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./assets/js/script.js"></script>
 
-    <!-- -->
+    <!-- pop up fazer -->
     <div class="modal fade" id="loginModal">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content text-black text-center p-4">
