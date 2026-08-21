@@ -93,19 +93,19 @@
                         <form class="row g-3 m-0 p-0 bg-transparent" action="../php/dashboard.php" method="POST">
     <div class="col-md-6">
         <label class="form-label">Nome Completo</label>
-        <input type="text" class="form-control" id="campoNome" name="nome" value="">
+        <input type="text" class="form-control" id="campoNome" name="nome" value="" placeholder="Digite seu nome" required>
     </div>
     <div class="col-md-6">
         <label class="form-label">E-mail</label>
-        <input type="email" class="form-control" id="campoEmail" name="email" value="">
+        <input type="email" class="form-control" id="campoEmail" name="email" value="" placeholder="Digite seu email" required>
     </div>
     <div class="col-md-6">
         <label class="form-label">Telefone</label>
-        <input type="text" class="form-control" id="campoTelefone" name="telefone" value="">
+        <input type="text" class="form-control" id="campoTelefone" name="telefone" value="" placeholder="Digite seu telefone" required>
     </div>
     <div class="col-md-6">
-        <label class="form-label">Cidade</label>
-        <input type="text" class="form-control" placeholder="Não informado">
+    <label class="form-label">Cidade</label>
+    <input type="text" class="form-control" id="campoCidade" name="cidade" value"" placeholder="Digite sua cidade" required>
     </div>
     <div class="col-12 mt-4">
         <button type="submit" class="btn btn-custom px-5 w-100">Salvar Alterações</button>
