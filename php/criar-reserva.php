@@ -22,7 +22,6 @@ $passageiros = filter_input(INPUT_POST, 'passageiros', FILTER_VALIDATE_INT);
 $dataViagem = trim($_POST['data'] ?? '');
 $transporte = trim($_POST['transporte'] ?? '');
 $assento = trim($_POST['assento'] ?? '');
-$valorTotal = filter_var($_POST['valor_total'] ?? null, FILTER_VALIDATE_FLOAT);
 
 $transportesPermitidos = ['Avião', 'Ônibus'];
 $assentosPermitidos = ['Padrão', 'VIP', 'Executiva'];
@@ -30,26 +29,40 @@ $assentosPermitidos = ['Padrão', 'VIP', 'Executiva'];
 $data = DateTime::createFromFormat('Y-m-d', $dataViagem);
 $hoje = new DateTime('today');
 
-if (!$destinoId || !$passageiros || $passageiros < 1 || $passageiros > 9 || !$data || $data->format('Y-m-d') !== $dataViagem || $data < $hoje || !in_array($transporte, $transportesPermitidos, true) || !in_array($assento, $assentosPermitidos, true) || $valorTotal === false || $valorTotal < 0) {
+if (!$destinoId || !$passageiros || $passageiros < 1 || $passageiros > 9 || !$data || $data->format('Y-m-d') !== $dataViagem || $data < $hoje || !in_array($transporte, $transportesPermitidos, true) || !in_array($assento, $assentosPermitidos, true)) {
     http_response_code(422);
     echo json_encode(['erro' => 'Dados da reserva inválidos.'], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-$stmtDestino = $conexao->prepare('SELECT id_destino FROM destinos WHERE id_destino = ? LIMIT 1');
+$stmtDestino = $conexao->prepare('SELECT id_destino, preco_destino FROM destinos WHERE id_destino = ? LIMIT 1');
 $stmtDestino->bind_param('i', $destinoId);
 $stmtDestino->execute();
-$destinoExiste = $stmtDestino->get_result()->fetch_assoc();
+$destino = $stmtDestino->get_result()->fetch_assoc();
 $stmtDestino->close();
 
-if (!$destinoExiste) {
+if (!$destino) {
     http_response_code(404);
     echo json_encode(['erro' => 'Destino não encontrado.'], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-$sql = 'INSERT INTO reservas (usuario_id, id_destino, data_viagem, passageiros, transporte, assento, valor_total, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+$precoBase = (float) $destino['preco_destino'] * $passageiros;
+if ($transporte === 'Ônibus') {
+    $precoBase /= 2;
+}
+
+$adicionalAssento = 0;
+if ($assento === 'VIP') {
+    $adicionalAssento = 150 * $passageiros;
+} elseif ($assento === 'Executiva') {
+    $adicionalAssento = 300 * $passageiros;
+}
+
+$valorTotal = $precoBase + $adicionalAssento;
 $status = 'Confirmada';
+
+$sql = 'INSERT INTO reservas (usuario_id, id_destino, data_viagem, passageiros, transporte, assento, valor_total, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
 $stmt = $conexao->prepare($sql);
 $stmt->bind_param('iisissds', $usuarioId, $destinoId, $dataViagem, $passageiros, $transporte, $assento, $valorTotal, $status);
 
@@ -63,4 +76,8 @@ if (!$stmt->execute()) {
 $idReserva = $stmt->insert_id;
 $stmt->close();
 
-echo json_encode(['sucesso' => true, 'id_reserva' => $idReserva], JSON_UNESCAPED_UNICODE);
+echo json_encode([
+    'sucesso' => true,
+    'id_reserva' => $idReserva,
+    'valor_total' => $valorTotal
+], JSON_UNESCAPED_UNICODE);
