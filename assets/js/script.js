@@ -142,32 +142,16 @@ if (form && btnConfirmar) {
     return precoBase + adicional;
   }
 
-  // verificacao de dados / execucao do botao de confirmar reserva
-  btnConfirmar.addEventListener("click", () => {
-    const nome = document.getElementById("nome").value.trim();
-    const destinoSelect = document.getElementById("destino");
-    const destino = destinoSelect.value;
-    const distancia = destinoSelect.selectedOptions[0]?.dataset.distancia;
-    const passageiros = parseInt(document.getElementById("passageiros").value);
-    const transporte = document.getElementById("transporte").value;
-    const assento = document.getElementById("assento").value;
-    const data = document.getElementById("data").value
+  const campoNomeReserva = document.getElementById("nome");
+  const campoDestino = document.getElementById("destino");
+  const campoPassageiros = document.getElementById("passageiros");
+  const campoData = document.getElementById("data");
+  const campoTransporte = document.getElementById("transporte");
+  const campoAssento = document.getElementById("assento");
 
-    if (!nome || !destino || !passageiros || !assento || !transporte) {
-      msgErro.innerText = "Por favor, preencha todos os campos corretamente!";
-      form.reset();
-      return;
-    }
-    if (!data) {
-      msgErro.innerText = "Por favor, selecione uma data.";
-      return;
-    }
-    if (passageiros > 9) {
-      msgErro.innerText = "Não é possível adicionar mais de 9 passageiros.";
-      return;
-    }
+  function validarDataReserva(data) {
+    if (!data) return "Selecione uma data.";
 
-    // requisitos data -> 1 mes de antecedencia / nao pode ser feita no passado
     const dataReserva = new Date(data + "T00:00:00");
     const hoje = new Date();
     hoje.setHours(0, 0, 0, 0);
@@ -176,28 +160,57 @@ if (form && btnConfirmar) {
     dataMinima.setMonth(dataMinima.getMonth() + 1);
     dataMinima.setHours(0, 0, 0, 0);
 
-    if (dataReserva < hoje) {
-      msgErro.innerText = "A reserva não pode ser feita no passado!";
-      return;
-    }
-    if (dataReserva < dataMinima) {
-      msgErro.innerText = "A reserva deve ser feita com pelo menos 1 mês de antecedência!";
+    if (dataReserva < hoje) return "A reserva não pode ser feita no passado.";
+    if (dataReserva < dataMinima) return "A reserva deve ser feita com pelo menos 1 mês de antecedência.";
+    return null;
+  }
+
+  function validarPassageiros(valor) {
+    const numero = parseInt(valor);
+    if (!valor || isNaN(numero)) return "Informe a quantidade de passageiros.";
+    if (numero < 1) return "É necessário pelo menos 1 passageiro.";
+    if (numero > 9) return "Não é possível adicionar mais de 9 passageiros.";
+    return null;
+  }
+
+  btnConfirmar.addEventListener("click", () => {
+    const nome = campoNomeReserva.value.trim();
+    const destino = campoDestino.value;
+    const distancia = campoDestino.selectedOptions[0]?.dataset.distancia;
+    const passageiros = parseInt(campoPassageiros.value);
+    const transporte = campoTransporte.value;
+    const assento = campoAssento.value;
+    const data = campoData.value;
+
+    const validacoes = [
+      [campoNomeReserva, validarNome(nome)],
+      [campoDestino, validarCampoObrigatorio(destino, "O destino")],
+      [campoPassageiros, validarPassageiros(campoPassageiros.value)],
+      [campoData, validarDataReserva(data)],
+      [campoTransporte, validarCampoObrigatorio(transporte, "O tipo de transporte")],
+      [campoAssento, validarCampoObrigatorio(assento, "O tipo de assento")],
+    ];
+
+    let temErro = false;
+    validacoes.forEach(([campo, mensagem]) => {
+      exibirErroCampo(campo, mensagem);
+      if (mensagem) temErro = true;
+    });
+
+    if (temErro) {
+      msgErro.innerText = "Corrija os campos destacados para continuar.";
       return;
     }
     msgErro.innerText = "";
 
-    // formata data
     const dataFormatada = data.split('-').reverse().join('/');
-
     const total = calcularTotal(Number(distancia), passageiros, assento, transporte);
 
-    // formata valor total
     const valorFormatado = total.toLocaleString('pt-BR', {
       style: 'currency',
       currency: 'BRL'
     });
 
-    // mostra resultado
     form.classList.add("d-none");
     resultado.classList.remove("d-none");
     resumo.innerHTML = `

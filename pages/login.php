@@ -25,25 +25,21 @@
 
                 <div id="mensagem-erro" style="font-weight: bold; color: #111827; display: none; padding: 17px; background-color: #FDF0F4; border-radius: 15px; margin-bottom: 10px"></div>
 
-                <form method="POST" action="../php/login.php">
+                <form method="POST" action="../php/login.php" id="formLogin" novalidate>
                     <div class="campo-entrada">
                         <label>E-mail</label>
-                        <input type="email" name="email" placeholder="Digite seu e-mail" required>
+                        <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
                     </div>
 
                     <div class="campo-entrada">
                         <label>Senha</label>
-                        <input type="password" name="senha" placeholder="Digite sua senha" required>
+                        <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
                     </div>
-                    
 
                     <button type="submit" class="botao-continuar">Entrar</button>
-
-                    
                 </form>
                 <div class="extra">
                     <p class="mb-3">Novo por aqui? <a href="./cadastro.php">Cadastre-se</a></p>
-
                     <p><a href="./esqueci-senha.php">Esqueci minha senha</a></p>
                 </div>
             </div>
@@ -54,8 +50,8 @@
         </section>
     </main>
 
+    <script src="../assets/js/validacoes.js"></script>
     <script>
-        // Exibe a mensagem de erro vinda do backend
         document.addEventListener("DOMContentLoaded", () => {
             const params = new URLSearchParams(window.location.search);
             const erro = params.get("erro");
@@ -71,8 +67,23 @@
             mensagemErro.textContent = mensagens[erro] || "Não foi possível fazer login. Tente novamente.";
             mensagemErro.style.display = "block";
         });
-    </script>
 
+        const formLogin = document.getElementById("formLogin");
+        const campoEmailLogin = document.getElementById("email");
+        const campoSenhaLogin = document.getElementById("senha");
+
+        formLogin.addEventListener("submit", (evento) => {
+            const erroEmail = validarEmail(campoEmailLogin.value);
+            const erroSenha = validarCampoObrigatorio(campoSenhaLogin.value, "A senha");
+
+            exibirErroCampo(campoEmailLogin, erroEmail);
+            exibirErroCampo(campoSenhaLogin, erroSenha);
+
+            if (erroEmail || erroSenha) {
+                evento.preventDefault();
+            }
+        });
+    </script>
 </body>
 
 </html>

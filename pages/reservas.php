@@ -201,6 +201,7 @@ if (!isset($_SESSION["usuario_id"])) {
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/validacoes.js"></script>
     <script src="../assets/js/script.js"></script>
     <script>
         // Pré-seleciona o destino escolhido na página principal (?destino=Cidade)

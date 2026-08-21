@@ -23,25 +23,31 @@
                 <h1 class="titulo-principal">Cadastre-se</h1>
                 <p class="subtitulo">Crie sua conta para começar a viajar.</p>
 
-                <form method="POST" action="../php/cadastro.php">
+                <?php if (!empty($erro)): ?>
+                    <div class="mensagem-erro-servidor" style="font-weight: bold; color: #111827; padding: 17px; background-color: #FDF0F4; border-radius: 15px; margin-bottom: 10px">
+                        <?= htmlspecialchars($erro, ENT_QUOTES, 'UTF-8') ?>
+                    </div>
+                <?php endif; ?>
+
+                <form method="POST" action="../php/cadastro.php" id="formCadastro" novalidate>
                     <div class="campo-entrada">
                         <label>Nome completo</label>
-                        <input type="text" name="nome" placeholder="Nome como no documento" required>
+                        <input type="text" id="nome" name="nome" placeholder="Nome como no documento" required>
                     </div>
 
                     <div class="campo-entrada">
                         <label>CPF</label>
-                        <input type="text" name="cpf" placeholder="000.000.000-00" required>
+                        <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" maxlength="14" inputmode="numeric" required>
                     </div>
 
                     <div class="grid-2-colunas">
                         <div class="campo-entrada">
                             <label>Data de nascimento</label>
-                            <input type="date" name="data_nascimento" required>
+                            <input type="date" id="data_nascimento" name="data_nascimento" required>
                         </div>
                         <div class="campo-entrada">
                             <label>Gênero</label>
-                            <select name="genero" required>
+                            <select id="genero" name="genero" required>
                                 <option value="">Selecione</option>
                                 <option>Masculino</option>
                                 <option>Feminino</option>
@@ -52,27 +58,27 @@
 
                     <div class="campo-entrada">
                         <label>E-mail</label>
-                        <input type="email" name="email" placeholder="exemplo@email.com" required>
+                        <input type="email" id="email" name="email" placeholder="exemplo@email.com" required>
                     </div>
 
                     <div class="campo-entrada">
                         <label>Telefone</label>
-                        <input type="tel" name="telefone" placeholder="(00) 00000-0000" required>
+                        <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" maxlength="15" inputmode="numeric" required>
                     </div>
 
                     <div class="campo-entrada">
                         <label>Cidade</label>
-                        <input type="text" name="cidade" placeholder="Sua cidade" required>
+                        <input type="text" id="cidade" name="cidade" placeholder="Sua cidade" required>
                     </div>
 
                     <div class="grid-2-colunas">
                         <div class="campo-entrada">
                             <label>Senha</label>
-                            <input type="password" name="senha" placeholder="Mínimo 8 caracteres" required>
+                            <input type="password" id="senha" name="senha" placeholder="Mínimo 8 caracteres" required>
                         </div>
                         <div class="campo-entrada">
                             <label>Confirmar senha</label>
-                            <input type="password" name="confirmar_senha" placeholder="Repita a senha" required>
+                            <input type="password" id="confirmar_senha" name="confirmar_senha" placeholder="Repita a senha" required>
                         </div>
                     </div>
 
@@ -89,6 +95,59 @@
             <a href="../index.php" class="botao-fechar-tela" title="Sair">✕</a>
         </section>
     </main>
+
+    <script src="../assets/js/validacoes.js"></script>
+    <script>
+        const formCadastro = document.getElementById("formCadastro");
+        const campoNome = document.getElementById("nome");
+        const campoCpf = document.getElementById("cpf");
+        const campoDataNascimento = document.getElementById("data_nascimento");
+        const campoGenero = document.getElementById("genero");
+        const campoEmail = document.getElementById("email");
+        const campoTelefone = document.getElementById("telefone");
+        const campoCidade = document.getElementById("cidade");
+        const campoSenha = document.getElementById("senha");
+        const campoConfirmarSenha = document.getElementById("confirmar_senha");
+
+        aplicarMascaraCPF(campoCpf);
+        aplicarMascaraTelefone(campoTelefone);
+
+        function validarCampo(input, funcaoValidadora, ...args) {
+            const mensagem = funcaoValidadora(...args);
+            exibirErroCampo(input, mensagem);
+            return !mensagem;
+        }
+
+        campoNome.addEventListener("blur", () => validarCampo(campoNome, validarNome, campoNome.value));
+        campoCpf.addEventListener("blur", () => validarCampo(campoCpf, validarCPF, campoCpf.value));
+        campoDataNascimento.addEventListener("blur", () => validarCampo(campoDataNascimento, validarDataNascimento, campoDataNascimento.value));
+        campoGenero.addEventListener("change", () => validarCampo(campoGenero, validarCampoObrigatorio, campoGenero.value, "O gênero"));
+        campoEmail.addEventListener("blur", () => validarCampo(campoEmail, validarEmail, campoEmail.value));
+        campoTelefone.addEventListener("blur", () => validarCampo(campoTelefone, validarTelefone, campoTelefone.value));
+        campoCidade.addEventListener("blur", () => validarCampo(campoCidade, validarCampoObrigatorio, campoCidade.value, "A cidade"));
+        campoSenha.addEventListener("blur", () => validarCampo(campoSenha, validarSenha, campoSenha.value));
+        campoConfirmarSenha.addEventListener("blur", () => validarCampo(campoConfirmarSenha, validarConfirmarSenha, campoSenha.value, campoConfirmarSenha.value));
+
+        formCadastro.addEventListener("submit", (evento) => {
+            const validacoes = [
+                validarCampo(campoNome, validarNome, campoNome.value),
+                validarCampo(campoCpf, validarCPF, campoCpf.value),
+                validarCampo(campoDataNascimento, validarDataNascimento, campoDataNascimento.value),
+                validarCampo(campoGenero, validarCampoObrigatorio, campoGenero.value, "O gênero"),
+                validarCampo(campoEmail, validarEmail, campoEmail.value),
+                validarCampo(campoTelefone, validarTelefone, campoTelefone.value),
+                validarCampo(campoCidade, validarCampoObrigatorio, campoCidade.value, "A cidade"),
+                validarCampo(campoSenha, validarSenha, campoSenha.value),
+                validarCampo(campoConfirmarSenha, validarConfirmarSenha, campoSenha.value, campoConfirmarSenha.value),
+            ];
+
+            if (validacoes.includes(false)) {
+                evento.preventDefault();
+                const primeiroInvalido = formCadastro.querySelector(".campo-invalido");
+                if (primeiroInvalido) primeiroInvalido.focus();
+            }
+        });
+    </script>
 </body>
 
 </html>
