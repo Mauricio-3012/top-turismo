@@ -62,7 +62,7 @@
     <img src="https://www.svgrepo.com/show/452088/php.svg" height="60" title="PHP"/>
     <img src="https://www.svgrepo.com/show/373848/mysql.svg" height="60" title="MySQL"/>
     <img src="https://www.svgrepo.com/show/353400/apache.svg" height="60" title="Apache"/>
-    <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/xampp.svg" height="60" title="XAMPP"/>
+    <img src="https://cdn.simpleicons.org/xampp?viewbox=auto" height="60" title="XAMPP"/>
     <img src="https://www.svgrepo.com/show/374171/vscode.svg" height="60" title="VS Code"/>
     <img src="https://www.svgrepo.com/show/452210/git.svg" height="60" title="Git"/>
     <img src="https://img.icons8.com/?size=100&id=bVGqATNwfhYq&format=png&color=000000.svg" height="60" title="GitHub"/>
