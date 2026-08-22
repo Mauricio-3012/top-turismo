@@ -53,10 +53,15 @@
     </main>
 
     <script>
+        // O token vem da URL e é enviado ao endpoint PHP junto com a nova senha.
+        // A validação definitiva do token deve sempre acontecer no servidor.
         const params = new URLSearchParams(window.location.search);
         const token = params.get('token');
+
         document.getElementById('token').value = token || '';
 
+        // Validação de interface para evitar o envio de duas senhas diferentes.
+        // O backend também deve repetir essa validação antes de atualizar a senha.
         document.getElementById('form-redefinir').addEventListener('submit', function (e) {
             const senha = document.getElementById('senha').value;
             const confirmar = document.getElementById('confirmar_senha').value;

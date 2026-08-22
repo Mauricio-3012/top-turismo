@@ -73,7 +73,7 @@ if (!isset($_SESSION["usuario_id"])) {
         </nav>
     </header>
 
-    <main class="d-flex justify-content-center align-items-center min-vh-100">
+    <main class="reserva-main">
         <form id="reservaForm" class=" shadow-lg w-100 p-3 rounded-3" style="max-width: 700px;">
             <div class="p-2 form-info">
                 <a href="../index.php" class="btn-voltar">
@@ -84,56 +84,91 @@ if (!isset($_SESSION["usuario_id"])) {
                 <h2>Reserve sua Viagem</h2>
                 <p>Preencha os dados abaixo para finalizar sua reserva.</p>
             </div>
+
+            <div class="reserva-imagem-form reserva-destino-preview">
+                <img id="reservaImagemForm" src="../assets/imagens/hero-bg.jpg" alt="Destino da viagem">
+                <div class="reserva-imagem-overlay"></div>
+                <div class="reserva-imagem-legenda" id="reservaImagemLegendaForm">
+                    <i class="bi bi-geo-alt-fill"></i> Selecione um destino
+                </div>
+            </div>
+
+            <div class="reserva-destino-meta">
+                <div class="reserva-destino-meta-item">
+                    <span><i class="bi bi-geo-alt-fill"></i> Destino</span>
+                    <strong id="reservaDestinoForm">Selecione um destino</strong>
+                </div>
+                <div class="reserva-destino-meta-item">
+                    <span><i class="bi bi-tag-fill"></i> Preço base</span>
+                    <strong id="reservaPrecoForm">R$ 0,00 <small>/ passageiro</small></strong>
+                </div>
+                <div class="reserva-destino-meta-item">
+                    <span><i class="bi bi-arrow-right-circle-fill"></i> Modalidade</span>
+                    <strong id="reservaTipoForm">Ida</strong>
+                </div>
+            </div>
+
             <div class="mb-2 p-2">
                 <label for="nome" class="form-label">Nome </label>
                 <input type="text" id="nome" class="form-control" placeholder="Nome Completo">
             </div>
             <div class="mb-2 p-2">
                 <label for="destino" class="form-label">Destino</label>
-                <select id="destino" class="form-select">
-                    <option value="Campo Grande" data-distancia="878">Campo Grande - MS</option>
-                    <option value="Curitiba" data-distancia="1.080">Curitiba - PR</option>
-                    <option value="Fernando de Noronha" data-distancia="2155">Fernando de Noronha - PE</option>
-                    <option value="Florianopolis" data-distancia="1315">Florianópolis - SC</option>
-                    <option value="Fortaleza" data-distancia="1688">Fortaleza - CE</option>
-                    <option value="Foz do Iguacu" data-distancia="1276">Foz do Iguaçu - PR</option>
-                    <option value="Goiania" data-distancia="200">Goiânia - GO</option>
-                    <option value="Gramado" data-distancia="1540">Gramado - RS</option>
-                    <option value="Jericoacoara" data-distancia="1650">Jericoacoara - CE</option>
-                    <option value="Lencois Maranhenses" data-distancia="1526">Lençóis Maranhenses - MA</option>
-                    <option value="Maceio" data-distancia="1485">Maceió - AL</option>
-                    <option value="Manaus" data-distancia="1937">Manaus - AM</option>
-                    <option value="Porto Alegre" data-distancia="1620">Porto Alegre - RS</option>
-                    <option value="Rio de Janeiro" data-distancia="932">Rio de Janeiro - RJ</option>
-                    <option value="Salvador" data-distancia="1058">Salvador - BA</option>
-                    <option value="Sao Paulo" data-distancia="875">São Paulo - SP</option>
-                </select>
+                <select id="destino" class="form-select" required>
+    <option value="">Carregando destinos...</option>
+</select>
             </div>
             <div class="mb-2 p-2">
                 <label for="passageiros" class="form-label">Quantidade de passageiros</label>
                 <input type="number" id="passageiros" class="form-control" min="1" max="9" placeholder="1-9" required>
             </div>
+
             <div class="mb-2 p-2">
-                <label for="data" class="form-label">Data</label>
-                <input type="date" id="data" class="form-control" required>
+                <label for="tipoViagem" class="form-label">Tipo de viagem</label>
+
+                <select id="tipoViagem" class="form-select" required>
+                    <option value="">Selecione o tipo</option>
+                    <option value="ida">Somente ida</option>
+                    <option value="ida_volta">Ida e volta</option>
+                </select>
             </div>
+
+            <div class="mb-2 p-2">
+                <div class="row g-3" id="grupoDatas">
+
+                    <div class="col-12" id="campoDataIda">
+                        <label for="dataIda" class="form-label">Data de ida</label>
+                        <input type="date" id="dataIda" class="form-control" required>
+                    </div>
+
+                    <div class="col-12 d-none" id="campoDataVolta">
+                        <label for="dataVolta" class="form-label">Data de volta</label>
+                        <input type="date" id="dataVolta" class="form-control">
+                    </div>
+
+                </div>
+            </div>
+
             <div class="mb-2 p-2">
                 <label for="transporte" class="form-label">Tipo de Transporte</label>
-                <select id="transporte" class="form-select">
+                <select id="transporte" class="form-select" required>
                     <option value="">Selecione o tipo</option>
                     <option value="Avião">Avião</option>
                     <option value="Ônibus">Ônibus</option>
                 </select>
             </div>
             <div class="mb-2 p-2">
-                <label for="assento" class="form-label">Tipo de assento</label>
-                <select id="assento" class="form-select">
-                    <option value="">Selecione o tipo</option>
-                    <option value="Padrão">Padrão</option>
-                    <option value="VIP">VIP</option>
+                <label for="classe" class="form-label">Classe</label>
+
+                <select id="classe" class="form-select" required>
+                    <option value="">Selecione a classe</option>
+                    <option value="Econômica">Econômica</option>
                     <option value="Executiva">Executiva</option>
+                    <option value="VIP">VIP</option>
                 </select>
             </div>
+
+            <div id="beneficiosDesconto" class="beneficios-desconto mb-3" aria-live="polite"></div>
 
             <div class="mb-2 p-2">
                 <button type="button" class="btn btn-custom w-100" id="btnConfirmar">CONTINUAR</button>
@@ -141,14 +176,70 @@ if (!isset($_SESSION["usuario_id"])) {
             <div id="erro" class="text-center"></div>
         </form>
 
+        <div id="resultado" class="card reserva-confirmacao d-none">
 
-        <div id="resultado" class="card mt-4 p-4 d-none">
-            <a href="./reservas.php" class="btn-voltar mb-3">
+            <a href="./reservas.php" class="btn-voltar reserva-voltar">
                 <i class="bi bi-arrow-left-circle"></i> Voltar
             </a>
-            <h4 class="mt-3 text-center mb-3">Confirme sua Reserva</h4>
-            <p id="resumo" class="mb-3 text-center"></p>
-            <button class="btn btn-custom mb-3 text-center" id="novaReserva">Confirmar reserva</button>
+
+            <div class="reserva-titulo">
+                <span class="reserva-titulo-kicker">RESERVA DE VIAGEM</span>
+                <h4>Confirme sua Reserva</h4>
+                <p>Confira os dados da sua viagem antes de continuar.</p>
+            </div>
+
+            <div class="reserva-imagem-resultado">
+                <img id="reservaImagemDestino" src="../assets/imagens/hero-bg.jpg" alt="Destino da viagem">
+                <div class="reserva-imagem-overlay"></div>
+                <div class="reserva-imagem-legenda" id="reservaImagemLegenda">
+                    <i class="bi bi-geo-alt-fill"></i> Seu destino
+                </div>
+            </div>
+
+            <div class="reserva-destino-meta reserva-destino-meta-resultado">
+                <div class="reserva-destino-meta-item">
+                    <span><i class="bi bi-geo-alt-fill"></i> Destino</span>
+                    <strong id="reservaDestinoHero">Sua viagem</strong>
+                </div>
+                <div class="reserva-destino-meta-item">
+                    <span><i class="bi bi-tag-fill"></i> Preço base</span>
+                    <strong id="precoPassageiroMeta">R$ 0,00 <small>/ passageiro</small></strong>
+                </div>
+                <div class="reserva-destino-meta-item">
+                    <span><i class="bi bi-arrow-right-circle-fill"></i> Modalidade</span>
+                    <strong id="tipoViagemMeta">Ida</strong>
+                </div>
+            </div>
+
+            <div id="resumo" class="resumo-reserva"></div>
+
+            <div class="resumo-precos">
+                <div class="preco-linha">
+                    <span>Preço por passageiro</span>
+                    <strong id="precoPassageiro">R$ 0,00</strong>
+                </div>
+                <div class="preco-linha">
+                    <span>Subtotal da reserva</span>
+                    <strong id="subtotal">R$ 0,00</strong>
+                </div>
+                <div class="preco-linha desconto-linha" id="linhaDesconto">
+                    <span id="textoDesconto">Desconto</span>
+                    <strong id="desconto">- R$ 0,00</strong>
+                </div>
+                <div class="preco-divisor"></div>
+                <div class="preco-total">
+                    <span>Total</span>
+                    <strong id="total">R$ 0,00</strong>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                class="btn btn-custom w-100 reserva-confirmar-btn"
+                id="novaReserva">
+                <i class="bi bi-check-circle me-2"></i>Confirmar reserva
+            </button>
+
         </div>
     </main>
 
@@ -202,21 +293,185 @@ if (!isset($_SESSION["usuario_id"])) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/validacoes.js"></script>
-    <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/script.js?v=20260822-modalfix"></script>
     <script>
-        // Pré-seleciona o destino escolhido na página principal (?destino=Cidade)
-        document.addEventListener("DOMContentLoaded", () => {
-            const params = new URLSearchParams(window.location.search);
-            const destino = params.get("destino");
-            const selectDestino = document.getElementById("destino");
+document.addEventListener("DOMContentLoaded", async () => {
 
-            if (destino && selectDestino) {
-                const opcaoExiste = Array.from(selectDestino.options)
-                    .some(opcao => opcao.value === destino);
-                if (opcaoExiste) selectDestino.value = destino;
+    const selectDestino = document.getElementById("destino");
+
+    try {
+
+        // Busca os destinos no banco através da API
+        const resposta = await fetch("../php/destinos.php");
+
+        if (!resposta.ok) {
+            throw new Error("Erro ao buscar destinos.");
+        }
+
+        const destinos = await resposta.json();
+
+        // Limpa o "Carregando destinos..."
+        selectDestino.innerHTML =
+            '<option value="">Selecione o destino</option>';
+
+        // Recupera o destino enviado pela página inicial
+        const params = new URLSearchParams(window.location.search);
+        const destinoSelecionado = params.get("destino");
+
+        // Cria as opções vindas do MySQL
+        destinos.forEach(destino => {
+
+            const option = document.createElement("option");
+
+            // O value será o ID do destino no banco
+            option.value = destino.id_destino;
+
+            // Texto mostrado para o usuário
+            option.textContent =
+                `${destino.nome_destino} - ${destino.pais_destino}`;
+
+            // Guarda apenas o preço no option para o cálculo da reserva.
+            option.dataset.preco = destino.preco_destino;
+
+            // Se veio um destino pela URL, tenta selecioná-lo
+            if (destinoSelecionado) {
+                const normalizarDestino = (valor) => String(valor || "")
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .toLowerCase()
+                    .trim();
+
+                const alvo = normalizarDestino(destinoSelecionado);
+                const nomeBanco = normalizarDestino(destino.nome_destino);
+                const cidadeBanco = normalizarDestino(destino.cidade_destino);
+                const idBanco = String(destino.id_destino);
+
+                if (alvo === nomeBanco || alvo === cidadeBanco || alvo === idBanco) {
+                    option.selected = true;
+                }
             }
+
+            selectDestino.appendChild(option);
         });
-    </script>
+
+        // Atualiza a localização do formulário depois que os destinos do banco foram carregados.
+        selectDestino.dispatchEvent(new Event("change"));
+
+    } catch (erro) {
+
+        console.error(erro);
+
+        selectDestino.innerHTML =
+            '<option value="">Erro ao carregar destinos</option>';
+    }
+
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const transporte = document.getElementById("transporte");
+    const classe = document.getElementById("classe");
+
+    transporte.addEventListener("change", () => {
+
+        const valor = transporte.value;
+
+        // Limpa a seleção atual
+        classe.value = "";
+
+        // Percorre as opções da classe
+        Array.from(classe.options).forEach(opcao => {
+
+            if (opcao.value === "") {
+                opcao.disabled = false;
+                return;
+            }
+
+            // Ônibus só permite Econômica
+            if (valor === "Ônibus") {
+                opcao.disabled = opcao.value !== "Econômica";
+            } else {
+                // Avião permite todas
+                opcao.disabled = false;
+            }
+
+        });
+
+    });
+
+});
+
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const tipoViagem = document.getElementById("tipoViagem");
+
+    const campoDataIda = document.getElementById("campoDataIda");
+    const campoDataVolta = document.getElementById("campoDataVolta");
+
+    const dataIda = document.getElementById("dataIda");
+    const dataVolta = document.getElementById("dataVolta");
+
+
+    tipoViagem.addEventListener("change", () => {
+
+        if (tipoViagem.value === "ida_volta") {
+
+            // Mostra a data de volta
+            campoDataVolta.classList.remove("d-none");
+
+            // Divide igualmente em duas colunas
+            campoDataIda.classList.remove("col-12");
+            campoDataIda.classList.add("col-md-6");
+
+            campoDataVolta.classList.remove("col-12");
+            campoDataVolta.classList.add("col-md-6");
+
+            // Torna obrigatória
+            dataVolta.required = true;
+
+        } else {
+
+            // Esconde a data de volta
+            campoDataVolta.classList.add("d-none");
+
+            // Ida ocupa toda a largura
+            campoDataIda.classList.remove("col-md-6");
+            campoDataIda.classList.add("col-12");
+
+            // Volta deixa de ser obrigatória
+            dataVolta.required = false;
+            dataVolta.value = "";
+        }
+
+    });
+
+
+    // Impede datas anteriores a hoje
+    const hoje = new Date().toISOString().split("T")[0];
+
+    dataIda.min = hoje;
+    dataVolta.min = hoje;
+
+
+    // A volta não pode ser anterior à ida
+    dataIda.addEventListener("change", () => {
+
+        dataVolta.min = dataIda.value;
+
+        if (
+            dataVolta.value &&
+            dataVolta.value < dataIda.value
+        ) {
+            dataVolta.value = "";
+        }
+
+    });
+
+});
+</script>
+
 </body>
 
 </html>
