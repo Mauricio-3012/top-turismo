@@ -66,7 +66,7 @@
     <img src="https://www.svgrepo.com/show/452210/git.svg" height="60" title="Git"/>
     <img src="https://img.icons8.com/?size=100&id=bVGqATNwfhYq&format=png&color=000000.svg" height="60" title="GitHub"/>
     <img src="https://www.svgrepo.com/show/378781/chrome.svg" height="60" title="Chrome"/>
-    <img src="https://img.icons8.com/?size=100&id=PndQWK6M1Hjo&format=png&color=000000.svg" height="60" title="Visual Studio"/>
+    <img src="https://img.icons8.com/?size=100&id=PndQWK6M1Hjo&format=png&color=000000.svg" height="60" title="Bootstrap"/>
   </p>
   </div>
 </section>
