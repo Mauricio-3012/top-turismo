@@ -227,18 +227,21 @@
                             <i class="bi bi-search"></i>
                             <input aria-label="Buscar destinos" placeholder="Buscar destinos..." type="text" />
                         </div>
-                        <div class="filtro-destinos">
+                        <div class="filtro-destinos dropdown">
                             <i class="bi bi-sliders"></i>
-                            <select aria-label="Filtrar destinos" id="filtroDestinos">
-                                <option value="todos">Todos os destinos</option>
-                                <option value="populares">Mais populares</option>
-                                <option value="avaliados">Melhor avaliados</option>
-                                <option value="norte">Região Norte</option>
-                                <option value="nordeste">Região Nordeste</option>
-                                <option value="centro-oeste">Centro-Oeste</option>
-                                <option value="sudeste">Região Sudeste</option>
-                                <option value="sul">Região Sul</option>
-                            </select>
+                            <button aria-expanded="false" class="btn filtro-destinos-btn dropdown-toggle" data-bs-toggle="dropdown" id="filtroDestinos" type="button">
+                                <span class="filtro-destinos-label">Todos os destinos</span>
+                            </button>
+                            <ul class="dropdown-menu filtro-destinos-menu" aria-labelledby="filtroDestinos">
+                                <li><button class="dropdown-item filtro-opcao active" data-value="todos" type="button">Todos os destinos</button></li>
+                                <li><button class="dropdown-item filtro-opcao" data-value="populares" type="button">Mais populares</button></li>
+                                <li><button class="dropdown-item filtro-opcao" data-value="avaliados" type="button">Melhor avaliados</button></li>
+                                <li><button class="dropdown-item filtro-opcao" data-value="norte" type="button">Região Norte</button></li>
+                                <li><button class="dropdown-item filtro-opcao" data-value="nordeste" type="button">Região Nordeste</button></li>
+                                <li><button class="dropdown-item filtro-opcao" data-value="centro-oeste" type="button">Centro-Oeste</button></li>
+                                <li><button class="dropdown-item filtro-opcao" data-value="sudeste" type="button">Região Sudeste</button></li>
+                                <li><button class="dropdown-item filtro-opcao" data-value="sul" type="button">Região Sul</button></li>
+                            </ul>
                         </div>
                     </div>
                     <div class="row">
@@ -341,7 +344,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.7"
-                                data-fotos=""
+                                data-fotos="./assets/imagens/sao-paulo.jpg"
                                 data-popularidade="5"
                                 data-regiao="sudeste"
                             >
@@ -390,7 +393,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.9"
-                                data-fotos=""
+                                data-fotos="./assets/imagens/foz-do-iguacu.jpg"
                                 data-popularidade="5"
                                 data-regiao="sul"
                             >
@@ -578,7 +581,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.8"
-                                data-fotos=""
+                                data-fotos="./assets/imagens/gramado.jpg"
                                 data-popularidade="5"
                                 data-regiao="sul"
                             >
@@ -627,7 +630,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.6"
-                                data-fotos=""
+                                data-fotos="./assets/imagens/parana.jpg"
                                 data-popularidade="4"
                                 data-regiao="sul"
                             >
@@ -909,7 +912,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.9"
-                                data-fotos=""
+                                data-fotos="./assets/imagens/maceio.jpg"
                                 data-popularidade="5"
                                 data-regiao="nordeste"
                             >
@@ -1202,7 +1205,7 @@
                     ></i>
                     <div class="modal-body">
                         <i class="bi bi-lock-fill fs-1 text-black mb-3"></i>
-                        <h5 class="mb-3">Faça login ou cadastre-se para reservar</h5>
+                        <h5 class="mb-3">Faça login ou cadastre-se para continuar</h5>
                         <div class="d-flex justify-content-center gap-2">
                             <a class="btn btn-custom" href="pages/login.php"> Fazer Login</a>
                             <a class="btn btn-custom" href="pages/cadastro.php">Cadastrar</a>

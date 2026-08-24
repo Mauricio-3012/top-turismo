@@ -135,6 +135,15 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                         <h4 class="fw-bold mb-4" style="color: var(--btn-bg);">
                             <i class="bi bi-person-fill me-2"></i>Meus Dados
                         </h4>
+                        <?php if (isset($_GET["sucesso"])): ?>
+                            <div class="alert alert-success d-flex align-items-center gap-2" role="alert">
+                                <i class="bi bi-check-circle-fill"></i> Dados atualizados com sucesso.
+                            </div>
+                        <?php elseif (isset($_GET["erro"])): ?>
+                            <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill"></i> <?= htmlspecialchars($_GET["erro"], ENT_QUOTES, "UTF-8") ?>
+                            </div>
+                        <?php endif; ?>
                         <form class="row g-3 m-0 p-0 bg-transparent" action="../php/dashboard.php" method="POST">
     <div class="col-md-6">
         <label class="form-label">Nome Completo</label>
@@ -152,6 +161,38 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
     <label class="form-label">Cidade</label>
     <input type="text" class="form-control" id="campoCidade" name="cidade" value="<?= htmlspecialchars($usuarioLogado["cidade"], ENT_QUOTES, "UTF-8") ?>" placeholder="Digite sua cidade" required>
     </div>
+    <div class="col-12 mt-3">
+        <div class="alterar-senha-box">
+            <div class="mb-3">
+                <h6 class="fw-bold mb-1"><i class="bi bi-shield-lock me-2"></i>Alterar senha</h6>
+                <p class="text-muted small mb-0">Preencha somente se quiser trocar sua senha atual.</p>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label" for="senhaAtual">Senha atual</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="senhaAtual" name="senha_atual" autocomplete="current-password" placeholder="Senha atual">
+                        <button class="btn btn-outline-secondary btn-toggle-senha" type="button" data-target="senhaAtual" aria-label="Mostrar senha"><i class="bi bi-eye"></i></button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="senhaNova">Nova senha</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="senhaNova" name="senha_nova" minlength="6" autocomplete="new-password" placeholder="Mínimo 6 caracteres">
+                        <button class="btn btn-outline-secondary btn-toggle-senha" type="button" data-target="senhaNova" aria-label="Mostrar senha"><i class="bi bi-eye"></i></button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="senhaConfirmacao">Confirmar nova senha</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="senhaConfirmacao" name="senha_confirmacao" minlength="6" autocomplete="new-password" placeholder="Repita a nova senha">
+                        <button class="btn btn-outline-secondary btn-toggle-senha" type="button" data-target="senhaConfirmacao" aria-label="Mostrar senha"><i class="bi bi-eye"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="col-12 mt-4">
         <button type="submit" class="btn btn-custom px-5 w-100">Salvar Alterações</button>
     </div>

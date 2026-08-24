@@ -64,6 +64,34 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ============================================================
+// ALTERAÇÃO DE SENHA NO DASHBOARD
+// ============================================================
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".btn-toggle-senha").forEach((botao) => {
+    botao.addEventListener("click", () => {
+      const campo = document.getElementById(botao.dataset.target);
+      if (!campo) return;
+      const visivel = campo.type === "text";
+      campo.type = visivel ? "password" : "text";
+      botao.innerHTML = visivel ? '<i class="bi bi-eye"></i>' : '<i class="bi bi-eye-slash"></i>';
+      botao.setAttribute("aria-label", visivel ? "Mostrar senha" : "Ocultar senha");
+    });
+  });
+
+  const formPerfil = document.querySelector('form[action="../php/dashboard.php"]');
+  if (!formPerfil) return;
+  formPerfil.addEventListener("submit", (event) => {
+    const atual = document.getElementById("senhaAtual")?.value.trim() || "";
+    const nova = document.getElementById("senhaNova")?.value || "";
+    const confirmacao = document.getElementById("senhaConfirmacao")?.value || "";
+    if (!atual && !nova && !confirmacao) return;
+    if (!atual || !nova || !confirmacao) { event.preventDefault(); alert("Para alterar a senha, preencha a senha atual, a nova senha e a confirmação."); return; }
+    if (nova.length < 6) { event.preventDefault(); alert("A nova senha deve ter pelo menos 6 caracteres."); return; }
+    if (nova !== confirmacao) { event.preventDefault(); alert("A confirmação da nova senha não confere."); }
+  });
+});
+
+// ============================================================
 // ACESSO À RESERVA
 // ============================================================
 // Usuário logado: segue para o formulário com o destino selecionado.
@@ -186,7 +214,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     event.preventDefault();
     event.stopPropagation();
-    abrirDetalhes(botao);
+
+    statusLogin.then((logado) => {
+      if (logado) {
+        abrirDetalhes(botao);
+        return;
+      }
+
+      const loginModalElement = document.getElementById("loginModal");
+      if (loginModalElement) {
+        bootstrap.Modal.getOrCreateInstance(loginModalElement).show();
+      }
+    });
   });
 
   btnReservarModal?.addEventListener("click", () => {
@@ -225,8 +264,20 @@ function setTheme(theme) {
 document.addEventListener("DOMContentLoaded", () => {
     const inputBusca = document.querySelector(".busca-caixa input");
     const filtro = document.getElementById("filtroDestinos");
+    const filtroLabel = document.querySelector(".filtro-destinos-label");
+    const filtroOpcoes = document.querySelectorAll(".filtro-opcao");
     const container = document.querySelector("#destinos .row");
     const colunas = container ? Array.from(container.children) : [];
+    let criterioFiltro = "todos";
+
+    filtroOpcoes.forEach((opcao) => {
+        opcao.addEventListener("click", () => {
+            criterioFiltro = opcao.dataset.value || "todos";
+            if (filtroLabel) filtroLabel.textContent = opcao.textContent.trim();
+            filtroOpcoes.forEach((item) => item.classList.toggle("active", item === opcao));
+            aplicarFiltros();
+        });
+    });
 
     // Remove acentos para que "João" também seja encontrado como "Joao".
     function normalizarBusca(texto) {
@@ -263,7 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Filtra por texto/região e ordena por popularidade ou avaliação.
     function aplicarFiltros() {
         const termo = normalizarBusca(inputBusca?.value);
-        const criterio = filtro?.value || "todos";
+        const criterio = criterioFiltro;
 
         const dados = colunas.map((coluna, indice) => {
             const card = coluna.querySelector(".card-destino-custom");
@@ -305,7 +356,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderizarEstrelas();
     inputBusca?.addEventListener("input", aplicarFiltros);
-    filtro?.addEventListener("change", aplicarFiltros);
     aplicarFiltros();
 });
 

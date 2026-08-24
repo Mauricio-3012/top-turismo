@@ -354,8 +354,16 @@ section[id] {
 .destinos-filtros .busca-caixa i, .filtro-destinos > i { color:var(--btn-bg); font-size:1rem; flex:0 0 auto; }
 .destinos-filtros .busca-caixa input { width:100%; border:0; outline:0; background:transparent; color:var(--text); padding:11px 10px; font-size:.95rem; }
 .destinos-filtros .busca-caixa input::placeholder { color:var(--text-soft); }
-.filtro-destinos { padding:0 14px; gap:8px; }
-.filtro-destinos select { border:0; outline:0; background:transparent; color:var(--text); padding:11px 25px 11px 2px; font-weight:600; cursor:pointer; }
+.filtro-destinos { padding:0 8px 0 14px; gap:8px; position:relative; }
+.filtro-destinos-btn { border:0; outline:0; background:transparent; color:var(--text); padding:11px 34px 11px 2px; font-weight:600; min-width:190px; text-align:left; }
+.filtro-destinos-btn:hover, .filtro-destinos-btn:focus, .filtro-destinos-btn.show { color:var(--btn-bg); background:transparent; box-shadow:none; }
+.filtro-destinos-menu { min-width:220px; margin-top:6px !important; padding:7px; background-color:var(--primary); border:1px solid var(--border-subtle); border-radius:12px; box-shadow:var(--shadow-card); }
+.filtro-destinos-menu .dropdown-item { color:var(--text-inverse); border-radius:8px; padding:9px 12px; font-weight:500; text-transform:none; text-align:left; background:transparent; }
+.filtro-destinos-menu .dropdown-item:hover, .filtro-destinos-menu .dropdown-item:focus, .filtro-destinos-menu .dropdown-item.active { color:var(--btn-bg); background:rgba(255,107,0,.10); }
+.filtro-destinos-menu .dropdown-item.active::after { content:"\F26E"; font-family:"bootstrap-icons"; float:right; }
+.dark-mode .filtro-destinos-menu { background-color:var(--card-bg); }
+.dark-mode .filtro-destinos-menu .dropdown-item { color:var(--text); }
+.dark-mode .filtro-destinos-menu .dropdown-item:hover, .dark-mode .filtro-destinos-menu .dropdown-item:focus, .dark-mode .filtro-destinos-menu .dropdown-item.active { color:var(--btn-bg); background:rgba(255,107,0,.12); }
 .destino-modal-carousel, .destino-modal-carousel .carousel-inner, .destino-modal-carousel .carousel-item { height:100%; }
 .destino-modal-carousel .carousel-item img, .destino-modal-carousel .destino-modal-foto-placeholder { width:100%; height:100%; object-fit:cover; display:flex; align-items:center; justify-content:center; }
 .destino-modal-foto-placeholder { background:linear-gradient(135deg, var(--surface-soft), rgba(255,107,0,.08)); color:var(--text-soft); flex-direction:column; gap:8px; font-weight:700; }
@@ -1348,11 +1356,25 @@ a:hover {
 @media (max-width: 767px) {
   .destinos-filtros { align-items:stretch; }
   .destinos-filtros .busca-caixa, .filtro-destinos { width:100%; }
-  .filtro-destinos select { flex:1; }
+  .filtro-destinos-btn { flex:1; min-width:0; }
+  .filtro-destinos-menu { width:100%; }
   .nome-destino-overlay { max-width:100%; }
   .destino-modal-imagem-wrap { height:240px; }
 }
 
+
+
+/* =========================================================
+   ALTERAÇÃO DE SENHA NO DASHBOARD
+   ========================================================= */
+.alterar-senha-box { padding:18px; border:1px solid var(--border-subtle); border-radius:16px; background:var(--surface-soft); }
+.alterar-senha-box h6 { color:var(--text); }
+.alterar-senha-box .form-control { background-color:var(--input-bg); color:var(--text); border-color:var(--border-subtle); }
+.alterar-senha-box .form-control::placeholder { color:var(--text-soft); }
+.btn-toggle-senha { border-color:var(--border-subtle); color:var(--text-soft); background:var(--card-bg); }
+.btn-toggle-senha:hover { color:var(--btn-bg); border-color:var(--btn-bg); background:var(--surface-soft); }
+.dark-mode .alert-success { background:rgba(21,148,71,.16); color:#8ce3ad; border-color:rgba(140,227,173,.2); }
+.dark-mode .alert-danger { background:rgba(236,81,81,.16); color:#ffaaaa; border-color:rgba(255,170,170,.2); }
 
 /* Ajustes finais dos cards de destinos */
 .card-destino-custom,
