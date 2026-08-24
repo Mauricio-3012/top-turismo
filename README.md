@@ -1,7 +1,7 @@
 <section>
   <div>
-  <h1 align='center'>TopTurismo - Sistema de Reserva de Viagens</h1>
-  <p align="center">TopTurismo é um site de reservas de viagens com front-end em HTML, CSS, JavaScript e Bootstrap, e back-end em PHP com banco de dados MySQL. A plataforma oferece uma interface moderna para navegar por destinos turísticos, visualizar imagens e simular reservas, além de um sistema completo de conta de usuário: cadastro, login, dashboard com edição de dados pessoais e exclusão de conta.</p>
+  <h1>TopTurismo - Sistema de Reserva de Viagens</h1>
+  <p>TopTurismo é um site de reservas de viagens com front-end em HTML, CSS, JavaScript e Bootstrap, e back-end em PHP com banco de dados MySQL. A plataforma oferece uma interface moderna para navegar por destinos turísticos, visualizar imagens e simular reservas, além de um sistema completo de conta de usuário: cadastro, login, dashboard com edição de dados pessoais e exclusão de conta.</p>
   </div>
 </section>
 
@@ -66,7 +66,7 @@
     <img src="https://www.svgrepo.com/show/452210/git.svg" height="60" title="Git"/>
     <img src="https://img.icons8.com/?size=100&id=bVGqATNwfhYq&format=png&color=000000.svg" height="60" title="GitHub"/>
     <img src="https://www.svgrepo.com/show/378781/chrome.svg" height="60" title="Chrome"/>
-    <img src="https://img.icons8.com/?size=100&id=PndQWK6M1Hjo&format=png&color=000000.svg" height="60" title="Visual Studio"/>
+    <img src="https://img.icons8.com/?size=100&id=PndQWK6M1Hjo&format=png&color=000000.svg" height="60" title="Bootstrap"/>
   </p>
   </div>
 </section>
