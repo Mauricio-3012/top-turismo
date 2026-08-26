@@ -17,7 +17,7 @@ if (!isset($_SESSION["usuario_id"])) {
 require "conexao.php";
 
 $stmt = $conexao->prepare(
-    "SELECT nome, email, telefone, cidade
+    "SELECT nome, email, telefone, cidade, tipo
      FROM usuarios
      WHERE id = ?"
 );

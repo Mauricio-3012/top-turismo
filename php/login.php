@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $conexao->close();
 
-        header("Location: ../pages/dashboard.php");
+        header($usuario["tipo"] === "admin" ? "Location: ../admin/dashboard.php" : "Location: ../pages/dashboard.php");
         exit;
     }
 

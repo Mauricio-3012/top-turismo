@@ -1,3 +1,7 @@
+<?php
+session_start();
+$isAdmin = (($_SESSION["usuario_tipo"] ?? "cliente") === "admin");
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
     <head>
@@ -26,6 +30,9 @@
                             <li class="nav-item"><a class="nav-link text-white" href="#reservar">Fazer Reserva</a></li>
                             <li class="nav-item"><a class="nav-link text-white" href="#sobre-nos">Sobre nós</a></li>
                             <li class="nav-item"><a class="nav-link text-white" href="#contato">Contato</a></li>
+<?php if ($isAdmin): ?>
+                            <li class="nav-item"><a class="nav-link text-white" href="./admin/dashboard.php"><i class="bi bi-speedometer2 me-1"></i>Gerenciar destinos</a></li>
+                            <?php endif; ?>
                         </ul>
                     </div>
                     <div class="d-flex align-items-center ms-auto gap-3">
@@ -249,7 +256,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.8"
-                                data-fotos=""
+                                data-fotos="./assets/imagens/destinos/rio-de-janeiro/foto-2.jpg|./assets/imagens/destinos/rio-de-janeiro/foto-3.jpg"
                                 data-popularidade="5"
                                 data-regiao="sudeste"
                             >
@@ -299,7 +306,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.6"
-                                data-fotos=""
+                                data-fotos="./assets/imagens/destinos/salvador/foto-2.jpg|./assets/imagens/destinos/salvador/foto-3.jpg"
                                 data-popularidade="5"
                                 data-regiao="nordeste"
                             >
@@ -344,7 +351,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.7"
-                                data-fotos="./assets/imagens/sao-paulo.jpg"
+                                data-fotos="./assets/imagens/destinos/sao-paulo/foto-2.png|./assets/imagens/destinos/sao-paulo/foto-3.png"
                                 data-popularidade="5"
                                 data-regiao="sudeste"
                             >
@@ -393,7 +400,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.9"
-                                data-fotos="./assets/imagens/foz-do-iguacu.jpg"
+                                data-fotos="./assets/imagens/destinos/foz-do-iguacu/foto-2.jpg|./assets/imagens/destinos/foz-do-iguacu/foto-3.png"
                                 data-popularidade="5"
                                 data-regiao="sul"
                             >
@@ -442,7 +449,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.5"
-                                data-fotos=""
+                                data-fotos="./assets/imagens/destinos/lencois-maranhenses/foto-2.jpg|./assets/imagens/destinos/lencois-maranhenses/foto-3.jpg"
                                 data-popularidade="4"
                                 data-regiao="nordeste"
                             >
@@ -487,7 +494,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.4"
-                                data-fotos=""
+                                data-fotos="./assets/imagens/destinos/manaus/foto-2.jpg|./assets/imagens/destinos/manaus/foto-3.jpg"
                                 data-popularidade="4"
                                 data-regiao="norte"
                             >
@@ -532,7 +539,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.9"
-                                data-fotos=""
+                                data-fotos="./assets/imagens/destinos/florianopolis/foto-2.jpg|./assets/imagens/destinos/florianopolis/foto-3.jpg"
                                 data-popularidade="5"
                                 data-regiao="sul"
                             >
@@ -581,7 +588,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.8"
-                                data-fotos="./assets/imagens/gramado.jpg"
+                                data-fotos="./assets/imagens/destinos/gramado/foto-2.png|./assets/imagens/destinos/gramado/foto-3.jpg"
                                 data-popularidade="5"
                                 data-regiao="sul"
                             >
@@ -630,7 +637,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.6"
-                                data-fotos="./assets/imagens/parana.jpg"
+                                data-fotos="./assets/imagens/destinos/curitiba/foto-2.jpg|./assets/imagens/destinos/curitiba/foto-3.jpg"
                                 data-popularidade="4"
                                 data-regiao="sul"
                             >
@@ -675,7 +682,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.9"
-                                data-fotos=""
+                                data-fotos="./assets/imagens/destinos/fernando-de-noronha/foto-2.png|./assets/imagens/destinos/fernando-de-noronha/foto-3.png"
                                 data-popularidade="5"
                                 data-regiao="nordeste"
                             >
@@ -724,7 +731,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.3"
-                                data-fotos=""
+                                data-fotos="./assets/imagens/destinos/campo-grande/foto-2.jpg|./assets/imagens/destinos/campo-grande/foto-3.jpg"
                                 data-popularidade="3"
                                 data-regiao="centro-oeste"
                             >
@@ -773,7 +780,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.7"
-                                data-fotos=""
+                                data-fotos="./assets/imagens/destinos/fortaleza/foto-2.jpg|./assets/imagens/destinos/fortaleza/foto-3.jpg"
                                 data-popularidade="5"
                                 data-regiao="nordeste"
                             >
@@ -818,7 +825,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.4"
-                                data-fotos=""
+                                data-fotos="./assets/imagens/destinos/goiania/foto-2.jpg|./assets/imagens/destinos/goiania/foto-3.png"
                                 data-popularidade="3"
                                 data-regiao="centro-oeste"
                             >
@@ -863,7 +870,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.8"
-                                data-fotos=""
+                                data-fotos="./assets/imagens/destinos/jericoacoara/foto-2.png|./assets/imagens/destinos/jericoacoara/foto-3.jpg"
                                 data-popularidade="5"
                                 data-regiao="nordeste"
                             >
@@ -912,7 +919,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.9"
-                                data-fotos="./assets/imagens/maceio.jpg"
+                                data-fotos="./assets/imagens/destinos/maceio/foto-2.jpeg|./assets/imagens/destinos/maceio/foto-3.jpg"
                                 data-popularidade="5"
                                 data-regiao="nordeste"
                             >
@@ -957,7 +964,7 @@
                             <div
                                 class="card h-100 card-destino-custom"
                                 data-avaliacao="4.5"
-                                data-fotos=""
+                                data-fotos="./assets/imagens/destinos/porto-alegre/foto-2.png|./assets/imagens/destinos/porto-alegre/foto-3.jpg"
                                 data-popularidade="3"
                                 data-regiao="sul"
                             >
@@ -1002,6 +1009,13 @@
                             </div>
                         </div>
                     </div>
+                    <?php if ($isAdmin): ?>
+                    <div class="text-center mt-2 mb-4">
+                        <a class="btn btn-custom btn-lg px-5 rounded-pill" href="./admin/adicionar-destino.php">
+                            <i class="bi bi-plus-circle me-2"></i>Adicionar destino
+                        </a>
+                    </div>
+                    <?php endif; ?>
                     <div class="d-none text-center py-5 text-muted" id="nenhumDestinoEncontrado">
                         <i class="bi bi-search fs-2 d-block mb-2"></i>Nenhum destino encontrado.
                     </div>
@@ -1083,7 +1097,7 @@
                         <div class="destino-modal-imagem-wrap">
                             <div
                                 class="carousel slide destino-modal-carousel"
-                                data-bs-interval="false"
+                                data-bs-interval="4000"
                                 id="destinoModalCarousel"
                             >
                                 <div class="carousel-indicators">
@@ -1246,6 +1260,13 @@
                             <i class="bi bi-telephone fs-4"></i> Contato
                         </a>
                     </li>
+                    <?php if ($isAdmin): ?>
+                    <li class="mb-2">
+                        <a class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item" href="./admin/dashboard.php">
+                            <i class="bi bi-speedometer2 fs-4"></i> Gerenciar destinos
+                        </a>
+                    </li>
+                    <?php endif; ?>
                 </ul>
                 <hr />
                 <ul class="list-unstyled" id="userAuthMenuMobileList">

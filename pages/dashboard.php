@@ -83,6 +83,7 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                         <ul class="dropdown-menu dropdown-menu-end" id="userAuthMenuList">
                             <li class="px-3 py-2 small text-muted border-bottom">Olá, <strong><?= htmlspecialchars($usuarioLogado["nome"], ENT_QUOTES, "UTF-8") ?></strong></li>
                             <li><a class="dropdown-item" href="#meus-dados"><i class="bi bi-person-fill me-2"></i>Meu Perfil</a></li>
+                            <?php if (($_SESSION["usuario_tipo"] ?? "cliente") === "admin"): ?><li><a class="dropdown-item" href="../admin/dashboard.php"><i class="bi bi-speedometer2 me-2"></i>Painel Admin</a></li><?php endif; ?>
                             <li><a class="dropdown-item" href="../php/logout.php"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
                         </ul>
                     </div>

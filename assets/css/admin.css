@@ -1,0 +1,17 @@
+.admin-page { min-height: 100vh; padding: 110px 0 50px; background: var(--body-bg, #f6f7f9); }
+.admin-header-card, .admin-card { background: var(--card-bg, #fff); border: 1px solid var(--border-subtle, #e6e6e6); border-radius: 18px; box-shadow: var(--shadow-card, 0 8px 24px rgba(0,0,0,.06)); }
+.admin-header-card { padding: 26px; }
+.admin-card { padding: 24px; height: 100%; }
+.admin-stat { display:flex; align-items:center; gap:14px; }
+.admin-stat-icon { width:48px; height:48px; border-radius:14px; display:grid; place-items:center; background: rgba(255,107,0,.12); color:var(--btn-bg,#ff6b00); font-size:1.35rem; }
+.admin-table img { width:64px; height:48px; object-fit:cover; border-radius:10px; }
+.admin-table td, .admin-table th { vertical-align:middle; }
+.admin-form .form-control, .admin-form .form-select { min-height:48px; }
+.admin-preview { width:100%; aspect-ratio: 16/9; object-fit:cover; border-radius:14px; border:1px solid var(--border-subtle,#ddd); }
+.admin-actions { display:flex; gap:8px; flex-wrap:wrap; }
+.dark-mode .admin-page { background: var(--body-bg, #101114); }
+.dark-mode .admin-header-card, .dark-mode .admin-card { background: var(--card-bg,#191b20); }
+
+/* Integração visual do painel administrativo com o menu principal do site. */
+.admin-site-link { font-weight: 700; }
+.admin-site-cta { margin-top: 4px; }

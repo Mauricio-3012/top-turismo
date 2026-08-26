@@ -25,13 +25,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Detecta se estamos dentro de /pages/ ou na raiz do site para montar os links corretamente.
 const dentroDePages = window.location.pathname.includes("/pages/");
-const caminhoPhp = dentroDePages ? "../php/" : "php/";
+const dentroDeAdmin = window.location.pathname.includes("/admin/");
+const caminhoPhp = dentroDePages || dentroDeAdmin ? "../php/" : "php/";
 
 // Faz uma única checagem de login e compartilha o resultado entre o menu
 // de usuário e os botões de reserva. Isso evita várias requisições iguais.
 const statusLogin = fetch(caminhoPhp + "usuario-logado.php")
   .then((resposta) => resposta.ok)
   .catch(() => false);
+
+const dadosUsuario = fetch(caminhoPhp + "usuario-logado.php")
+  .then((resposta) => (resposta.ok ? resposta.json() : null))
+  .catch(() => null);
 
 // ============================================================
 // AUTENTICAÇÃO E MENU DO USUÁRIO
@@ -43,23 +48,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!menuDesktop && !menuMobile) return;
 
-  const linkDashboard = dentroDePages ? "dashboard.php" : "./pages/dashboard.php";
+  const linkDashboard = dentroDePages ? "dashboard.php" : (dentroDeAdmin ? "../pages/dashboard.php" : "./pages/dashboard.php");
   const linkLogout = caminhoPhp + "logout.php";
 
   statusLogin.then((logado) => {
     if (!logado) return;
 
-    const itensLogado = `
-      <li><a class="dropdown-item" href="${linkDashboard}"><i class="bi bi-person-fill me-2"></i>Meu Perfil</a></li>
-      <li><a class="dropdown-item" href="${linkLogout}"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
-    `;
-    if (menuDesktop) menuDesktop.innerHTML = itensLogado;
+    dadosUsuario.then((usuario) => {
+      const admin = usuario?.tipo === "admin";
+      const linkAdmin = dentroDePages ? "../admin/dashboard.php" : (dentroDeAdmin ? "dashboard.php" : "./admin/dashboard.php");
+      const itemAdmin = admin ? `<li><a class="dropdown-item" href="${linkAdmin}"><i class="bi bi-speedometer2 me-2"></i>Painel Admin</a></li>` : "";
+      const itemAdminMobile = admin ? `<li class="mb-2"><a href="${linkAdmin}" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item"><i class="bi bi-speedometer2 fs-4"></i> Painel Admin</a></li>` : "";
+      const itensLogado = `
+        <li><a class="dropdown-item" href="${linkDashboard}"><i class="bi bi-person-fill me-2"></i>Meu Perfil</a></li>
+        ${itemAdmin}
+        <li><a class="dropdown-item" href="${linkLogout}"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
+      `;
+      if (menuDesktop) menuDesktop.innerHTML = itensLogado;
 
-    const itensLogadoMobile = `
-      <li class="mb-2"><a href="${linkDashboard}" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item"><i class="bi bi-person-circle fs-4"></i> Meu Painel</a></li>
-      <li><a href="${linkLogout}" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item"><i class="bi bi-box-arrow-right fs-4"></i> Sair</a></li>
-    `;
-    if (menuMobile) menuMobile.innerHTML = itensLogadoMobile;
+      const itensLogadoMobile = `
+        <li class="mb-2"><a href="${linkDashboard}" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item"><i class="bi bi-person-circle fs-4"></i> Meu Painel</a></li>
+        ${itemAdminMobile}
+        <li><a href="${linkLogout}" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item"><i class="bi bi-box-arrow-right fs-4"></i> Sair</a></li>
+      `;
+      if (menuMobile) menuMobile.innerHTML = itensLogadoMobile;
+    });
   });
 });
 
@@ -120,6 +133,83 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ============================================================
+// DESTINOS VINDOS DO BANCO DE DADOS
+// ============================================================
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.querySelector("#destinos .row");
+  if (!container) return;
+
+  const apiDestinos = caminhoPhp + "destinos.php";
+  const escapeHtml = (valor) => String(valor ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+  const normalizarImagem = (caminho) => {
+    if (!caminho) return "";
+    return String(caminho).replace(/^\.\//, "");
+  };
+
+  const renderizarDestinos = (destinos) => {
+    if (!Array.isArray(destinos) || !destinos.length) return;
+
+    container.innerHTML = destinos.map((destino) => {
+      const nome = escapeHtml(destino.nome_destino);
+      const local = escapeHtml(`${destino.cidade_destino}${destino.estado_destino ? " - " + destino.estado_destino : ""}`);
+      const descricao = escapeHtml(destino.descricao_destino);
+      const imagem = escapeHtml(normalizarImagem(destino.img_destino));
+      const foto2 = escapeHtml(normalizarImagem(destino.img_destino_2));
+      const foto3 = escapeHtml(normalizarImagem(destino.img_destino_3));
+      const preco = Number(destino.preco_destino || 0).toLocaleString("pt-BR", { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+      const avaliacao = Number(destino.avaliacao_destino || 0).toFixed(1);
+      const regiao = escapeHtml(destino.regiao_destino || "");
+      const popularidade = Number(destino.popularidade_destino || 0);
+      const fotos = [foto2, foto3].filter(Boolean).join("|");
+
+      return `
+        <div class="col-md-6 mb-4">
+          <div class="card h-100 card-destino-custom"
+            data-avaliacao="${avaliacao}"
+            data-fotos="${fotos}"
+            data-popularidade="${popularidade}"
+            data-regiao="${regiao}">
+            <div class="card-img-container">
+              <img alt="${nome}" class="card-img-top" src="./${imagem}">
+              <div class="card-info-fixa">
+                <div class="card-top-row">
+                  <h5 class="nome-destino-overlay">${local}</h5>
+                  <div class="preco-badges">
+                    <div class="preco-badge">R$ ${preco}</div>
+                    <div class="ida-badge"><i class="bi bi-arrow-right"></i> Ida</div>
+                  </div>
+                </div>
+                <div class="avaliacao-estrelas" aria-label="Avaliação ${avaliacao} de 5"></div>
+              </div>
+              <div class="card-overlay">
+                <div class="overlay-conteudo">
+                  <p class="descricao-destino">${descricao}</p>
+                  <button class="btn btn-custom btn-ver-mais p-4" data-destino="${nome}" type="button">
+                    <i class="bi bi-info-circle"></i> Mais Detalhes
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }).join("");
+  };
+
+  fetch(apiDestinos, { cache: "no-store" })
+    .then((resposta) => resposta.ok ? resposta.json() : Promise.reject(new Error("API indisponível")))
+    .then((destinos) => renderizarDestinos(destinos))
+    .catch(() => {
+      // Mantém os 16 cards que já acompanham o projeto como fallback.
+    });
+});
+
+// ============================================================
 // MODAL DE DETALHES DOS DESTINOS
 // ============================================================
 // A delegação de eventos permite que o botão continue funcionando mesmo
@@ -133,8 +223,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnReservarModal = document.getElementById("btnReservarDestinoModal");
   const carouselElement = document.getElementById("destinoModalCarousel");
   const carousel = carouselElement
-    ? bootstrap.Carousel.getOrCreateInstance(carouselElement, { interval: false })
+    ? bootstrap.Carousel.getOrCreateInstance(carouselElement, { interval: 4000, ride: false, pause: false, wrap: true })
     : null;
+  let carrosselInterval = null;
+  let carrosselPausado = false;
   let destinoModalAtual = "";
 
   if (!container || !modal) return;
@@ -205,6 +297,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     carousel?.to(0);
+
+    // Inicia a troca automática das 3 fotos. O intervalo é reiniciado
+    // sempre que um novo destino é aberto para evitar múltiplos timers.
+    clearInterval(carrosselInterval);
+    carrosselPausado = false;
+    carrosselInterval = setInterval(() => {
+      if (!carrosselPausado && carouselElement && modalElement.classList.contains("show")) {
+        carousel?.next();
+      }
+    }, 4000);
+
     modal.show();
   }
 
@@ -226,6 +329,22 @@ document.addEventListener("DOMContentLoaded", () => {
         bootstrap.Modal.getOrCreateInstance(loginModalElement).show();
       }
     });
+  });
+
+  // Pausa o carrossel enquanto o usuário mantém o mouse sobre as imagens.
+  carouselElement?.addEventListener("mouseenter", () => {
+    carrosselPausado = true;
+  });
+
+  carouselElement?.addEventListener("mouseleave", () => {
+    carrosselPausado = false;
+  });
+
+  // Para o timer ao fechar o modal e libera o ciclo ao abrir novamente.
+  modalElement?.addEventListener("hidden.bs.modal", () => {
+    clearInterval(carrosselInterval);
+    carrosselInterval = null;
+    carrosselPausado = false;
   });
 
   btnReservarModal?.addEventListener("click", () => {
@@ -267,7 +386,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const filtroLabel = document.querySelector(".filtro-destinos-label");
     const filtroOpcoes = document.querySelectorAll(".filtro-opcao");
     const container = document.querySelector("#destinos .row");
-    const colunas = container ? Array.from(container.children) : [];
     let criterioFiltro = "todos";
 
     filtroOpcoes.forEach((opcao) => {
@@ -316,6 +434,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const termo = normalizarBusca(inputBusca?.value);
         const criterio = criterioFiltro;
 
+        const colunas = container ? Array.from(container.children) : [];
         const dados = colunas.map((coluna, indice) => {
             const card = coluna.querySelector(".card-destino-custom");
             const titulo = normalizarBusca(card?.querySelector(".nome-destino-overlay")?.textContent);
@@ -356,6 +475,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderizarEstrelas();
     inputBusca?.addEventListener("input", aplicarFiltros);
+    if (container) {
+      const observer = new MutationObserver(() => { renderizarEstrelas(); aplicarFiltros(); });
+      observer.observe(container, { childList: true });
+    }
     aplicarFiltros();
 });
 

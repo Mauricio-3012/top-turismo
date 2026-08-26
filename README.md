@@ -165,3 +165,32 @@ CREATE TABLE usuarios (
     Turma de Tecnologia em Informática para Internet (Vespertino) - Senac DF
   </div>
 </section>
+
+## Painel administrativo
+
+O projeto agora possui um painel administrativo protegido pelo campo `usuarios.tipo`.
+
+### Banco de dados
+
+Se você ainda não importou o banco, use `database/topturismo_admin.sql`. Ele mantém os 16 destinos atuais e inclui os campos necessários para as 3 imagens, região, estado, avaliação e popularidade.
+
+Se você já possui o banco `topturismo` funcionando, use `database/topturismo_admin_migracao.sql` uma única vez para adicionar os novos campos e criar a conta administrativa.
+
+### Conta administrativa inicial
+
+- E-mail: `admin@topturismo.com`
+- Senha: `Admin@123`
+
+Troque a senha depois do primeiro acesso.
+
+### Acesso
+
+Ao entrar com uma conta `admin`, o login direciona para `admin/dashboard.php`. O painel permite:
+
+- cadastrar destinos;
+- enviar as 3 imagens do carrossel;
+- editar destinos e substituir imagens;
+- excluir destinos que não possuam reservas vinculadas;
+- visualizar todos os destinos cadastrados.
+
+Os novos destinos são carregados pelo site a partir do banco, portanto não é necessário editar os cards do `index.php` manualmente.
