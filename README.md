@@ -76,22 +76,22 @@
     <h2>Estrutura do projeto</h2>
     <pre>
 top-turismo/
-├── index.php                  # Página inicial (destinos, sobre, contato)
-├── pages/                     # Páginas do site
+├── index.php
+├── pages/
 │   ├── login.php
 │   ├── cadastro.php
-│   ├── dashboard.php          # Meu Perfil (dados do usuário logado)
-│   ├── reservas.php           # Formulário de reserva (requer login)
+│   ├── dashboard.php
+│   ├── reservas.php
 │   ├── esqueci-senha.php
 │   └── redefinir-senha.php
-├── php/                       # Regras de negócio / back-end (PHP + MySQL)
-│   ├── conexao.example.php    # Modelo de configuração da conexão com o banco
+├── php/
+│   ├── conexao.example.php
 │   ├── login.php
 │   ├── cadastro.php
 │   ├── logout.php
-│   ├── dashboard.php          # Atualização de dados/senha do usuário
+│   ├── dashboard.php
 │   ├── excluir-conta.php
-│   └── usuario-logado.php     # Retorna os dados do usuário logado em JSON
+│   └── usuario-logado.php
 └── assets/
     ├── css/
     ├── js/
