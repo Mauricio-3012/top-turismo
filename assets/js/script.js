@@ -166,6 +166,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const avaliacao = Number(destino.avaliacao_destino || 0).toFixed(1);
       const regiao = escapeHtml(destino.regiao_destino || "");
       const popularidade = Number(destino.popularidade_destino || 0);
+      const cidade = escapeHtml(destino.cidade_destino || "");
+      const estado = escapeHtml(destino.estado_destino || "");
+      const pais = escapeHtml(destino.pais_destino || "Brasil");
+      const consultaMaps = escapeHtml([destino.nome_destino, destino.cidade_destino, destino.estado_destino, destino.pais_destino || "Brasil"].filter(Boolean).join(", "));
       const fotos = [foto2, foto3].filter(Boolean).join("|");
 
       return `
@@ -174,7 +178,8 @@ document.addEventListener("DOMContentLoaded", () => {
             data-avaliacao="${avaliacao}"
             data-fotos="${fotos}"
             data-popularidade="${popularidade}"
-            data-regiao="${regiao}">
+            data-regiao="${regiao}"
+            data-maps-query="${consultaMaps}">
             <div class="card-img-container">
               <img alt="${nome}" class="card-img-top" src="./${imagem}">
               <div class="card-info-fixa">
@@ -241,7 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
       || "Conheça este destino com a TopTurismo.";
     const precoTexto = card.querySelector(".preco-badge")?.textContent.replace(/\s+/g, " ").trim() || "R$ 0";
     const avaliacao = card.dataset.avaliacao || "4.5";
-    const nomeMaps = titulo.replace(/\s+-\s+[A-Z]{2}$/i, "");
+    const nomeMaps = card.dataset.mapsQuery || titulo.replace(/\s+-\s+[A-Z]{2}$/i, "");
     const fotos = (card.dataset.fotos || "")
       .split("|")
       .map(v => v.trim())
@@ -265,6 +270,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (elAvaliacao) elAvaliacao.textContent = avaliacao;
     if (elMaps) {
       elMaps.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(nomeMaps)}`;
+      elMaps.setAttribute("aria-label", `Abrir ${nomeMaps} no Google Maps`);
+      elMaps.innerHTML = '<img class="google-maps-icon" src="./assets/imagens/google-maps.svg" alt="Google Maps">';
     }
 
     // O carrossel sempre mantém exatamente 3 posições.

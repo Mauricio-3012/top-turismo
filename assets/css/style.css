@@ -448,6 +448,29 @@ section[id] {
 .destino-modal-localizacao strong { display:block; color:var(--text); }
 .destino-modal-localizacao p { margin:3px 0 0; color:var(--text-soft); font-size:.85rem; }
 .dark-mode .destino-modal-localizacao .btn-outline-dark { color:var(--text); border-color:var(--border-subtle); }
+/* Botão do Google Maps no modal de detalhes */
+.google-maps-icon {
+  width: 28px;
+  height: 28px;
+  display: inline-block;
+  object-fit: contain;
+  vertical-align: middle;
+}
+#destinoModalMaps {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  padding: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50% !important;
+  background: var(--card-bg);
+}
+#destinoModalMaps:hover {
+  transform: translateY(-1px);
+}
+
 
 /* =========================================================
    LINKS E FORMULÁRIOS GERAIS

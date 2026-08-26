@@ -31,7 +31,7 @@ $isAdmin = (($_SESSION["usuario_tipo"] ?? "cliente") === "admin");
                             <li class="nav-item"><a class="nav-link text-white" href="#sobre-nos">Sobre nós</a></li>
                             <li class="nav-item"><a class="nav-link text-white" href="#contato">Contato</a></li>
 <?php if ($isAdmin): ?>
-                            <li class="nav-item"><a class="nav-link text-white" href="./admin/dashboard.php"><i class="bi bi-speedometer2 me-1"></i>Gerenciar destinos</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" href="./admin/dashboard.php">Gerenciar destinos</a></li>
                             <?php endif; ?>
                         </ul>
                     </div>
@@ -1192,7 +1192,7 @@ $isAdmin = (($_SESSION["usuario_tipo"] ?? "cliente") === "admin");
                                 rel="noopener noreferrer"
                                 target="_blank"
                             >
-                                <i class="me-1"></i> Saiba Mais
+                                <img class="google-maps-icon" src="./assets/imagens/google-maps.svg" alt="" aria-hidden="true">
                             </a>
                         </div>
                         <div class="text-center pt-3">

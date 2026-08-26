@@ -11,11 +11,11 @@ $adminNome = $_SESSION['usuario_nome'] ?? 'Administrador';
 
             <div class="flex-grow-1 d-none d-lg-flex justify-content-center">
                 <ul class="navbar-nav flex-row gap-4">
-                    <li class="nav-item"><a class="nav-link text-white" href="../index.php#destinos"><i class="bi bi-geo-alt me-1"></i>Destinos</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="../index.php#reservar"><i class="bi bi-calendar-check me-1"></i>Fazer Reserva</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="../index.php#sobre-nos"><i class="bi bi-info-circle me-1"></i>Sobre nós</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="../index.php#contato"><i class="bi bi-telephone me-1"></i>Contato</a></li>
-                    <li class="nav-item"><a class="nav-link text-white fw-semibold" href="dashboard.php"><i class="bi bi-speedometer2 me-1"></i>Gerenciar destinos</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../index.php#destinos">Destinos</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../index.php#reservar">Fazer Reserva</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../index.php#sobre-nos">Sobre nós</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../index.php#contato">Contato</a></li>
+                    <li class="nav-item"><a class="nav-link text-white fw-semibold" href="dashboard.php">Gerenciar destinos</a></li>
                 </ul>
             </div>
 
