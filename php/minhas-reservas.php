@@ -26,11 +26,21 @@ $sql = "
         r.id_reserva,
         r.id_destino,
         r.data_viagem,
+        r.data_volta,
+        r.tipo_viagem,
         r.quantidade_passageiros,
         r.transporte,
+        r.classe,
         r.assento,
+        r.tipo_assento,
+        r.pagamento,
+        r.parcelas,
+        r.taxa_juros_percentual,
+        r.horario_ida,
+        r.horario_volta,
+        r.duracao_voo_minutos,
         r.valor_total,
-        r.status,
+        CASE WHEN LOWER(r.status) = 'cancelada' THEN 'cancelada' ELSE 'confirmada' END AS status,
         d.nome_destino,
         d.cidade_destino,
         d.pais_destino,
@@ -38,7 +48,6 @@ $sql = "
     FROM reservas r
     INNER JOIN destinos d ON d.id_destino = r.id_destino
     WHERE r.id_usuario = ?
-      AND LOWER(r.status) NOT IN ('cancelada', 'concluida', 'concluída')
     ORDER BY r.data_viagem DESC, r.id_reserva DESC
 ";
 

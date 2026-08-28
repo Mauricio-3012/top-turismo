@@ -15,3 +15,212 @@
 /* Integração visual do painel administrativo com o menu principal do site. */
 .admin-site-link { font-weight: 700; }
 .admin-site-cta { margin-top: 4px; }
+
+/* =========================================================
+   ADMIN — TEMA ESCURO E RESPONSIVIDADE
+   ========================================================= */
+.admin-page {
+  --admin-surface: var(--card-bg, #fff);
+  --admin-text: var(--text, #000);
+  --admin-muted: var(--text-soft, #6b7280);
+  --admin-border: var(--border-subtle, rgba(0,0,0,.10));
+  background: var(--bg, #f6f7f9);
+  color: var(--admin-text);
+}
+
+.admin-page .text-muted,
+.admin-page p.text-muted,
+.admin-page .small.text-muted {
+  color: var(--admin-muted) !important;
+}
+
+.admin-page h1,
+.admin-page h2,
+.admin-page h3,
+.admin-page h4,
+.admin-page strong,
+.admin-page label {
+  color: var(--admin-text);
+}
+
+.admin-header-card,
+.admin-card {
+  background: var(--admin-surface);
+  color: var(--admin-text);
+  border-color: var(--admin-border);
+}
+
+.admin-table {
+  --bs-table-bg: var(--admin-surface);
+  --bs-table-color: var(--admin-text);
+  --bs-table-border-color: var(--admin-border);
+  margin-bottom: 0;
+}
+
+.admin-table thead th {
+  background: var(--admin-surface);
+  color: var(--admin-text);
+  border-color: var(--admin-border);
+}
+
+.admin-table tbody td {
+  background: var(--admin-surface);
+  color: var(--admin-text);
+  border-color: var(--admin-border);
+}
+
+.admin-table tbody tr:hover td {
+  background: var(--surface-soft, rgba(0,0,0,.025));
+}
+
+.dark-mode .admin-page {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.dark-mode .admin-table,
+.dark-mode .admin-table thead,
+.dark-mode .admin-table tbody,
+.dark-mode .admin-table tr,
+.dark-mode .admin-table th,
+.dark-mode .admin-table td {
+  --bs-table-bg: var(--card-bg);
+  --bs-table-color: var(--text);
+  background: var(--card-bg) !important;
+  color: var(--text) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+.dark-mode .admin-table tbody tr:hover td {
+  background: #222838 !important;
+}
+
+.dark-mode .admin-page .badge.text-bg-secondary {
+  background: #4b5563 !important;
+  color: #fff !important;
+}
+
+.dark-mode .admin-page .btn-light {
+  background: var(--card-bg);
+  color: var(--text);
+  border-color: var(--border-subtle);
+}
+
+.dark-mode .admin-page .btn-outline-secondary {
+  color: var(--text);
+  border-color: var(--border-subtle);
+}
+
+.dark-mode .admin-page .form-control,
+.dark-mode .admin-page .form-select {
+  background: var(--input-bg);
+  color: var(--text);
+  border-color: var(--border-subtle);
+}
+
+.dark-mode .admin-page .form-control::placeholder {
+  color: var(--text-soft);
+}
+
+.dark-mode .offcanvas {
+  background: var(--card-bg);
+  color: var(--text);
+}
+
+.dark-mode .offcanvas .menu-mobile-item,
+.dark-mode .offcanvas .offcanvas-title,
+.dark-mode .offcanvas .btn-close {
+  color: var(--text);
+}
+
+.dark-mode .offcanvas .btn-close {
+  filter: invert(1) grayscale(1) brightness(2);
+}
+
+.dark-mode header .dropdown-menu {
+  background: var(--card-bg);
+  border-color: var(--border-subtle);
+}
+
+.dark-mode header .dropdown-item {
+  color: var(--text);
+}
+
+.dark-mode header .dropdown-item:hover,
+.dark-mode header .dropdown-item:focus {
+  color: var(--btn-bg);
+  background: var(--surface-soft);
+}
+
+/* Tabela vira cartões no celular, sem overflow horizontal. */
+@media (max-width: 767.98px) {
+  .admin-page { padding: 88px 10px 30px; }
+  .admin-page > .container { padding-left: 0; padding-right: 0; }
+  .admin-header-card { padding: 18px; }
+  .admin-header-card .d-flex { align-items: flex-start !important; }
+  .admin-header-card h1 { font-size: 1.7rem; }
+  .admin-header-card .btn { width: 100%; }
+  .admin-card { padding: 16px; }
+  .admin-stat { min-height: 62px; }
+  .admin-actions { width: 100%; justify-content: stretch !important; }
+  .admin-actions .btn,
+  .admin-actions form { flex: 1 1 0; }
+  .admin-actions form .btn { width: 100%; }
+
+  .admin-table-responsive,
+  .table-responsive { overflow: visible; }
+  .admin-table,
+  .admin-table tbody,
+  .admin-table tr,
+  .admin-table td { display: block; width: 100%; }
+  .admin-table thead { display: none; }
+  .admin-table tbody tr {
+    margin-bottom: 14px;
+    border: 1px solid var(--admin-border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--admin-surface);
+  }
+  .admin-table tbody td {
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+    min-height: 48px;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--admin-border);
+  }
+  .admin-table tbody td:last-child { border-bottom: 0; }
+  .admin-table tbody td::before {
+    content: attr(data-label);
+    font-size: .72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--admin-muted);
+  }
+  .admin-table tbody td[data-label="Imagem"] { display: grid; }
+  .admin-table tbody td[data-label="Imagem"] img { width: 72px; height: 52px; }
+  .admin-table tbody td[data-label="Ações"] { display: block; }
+  .admin-table tbody td[data-label="Ações"]::before { display: block; margin-bottom: 8px; }
+  .admin-table tbody td[data-label="Ações"] .admin-actions { display: flex; }
+}
+
+@media (max-width: 420px) {
+  .admin-stat-icon { width: 42px; height: 42px; }
+  .admin-header-card h1 { font-size: 1.45rem; }
+  .admin-table tbody td { grid-template-columns: 74px minmax(0, 1fr); font-size: .9rem; }
+  .admin-table tbody td[data-label="Ações"] .admin-actions { flex-direction: column; }
+}
+
+/* Garante que componentes Bootstrap fora de .admin-page também acompanhem o tema. */
+.dark-mode .admin-page ~ * { color: var(--text); }
+.dark-mode body { background: var(--bg); color: var(--text); }
+.dark-mode .navbar .btn-light { background: var(--card-bg); color: var(--text) !important; border-color: var(--border-subtle); }
+.dark-mode .navbar .btn-light:hover { background: var(--surface-soft); color: var(--btn-bg) !important; }
+
+@media (max-width: 991.98px) {
+  .admin-page { padding-top: 92px; }
+  header .navbar > .container-fluid { padding-left: 10px; padding-right: 10px; }
+  header .navbar .logo-texto { font-size: 18px; }
+  header .navbar .btn { white-space: nowrap; }
+}

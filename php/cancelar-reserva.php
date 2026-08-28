@@ -80,7 +80,7 @@ $statusAtual = strtolower(trim((string) $reserva["status"]));
 if (
     in_array(
         $statusAtual,
-        ["cancelada", "concluida", "concluída"],
+        ["cancelada"],
         true
     )
 ) {
@@ -106,7 +106,7 @@ $sqlUpdate = "
     SET status = 'cancelada'
     WHERE id_reserva = ?
       AND id_usuario = ?
-      AND status NOT IN ('cancelada', 'concluida', 'concluída')
+      AND status <> 'cancelada'
 ";
 
 $stmtUpdate = $conexao->prepare($sqlUpdate);

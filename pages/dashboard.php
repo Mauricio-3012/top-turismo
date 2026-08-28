@@ -24,13 +24,14 @@ if (!$usuarioLogado) {
 }
 
 $stmtReservas = $conexao->prepare("SELECT
-    r.id_reserva, r.id_destino, r.data_viagem, r.quantidade_passageiros,
-    r.transporte, r.assento, r.valor_total, r.status,
+    r.id_reserva, r.id_destino, r.data_viagem, r.data_volta, r.tipo_viagem, r.quantidade_passageiros,
+    r.transporte, r.classe, r.assento, r.tipo_assento, r.pagamento, r.parcelas, r.taxa_juros_percentual,
+    r.horario_ida, r.horario_volta, r.duracao_voo_minutos, r.valor_total,
+    CASE WHEN LOWER(r.status) = 'cancelada' THEN 'cancelada' ELSE 'confirmada' END AS status,
     d.nome_destino, d.cidade_destino, d.pais_destino, d.img_destino
     FROM reservas r
     INNER JOIN destinos d ON d.id_destino = r.id_destino
     WHERE r.id_usuario = ?
-      AND LOWER(r.status) NOT IN ('cancelada', 'concluida', 'concluída')
     ORDER BY r.data_viagem DESC, r.id_reserva DESC");
 $stmtReservas->bind_param("i", $idUsuario);
 $stmtReservas->execute();
@@ -219,11 +220,10 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                     <div class="card border-0 shadow-sm p-3 p-md-4 mb-3 minhas-viagens-card">
                         <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap mb-4">
                             <div>
-                                <span class="small fw-bold text-uppercase" style="color: var(--btn-bg); letter-spacing: 1.2px;">Sua jornada</span>
-                                <h4 class="fw-bold mb-1 mt-1" style="color: var(--text);">
+                                <h4 class="fw-bold mb-1" style="color: var(--text);">
                                     <i class="bi bi-suitcase-lg me-2" style="color: var(--btn-bg);"></i>Minhas Viagens
                                 </h4>
-                                <p class="text-muted mb-0">Acompanhe suas reservas e consulte os detalhes da sua viagem.</p>
+                                <p class="text-muted mb-0">Suas reservas e status.</p>
                             </div>
                             <a href="../index.php#reservar" class="btn btn-custom rounded-pill px-4">
                                 <i class="bi bi-plus-circle me-1"></i> Nova reserva
@@ -301,14 +301,7 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
         }
 
         function textoStatus(status) {
-            const textos = {
-                pendente: "Pendente",
-                confirmada: "Confirmada",
-                cancelada: "Cancelada",
-                concluida: "Concluída",
-                "concluída": "Concluída"
-            };
-            return textos[String(status).toLowerCase()] || String(status);
+            return String(status).toLowerCase() === "cancelada" ? "Cancelada" : "Confirmada";
         }
 
         function classeStatus(status) {
@@ -317,13 +310,7 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
         }
 
         function iconeStatus(status) {
-            const icones = {
-                pendente: "bi-hourglass-split",
-                confirmada: "bi-check-circle-fill",
-                cancelada: "bi-x-circle-fill",
-                concluida: "bi-check2-all"
-            };
-            return icones[String(status).toLowerCase()] || "bi-info-circle-fill";
+            return String(status).toLowerCase() === "cancelada" ? "bi-x-circle-fill" : "bi-check-circle-fill";
         }
 
         function imagemDestino(reserva) {
@@ -333,7 +320,7 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
 
         function podeCancelar(reserva) {
             const status = String(reserva.status).toLowerCase();
-            if (["cancelada", "concluida", "concluída"].includes(status)) return false;
+            if (status === "cancelada") return false;
             const hoje = new Date();
             hoje.setHours(0, 0, 0, 0);
             const partes = String(reserva.data_viagem).split("-");
@@ -360,64 +347,45 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
             }
 
             lista.innerHTML = `
-                <div class="row g-4">
+                <div class="row g-3">
                     ${reservas.map((reserva, indice) => `
                         <div class="col-12">
-                            <article class="reserva-dashboard-card">
-                                <div class="row g-0">
-                                    <div class="col-lg-4">
-                                        <img class="reserva-dashboard-imagem" src="${escaparHtml(imagemDestino(reserva))}" alt="Destino: ${escaparHtml(reserva.nome_destino)}" onerror="this.src='../assets/imagens/hero-bg.jpg'">
+                            <article class="reserva-dashboard-card compacta">
+                                <div class="reserva-dashboard-conteudo">
+                                    <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+                                        <div>
+                                            <h5 class="reserva-dashboard-destino fw-bold mb-1">
+                                                <i class="bi bi-geo-alt-fill me-1" style="color: var(--btn-bg);"></i>${escaparHtml(reserva.nome_destino)}
+                                            </h5>
+                                            <div class="reserva-dashboard-local">${escaparHtml(reserva.cidade_destino)}${reserva.pais_destino ? ", " + escaparHtml(reserva.pais_destino) : ""}</div>
+                                        </div>
+                                        <span class="${classeStatus(reserva.status)}"><i class="bi ${iconeStatus(reserva.status)}"></i>${escaparHtml(textoStatus(reserva.status))}</span>
                                     </div>
-                                    <div class="col-lg-8">
-                                        <div class="reserva-dashboard-conteudo">
-                                            <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
-                                                <div>
-                                                    <h5 class="reserva-dashboard-destino fw-bold mb-1">
-                                                        <i class="bi bi-geo-alt-fill me-1" style="color: var(--btn-bg);"></i>${escaparHtml(reserva.nome_destino)}
-                                                    </h5>
-                                                    <div class="reserva-dashboard-local">
-                                                        ${escaparHtml(reserva.cidade_destino)}${reserva.pais_destino ? ", " + escaparHtml(reserva.pais_destino) : ""}
-                                                    </div>
-                                                </div>
-                                                <span class="${classeStatus(reserva.status)}">
-                                                    <i class="bi ${iconeStatus(reserva.status)}"></i>${escaparHtml(textoStatus(reserva.status))}
-                                                </span>
-                                            </div>
 
-                                            <div class="row g-3 reserva-dashboard-info">
-                                                <div class="col-6 col-md-3 reserva-dashboard-info-item">
-                                                    <span class="reserva-dashboard-info-label">Data</span>
-                                                    <span class="reserva-dashboard-info-value"><i class="bi bi-calendar3 me-1"></i>${formatarData(reserva.data_viagem)}</span>
-                                                </div>
-                                                <div class="col-6 col-md-3 reserva-dashboard-info-item">
-                                                    <span class="reserva-dashboard-info-label">Passageiros</span>
-                                                    <span class="reserva-dashboard-info-value"><i class="bi bi-people-fill me-1"></i>${escaparHtml(reserva.quantidade_passageiros)}</span>
-                                                </div>
-                                                <div class="col-6 col-md-3 reserva-dashboard-info-item">
-                                                    <span class="reserva-dashboard-info-label">Transporte</span>
-                                                    <span class="reserva-dashboard-info-value"><i class="bi ${String(reserva.transporte).toLowerCase().includes("avião") ? "bi-airplane-fill" : "bi-bus-front-fill"} me-1"></i>${escaparHtml(reserva.transporte)}</span>
-                                                </div>
-                                                <div class="col-6 col-md-3 reserva-dashboard-info-item">
-                                                    <span class="reserva-dashboard-info-label">Classe</span>
-                                                    <span class="reserva-dashboard-info-value"><i class="bi bi-person-badge-fill me-1"></i>${escaparHtml(reserva.assento)}</span>
-                                                </div>
-                                            </div>
+                                    <div class="row g-2 reserva-dashboard-info">
+                                        <div class="col-6 col-md-3 reserva-dashboard-info-item">
+                                            <span class="reserva-dashboard-info-label">Data</span>
+                                            <span class="reserva-dashboard-info-value"><i class="bi bi-calendar3 me-1"></i>${formatarData(reserva.data_viagem)}</span>
+                                        </div>
+                                        <div class="col-6 col-md-3 reserva-dashboard-info-item">
+                                            <span class="reserva-dashboard-info-label">Horário</span>
+                                            <span class="reserva-dashboard-info-value"><i class="bi bi-clock-fill me-1"></i>${escaparHtml(String(reserva.horario_ida || "").slice(0,5))} → ${formatarChegadaReserva(reserva.horario_ida, reserva.duracao_voo_minutos)}</span>
+                                        </div>
+                                        <div class="col-6 col-md-3 reserva-dashboard-info-item">
+                                            <span class="reserva-dashboard-info-label">Passageiros</span>
+                                            <span class="reserva-dashboard-info-value"><i class="bi bi-people-fill me-1"></i>${escaparHtml(reserva.quantidade_passageiros)}</span>
+                                        </div>
+                                        <div class="col-6 col-md-3 reserva-dashboard-info-item">
+                                            <span class="reserva-dashboard-info-label">Valor</span>
+                                            <span class="reserva-dashboard-valor">${formatarMoeda(reserva.valor_total)}</span>
+                                        </div>
+                                    </div>
 
-                                            <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
-                                                <div>
-                                                    <span class="d-block text-muted small">Valor total</span>
-                                                    <span class="reserva-dashboard-valor">${formatarMoeda(reserva.valor_total)}</span>
-                                                </div>
-                                                <div class="reserva-dashboard-acoes">
-                                                    <button type="button" class="btn btn-reserva-outline rounded-pill px-3 btn-detalhes-reserva" data-indice="${indice}">
-                                                        <i class="bi bi-eye me-1"></i> Detalhes
-                                                    </button>
-                                                    ${podeCancelar(reserva) ? `
-                                                        <button type="button" class="btn btn-outline-danger rounded-pill px-3 btn-cancelar-reserva" data-indice="${indice}">
-                                                            <i class="bi bi-x-circle me-1"></i> Cancelar
-                                                        </button>` : ""}
-                                                </div>
-                                            </div>
+                                    <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+                                        <small class="text-muted">Reserva #${escaparHtml(reserva.id_reserva)} · ${escaparHtml(reserva.transporte)}</small>
+                                        <div class="reserva-dashboard-acoes">
+                                            <button type="button" class="btn btn-reserva-outline rounded-pill px-3 btn-detalhes-reserva" data-indice="${indice}"><i class="bi bi-eye me-1"></i>Detalhes</button>
+                                            ${podeCancelar(reserva) ? `<button type="button" class="btn btn-outline-danger rounded-pill px-3 btn-cancelar-reserva" data-indice="${indice}"><i class="bi bi-x-circle me-1"></i>Cancelar</button>` : ""}
                                         </div>
                                     </div>
                                 </div>
@@ -425,6 +393,22 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                         </div>
                     `).join("")}
                 </div>`;
+        }
+
+        function formatarDuracaoReserva(minutos) {
+            const total = Number(minutos || 0);
+            if (!total) return "Não informado";
+            return `${Math.floor(total / 60)}h${String(total % 60).padStart(2, "0")}`;
+        }
+
+        function formatarChegadaReserva(horario, duracao) {
+            if (!horario || !duracao) return "Não informado";
+            const [h, m] = String(horario).slice(0, 5).split(":").map(Number);
+            const total = h * 60 + m + Number(duracao);
+            const dia = Math.floor(total / 1440);
+            const restante = total % 1440;
+            const chegada = `${String(Math.floor(restante / 60)).padStart(2, "0")}:${String(restante % 60).padStart(2, "0")}`;
+            return chegada + (dia ? " (+1 dia)" : "");
         }
 
         function abrirDetalhes(indice) {
@@ -444,9 +428,18 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                         </div>
                         <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Número da reserva</span><span class="reserva-detalhe-valor">#${escaparHtml(reserva.id_reserva)}</span></div>
                         <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Data da viagem</span><span class="reserva-detalhe-valor">${formatarData(reserva.data_viagem)}</span></div>
+                        ${reserva.data_volta ? `<div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Data da volta</span><span class="reserva-detalhe-valor">${formatarData(reserva.data_volta)}</span></div>` : ""}
                         <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Passageiros</span><span class="reserva-detalhe-valor">${escaparHtml(reserva.quantidade_passageiros)}</span></div>
                         <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Transporte</span><span class="reserva-detalhe-valor">${escaparHtml(reserva.transporte)}</span></div>
-                        <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Classe</span><span class="reserva-detalhe-valor">${escaparHtml(reserva.assento)}</span></div>
+                        <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Classe</span><span class="reserva-detalhe-valor">${escaparHtml(reserva.classe || "")}</span></div>
+                        <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Assento</span><span class="reserva-detalhe-valor">${escaparHtml(reserva.assento || "")} — ${escaparHtml(reserva.tipo_assento || "")}</span></div>
+                        <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Pagamento</span><span class="reserva-detalhe-valor">${escaparHtml(reserva.pagamento || "")} (simulação)</span></div>
+                        ${reserva.pagamento === "Cartão" ? `<div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Parcelamento</span><span class="reserva-detalhe-valor">${escaparHtml(reserva.parcelas || 1)}x · juros ${escaparHtml(reserva.taxa_juros_percentual || 0)}%</span></div>` : ""}
+                        ${reserva.pagamento === "Pix" ? `<div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Pagamento Pix</span><span class="reserva-detalhe-valor">À vista com desconto</span></div>` : ""}
+                        <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Saída</span><span class="reserva-detalhe-valor">${escaparHtml(reserva.horario_ida || "")}</span></div>
+                        <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Chegada estimada</span><span class="reserva-detalhe-valor">${formatarChegadaReserva(reserva.horario_ida, reserva.duracao_voo_minutos)}</span></div>
+                        ${reserva.horario_volta ? `<div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Saída da volta</span><span class="reserva-detalhe-valor">${escaparHtml(reserva.horario_volta)}</span></div>` : ""}
+                        <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Duração</span><span class="reserva-detalhe-valor">${formatarDuracaoReserva(reserva.duracao_voo_minutos)}</span></div>
                         <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Valor total</span><span class="reserva-detalhe-valor" style="color: var(--btn-bg);">${formatarMoeda(reserva.valor_total)}</span></div>
                     </div>
                 </div>`;

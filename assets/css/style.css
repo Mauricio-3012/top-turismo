@@ -1268,10 +1268,6 @@ a:hover {
   white-space: nowrap;
 }
 
-.reserva-status-pendente {
-  background: rgba(255, 193, 7, .15);
-  color: #a16d00;
-}
 
 .reserva-status-confirmada {
   background: rgba(21, 148, 71, .13);
@@ -1283,15 +1279,9 @@ a:hover {
   color: #c33c3c;
 }
 
-.reserva-status-concluida {
-  background: rgba(13, 110, 253, .13);
-  color: #0b63ce;
-}
 
-.dark-mode .reserva-status-pendente { color: #ffd45a; }
 .dark-mode .reserva-status-confirmada { color: #59d68a; }
 .dark-mode .reserva-status-cancelada { color: #ff8d8d; }
-.dark-mode .reserva-status-concluida { color: #79adff; }
 
 .reserva-dashboard-acoes {
   display: flex;
@@ -1504,3 +1494,188 @@ a:hover {
     border-radius: 5px;
   }
 }
+
+/* ============================================================
+   NOVOS CAMPOS DA RESERVA: assento, pagamento e horários
+   ============================================================ */
+.reserva-horarios-box {
+    margin: 0 8px;
+    padding: 16px;
+    border: 1px solid rgba(127, 127, 127, .22);
+    border-radius: 14px;
+    background: rgba(127, 127, 127, .07);
+}
+
+.reserva-horarios-titulo {
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.reserva-horarios-titulo i {
+    margin-right: 6px;
+}
+
+.reserva-horarios-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.reserva-horarios-grid > div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(127, 127, 127, .08);
+}
+
+.reserva-horarios-grid span {
+    font-size: .78rem;
+    opacity: .72;
+}
+
+.reserva-horarios-grid strong {
+    font-size: 1rem;
+}
+
+@media (max-width: 576px) {
+    .reserva-horarios-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================================
+   RESERVA V2 — ASSENTOS E PAGAMENTO
+   ========================================================= */
+.programacao-viagem {
+  border: 1px solid var(--border-subtle);
+  border-radius: 15px;
+  background: var(--surface-soft);
+  overflow: hidden;
+}
+.programacao-viagem-cabecalho {
+  padding: 12px 15px;
+  background: var(--surface-header);
+  color: var(--text);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.programacao-viagem-cabecalho i { color: var(--btn-bg); }
+.programacao-viagem-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border-subtle);
+}
+.programacao-viagem-grid > div { padding: 14px; background: var(--card-bg); }
+.programacao-viagem-grid span, .programacao-volta span {
+  display: block; color: var(--text-soft); font-size: .7rem; text-transform: uppercase; font-weight: 800; letter-spacing: .7px;
+}
+.programacao-viagem-grid strong { display: block; margin-top: 3px; color: var(--text); font-size: 1.05rem; }
+.programacao-volta { padding: 12px 15px; display:flex; align-items:center; gap:10px; background: var(--card-bg); border-top:1px solid var(--border-subtle); }
+.programacao-volta strong { color:var(--text); }
+.programacao-observacao { padding: 10px 15px; color:var(--text-soft); font-size:.78rem; border-top:1px solid var(--border-subtle); }
+.programacao-observacao i { color:var(--btn-bg); }
+
+.mapa-assentos {
+  padding: 16px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  background: var(--surface-soft);
+  min-height: 150px;
+}
+.mapa-assentos-vazio { min-height:130px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:var(--text-soft); text-align:center; }
+.mapa-assentos-vazio i { font-size:1.8rem; color:var(--btn-bg); }
+.mapa-veiculo-titulo { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:0 4px 14px; color:var(--text); font-weight:800; }
+.mapa-veiculo-titulo i { color:var(--btn-bg); margin-right:7px; }
+.mapa-veiculo-titulo span { margin-left:auto; padding:5px 10px; border-radius:999px; background:rgba(255,107,0,.1); color:var(--btn-bg); font-size:.72rem; }
+.mapa-veiculo { max-width:430px; margin:0 auto; padding:14px 18px 18px; border:2px solid var(--border-subtle); border-radius:42% 42% 18px 18px / 14% 14% 18px 18px; background:var(--card-bg); }
+.fileira-assentos { display:grid; grid-template-columns:25px repeat(2, 1fr) 22px repeat(2, 1fr); align-items:center; gap:6px; margin-bottom:7px; }
+.numero-fileira { color:var(--text-soft); font-size:.68rem; text-align:center; font-weight:700; }
+.assento-btn { border:1px solid var(--border-subtle); background:var(--surface-soft); color:var(--text); border-radius:8px; min-height:38px; font-size:.72rem; font-weight:800; cursor:pointer; transition:.15s ease; }
+.assento-btn:hover:not(:disabled) { transform:translateY(-1px); border-color:var(--btn-bg); color:var(--btn-bg); }
+.assento-btn.selecionado { background:var(--btn-bg); border-color:var(--btn-bg); color:var(--text-inverse); }
+.assento-btn.ocupado { opacity:.38; cursor:not-allowed; text-decoration:line-through; }
+.corredor-inicio { grid-column:5; }
+.assentos-contador { padding:6px 10px; border-radius:999px; background:var(--surface-soft); border:1px solid var(--border-subtle); color:var(--text); font-size:.75rem; font-weight:800; }
+.assentos-contador.is-invalid { border-color:var(--error); color:var(--error); }
+.legenda-assentos { display:flex; flex-wrap:wrap; gap:14px; margin-top:10px; color:var(--text-soft); font-size:.75rem; }
+.assento-legenda { display:inline-block; width:12px; height:12px; border-radius:4px; vertical-align:-2px; margin-right:4px; border:1px solid var(--border-subtle); background:var(--surface-soft); }
+.assento-legenda.selecionado { background:var(--btn-bg); border-color:var(--btn-bg); }
+.assento-legenda.ocupado { opacity:.4; }
+.campo-erro { color:var(--error); font-size:.76rem; font-weight:600; margin-top:5px; min-height:0; }
+.form-control.is-invalid, .form-select.is-invalid { border-color:var(--error); background-image:none; }
+
+.pagamento-card { max-width:760px; width:100%; }
+.pagamento-resumo-total { display:flex; justify-content:space-between; gap:20px; align-items:center; padding:15px 17px; border:1px solid var(--border-subtle); border-radius:14px; background:var(--surface-soft); margin-bottom:16px; }
+.pagamento-resumo-total span { color:var(--text-soft); font-weight:700; }
+.pagamento-resumo-total strong { color:var(--btn-bg); font-size:1.35rem; }
+.pagamento-opcoes { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:14px; }
+.pagamento-opcao { border:1px solid var(--border-subtle); background:var(--card-bg); color:var(--text); border-radius:14px; padding:15px; display:flex; align-items:center; gap:12px; text-align:left; cursor:pointer; }
+.pagamento-opcao:hover, .pagamento-opcao.ativo { border-color:var(--btn-bg); box-shadow:0 0 0 2px rgba(255,107,0,.1); }
+.pagamento-opcao i { font-size:1.6rem; color:var(--btn-bg); }
+.pagamento-opcao span { display:flex; flex-direction:column; gap:2px; }
+.pagamento-opcao small { color:var(--text-soft); }
+.pagamento-detalhes { border:1px solid var(--border-subtle); border-radius:14px; padding:16px; background:var(--surface-soft); }
+.pix-simulacao { display:flex; align-items:center; gap:14px; padding:14px; border-radius:12px; background:var(--card-bg); }
+.pix-simulacao > i { font-size:2.8rem; color:var(--btn-bg); }
+.pix-simulacao strong { color:var(--text); }
+.pix-simulacao p { margin:3px 0 0; color:var(--text-soft); font-size:.85rem; }
+.juros-box { margin-top:14px; display:grid; grid-template-columns:1fr auto; gap:7px 15px; padding:13px; border-radius:12px; background:var(--card-bg); border:1px solid var(--border-subtle); }
+.juros-box span { color:var(--text-soft); }
+.juros-box strong { color:var(--text); }
+.juros-box strong:last-child { color:var(--btn-bg); }
+.sucesso-reserva { text-align:center; }
+.sucesso-icone { width:82px; height:82px; margin:5px auto 18px; display:grid; place-items:center; border-radius:50%; background:rgba(21,148,71,.13); color:var(--success); font-size:2.8rem; }
+.sucesso-reserva h3 { color:var(--text); font-weight:800; margin:5px 0 8px; }
+.sucesso-reserva p { color:var(--text-soft); }
+.sucesso-codigo { display:inline-block; padding:11px 16px; border:1px solid var(--border-subtle); background:var(--surface-soft); border-radius:12px; margin:10px 0 20px; color:var(--text); }
+.sucesso-acoes { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
+
+@media (max-width: 700px) {
+  .programacao-viagem-grid { grid-template-columns:repeat(2,1fr); }
+  .pagamento-opcoes { grid-template-columns:1fr; }
+  .mapa-veiculo { padding-left:10px; padding-right:10px; }
+}
+@media (max-width: 450px) {
+  .fileira-assentos { grid-template-columns:20px repeat(2,1fr) 14px repeat(2,1fr); gap:4px; }
+  .assento-btn { min-height:34px; font-size:.65rem; }
+}
+
+
+/* =========================================================
+   NAV — SEÇÃO ATIVA
+   ========================================================= */
+.navbar .nav-link {
+  position: relative;
+  display: inline-block;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.navbar .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform .2s ease;
+}
+.navbar .nav-link:hover::after,
+.navbar .nav-link.active::after {
+  transform: scaleX(1);
+}
+.navbar .nav-link.active { color: #fff !important; }
+
+/* Minhas viagens — versão compacta */
+.reserva-dashboard-card.compacta .reserva-dashboard-conteudo { padding: 18px 20px; }
+.reserva-dashboard-card.compacta .reserva-dashboard-info { margin: 12px 0; padding: 10px 0; }
+.reserva-dashboard-card.compacta .reserva-dashboard-info-item { min-height: 42px; }
+.reserva-dashboard-card.compacta .reserva-dashboard-destino { font-size: 1.1rem; }

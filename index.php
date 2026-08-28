@@ -26,10 +26,10 @@ $isAdmin = (($_SESSION["usuario_tipo"] ?? "cliente") === "admin");
                     </div>
                     <div class="flex-grow-1 d-none d-lg-flex justify-content-center">
                         <ul class="navbar-nav flex-row gap-4">
-                            <li class="nav-item"><a class="nav-link text-white" href="#destinos">Destinos</a></li>
-                            <li class="nav-item"><a class="nav-link text-white" href="#reservar">Fazer Reserva</a></li>
-                            <li class="nav-item"><a class="nav-link text-white" href="#sobre-nos">Sobre nós</a></li>
-                            <li class="nav-item"><a class="nav-link text-white" href="#contato">Contato</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" href="#destinos" data-section-link="destinos">Destinos</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" href="#reservar" data-section-link="reservar">Fazer Reserva</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" href="#sobre-nos" data-section-link="sobre-nos">Sobre nós</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" href="#contato" data-section-link="contato">Contato</a></li>
 <?php if ($isAdmin): ?>
                             <li class="nav-item"><a class="nav-link text-white" href="./admin/dashboard.php">Gerenciar destinos</a></li>
                             <?php endif; ?>

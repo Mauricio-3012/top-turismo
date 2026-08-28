@@ -194,3 +194,9 @@ Ao entrar com uma conta `admin`, o login direciona para `admin/dashboard.php`. O
 - visualizar todos os destinos cadastrados.
 
 Os novos destinos são carregados pelo site a partir do banco, portanto não é necessário editar os cards do `index.php` manualmente.
+
+
+## Novos campos da reserva
+A reserva agora simula tipo de assento, assento, forma de pagamento, horário de saída e volta,
+duração e horário de chegada. Se o banco já existir, execute `database/atualizacao-reservas.sql`
+antes de usar o novo formulário.
