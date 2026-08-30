@@ -1,202 +1,48 @@
-<section>
-  <div>
-  <h1>TopTurismo - Sistema de Reserva de Viagens</h1>
-  <p>TopTurismo é um site de reservas de viagens com front-end em HTML, CSS, JavaScript e Bootstrap, e back-end em PHP com banco de dados MySQL. A plataforma oferece uma interface moderna para navegar por destinos turísticos, visualizar imagens e simular reservas, além de um sistema completo de conta de usuário: cadastro, login, dashboard com edição de dados pessoais e exclusão de conta.</p>
-  </div>
-</section>
+# TopTurismo — versão de estudo corrigida
 
-<section>
-  <div>
-    <h2>Funcionalidades</h2>
-  <ul>
-    <li>Exibição de destinos turísticos em um carrossel interativo</li>
-    <li>Cards informativos com imagens e descrições dos destinos</li>
-    <li>Sistema de contas de usuário:
-      <ul>
-        <li>Cadastro com nome, CPF, data de nascimento, gênero, e-mail, telefone, cidade e senha</li>
-        <li>Senhas armazenadas com hash (<code>password_hash</code>/<code>password_verify</code>)</li>
-        <li>Login com validação de e-mail e senha e controle de sessão (<code>$_SESSION</code>)</li>
-        <li>Logout com destruição completa da sessão</li>
-      </ul>
-    </li>
-    <li>Dashboard do usuário (Meu Perfil):
-      <ul>
-        <li>Exibição dos dados do usuário logado (nome, e-mail, telefone e cidade)</li>
-        <li>Edição e atualização dos dados pessoais</li>
-        <li>Alteração de senha</li>
-        <li>Exclusão de conta com confirmação em modal</li>
-      </ul>
-    </li>
-    <li>Formulário de reserva (acessível apenas para usuários logados) com:
-      <ul>
-        <li>Preenchimento do nome do passageiro</li>
-        <li>Escolha do destino</li>
-        <li>Seleção da quantidade de passageiros</li>
-        <li>Escolha do tipo de assento</li>
-        <li>Cálculo automático e exibição do resumo da viagem</li>
-      </ul>
-    </li>
-    <li>Suporte a tema claro e escuro (dark mode)</li>
-    <li>Layout totalmente responsivo (desktop e mobile)</li>
-    <li>Interface moderna com uso de Bootstrap e Bootstrap Icons</li>
-  </ul>
-  </div>
-</section>
+Esta versão mantém o visual e as funcionalidades do projeto, mas deixa a reserva mais estável e simples de entender.
 
-<section>
-  <div>
-    <h2>Em desenvolvimento</h2>
-    <ul>
-      <li>Fluxo de recuperação de senha ("Esqueci minha senha" / redefinição por token) — as telas já existem em <code>pages/esqueci-senha.php</code> e <code>pages/redefinir-senha.php</code>, mas o processamento correspondente em <code>php/</code> ainda precisa ser implementado</li>
-    </ul>
-  </div>
-</section>
+## Para testar no XAMPP
 
-<section>
-  <div align='center'>
-  <h2>Tecnologias utilizadas</h2>
-  <p align="center">
-    <img src="https://www.svgrepo.com/show/452228/html-5.svg" height="60" title="HTML5"/>
-    <img src="https://www.svgrepo.com/show/452185/css-3.svg" height="60" title="CSS3"/>
-    <img src="https://www.svgrepo.com/show/452045/js.svg" height="60" title="JavaScript"/>
-    <img src="https://www.svgrepo.com/show/452088/php.svg" height="60" title="PHP"/>
-    <img src="https://www.svgrepo.com/show/373848/mysql.svg" height="60" title="MySQL"/>
-    <img src="https://cdn.simpleicons.org/xampp?viewbox=auto" height="60" title="XAMPP"/>
-    <img src="https://www.svgrepo.com/show/374171/vscode.svg" height="60" title="VS Code"/>
-    <img src="https://www.svgrepo.com/show/452210/git.svg" height="60" title="Git"/>
-    <img src="https://img.icons8.com/?size=100&id=bVGqATNwfhYq&format=png&color=000000.svg" height="60" title="GitHub"/>
-    <img src="https://www.svgrepo.com/show/378781/chrome.svg" height="60" title="Chrome"/>
-    <img src="https://img.icons8.com/?size=100&id=PndQWK6M1Hjo&format=png&color=000000.svg" height="60" title="Bootstrap"/>
-  </p>
-  </div>
-</section>
+1. Faça uma cópia do projeto atual.
+2. Coloque esta pasta em `htdocs`/`www` conforme sua instalação.
+3. No phpMyAdmin, importe `database/topturismo-base.sql` para começar com o banco limpo (16 destinos, 0 usuários e 0 reservas).
+4. Copie `php/conexao.example.php` para `php/conexao.php`.
+5. Ajuste servidor, usuário, senha, banco e porta do MySQL.
+6. Se quiser testar o painel administrativo, importe `database/admin-inicial.sql`.
+7. Abra `pages/login.php`.
+8. Para testar como administrador: `admin@topturismo.com` / `Admin@123`.
+9. Para testar cadastro/login de cliente, crie uma conta pelo formulário.
 
-<section>
-  <div>
-    <h2>Estrutura do projeto</h2>
-    <pre>
-top-turismo/
-├── index.php
-├── pages/
-│   ├── login.php
-│   ├── cadastro.php
-│   ├── dashboard.php
-│   ├── reservas.php
-│   ├── esqueci-senha.php
-│   └── redefinir-senha.php
-├── php/
-│   ├── conexao.example.php
-│   ├── login.php
-│   ├── cadastro.php
-│   ├── logout.php
-│   ├── dashboard.php
-│   ├── excluir-conta.php
-│   └── usuario-logado.php
-└── assets/
-    ├── css/
-    ├── js/
-    └── imagens/
-    </pre>
-  </div>
-</section>
+## Teste completo da reserva
 
-<section>
-  <div>
-    <h2>Banco de dados</h2>
-    <p>O projeto utiliza MySQL através da extensão <code>mysqli</code>. É necessária uma tabela <code>usuarios</code> com, no mínimo, os campos utilizados pelo cadastro, login e dashboard:</p>
-    <pre>
-CREATE TABLE usuarios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(150) NOT NULL,
-    cpf VARCHAR(20) NOT NULL UNIQUE,
-    data_nascimento DATE NOT NULL,
-    genero VARCHAR(20) NOT NULL,
-    email VARCHAR(150) NOT NULL UNIQUE,
-    telefone VARCHAR(20) NOT NULL,
-    cidade VARCHAR(100) NOT NULL,
-    senha VARCHAR(255) NOT NULL,
-    tipo VARCHAR(20) NOT NULL DEFAULT 'cliente'
-);
-    </pre>
-  </div>
-</section>
+Login → destino → passageiros → ida/volta → data → transporte → classe → assentos → revisar → pagamento → confirmar → Minhas Viagens.
 
-<section>
-  <div>
-    <h2>Como rodar</h2>
-      <p>1. Baixe o repositório (Clique no Botão “Code” > Download ZIP) ou clone-o (veja a seção abaixo)</p>
-      <p>2. Extraia a pasta, se necessário</p>
-      <p>3. Crie um banco de dados MySQL e a tabela <code>usuarios</code> (veja a seção "Banco de dados")</p>
-      <p>4. Copie <code>php/conexao.example.php</code> para <code>php/conexao.php</code> e preencha com os dados do seu MySQL (servidor, usuário, senha, banco e porta). Esse arquivo é ignorado pelo Git (<code>.gitignore</code>) e não deve ser versionado</p>
-      <p>5. Como o projeto usa PHP, ele precisa rodar em um servidor local (não abra o <code>index.php</code> direto no navegador). Opções:</p>
-      <ul>
-        <li>Rode <code>php -S localhost:8000</code> na raiz do projeto e acesse <code>http://localhost:8000</code>; ou</li>
-        <li>Use um ambiente como XAMPP/WAMP/MAMP, colocando o projeto na pasta <code>htdocs</code> (ou equivalente) e acessando via <code>http://localhost/top-turismo</code></li>
-      </ul>
-  </div>
+## Importante
 
-  <div>
-    <h2>Como clonar</h2>
-     <p>No terminal:​ <code>git clone https://github.com/Mauricio-3012/top-turismo.git</code></p>
+O arquivo `php/conexao.php` não deve ser enviado ao GitHub porque contém as credenciais locais do banco. O projeto usa `php/conexao.example.php` apenas como modelo.
 
-    <p>No GitHub Desktop: no menu > File (Arquivo) > Clone a repository (Clonar repositório) > selecione a aba URL, cole o link do repositório: <code>https://github.com/Mauricio-3012/top-turismo.git</code></p>
-  </div>
-</section>
+O cartão é apenas uma simulação acadêmica. Número, validade e CVV não são enviados nem gravados no banco.
 
-<section>
-  <div>
-    <h2>Melhorias futuras</h2>
-    <ul>
-      <li>Implementar o back-end do fluxo de recuperação/redefinição de senha</li>
-      <li>Persistir e listar as reservas feitas pelo usuário na aba "Minhas Viagens" do dashboard</li>
-      <li>Adicionar validações mais robustas nos formulários (front-end e back-end)</li>
-      <li>Adicionar mensagens de sucesso/erro mais completas no dashboard (ex.: feedback visual ao salvar alterações)</li>
-      <li>Melhorar a responsividade para dispositivos móveis</li>
-    </ul>
-  </div>
-</section>
+## Recuperação de senha
 
-<section>
-  <div align="center">
-    <h2>Autores e Colaboradores</h2>
-    <p>Maurício Alves</p>
-    <p>Fabiano Assunção</p>
-    <p>David Lucas</p>
-    Turma de Tecnologia em Informática para Internet (Vespertino) - Senac DF
-  </div>
-</section>
+O cadastro agora pede uma **palavra-chave de recuperação**. Ela é armazenada somente como hash.
 
-## Painel administrativo
+Fluxo: **Esqueci minha senha → e-mail → palavra-chave → nova senha**.
 
-O projeto agora possui um painel administrativo protegido pelo campo `usuarios.tipo`.
+A autorização para redefinir a senha dura 15 minutos e a nova senha usa o mesmo `password_hash()` do cadastro e da alteração de senha.
 
-### Banco de dados
+Se você já tinha um banco criado antes desta atualização, execute `database/atualizacao-recuperacao-senha.sql`.
 
-Se você ainda não importou o banco, use `database/topturismo_admin.sql`. Ele mantém os 16 destinos atuais e inclui os campos necessários para as 3 imagens, região, estado, avaliação e popularidade.
+Administrador opcional (`database/admin-inicial.sql`): palavra-chave `TopTurismo2026`.
+A base limpa não cria usuários de teste.
 
-Se você já possui o banco `topturismo` funcionando, use `database/topturismo_admin_migracao.sql` uma única vez para adicionar os novos campos e criar a conta administrativa.
+## Organização do código
 
-### Conta administrativa inicial
+- `pages/`: telas HTML/PHP apresentadas ao usuário.
+- `php/`: processamento, validações, sessões e banco de dados.
+- `assets/css/`: estilos.
+- `assets/js/`: scripts gerais e o script específico de reservas.
+- `database/`: scripts SQL do projeto.
 
-- E-mail: `admin@topturismo.com`
-- Senha: `Admin@123`
-
-Troque a senha depois do primeiro acesso.
-
-### Acesso
-
-Ao entrar com uma conta `admin`, o login direciona para `admin/dashboard.php`. O painel permite:
-
-- cadastrar destinos;
-- enviar as 3 imagens do carrossel;
-- editar destinos e substituir imagens;
-- excluir destinos que não possuam reservas vinculadas;
-- visualizar todos os destinos cadastrados.
-
-Os novos destinos são carregados pelo site a partir do banco, portanto não é necessário editar os cards do `index.php` manualmente.
-
-
-## Novos campos da reserva
-A reserva agora simula tipo de assento, assento, forma de pagamento, horário de saída e volta,
-duração e horário de chegada. Se o banco já existir, execute `database/atualizacao-reservas.sql`
-antes de usar o novo formulário.
+O `reservas.js` foi reduzido e ficou responsável principalmente pela interface: seleção de assentos, troca de etapas, máscara do cartão e envio dos dados. As regras importantes e o cálculo oficial da reserva continuam no PHP.

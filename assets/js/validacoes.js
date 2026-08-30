@@ -61,14 +61,14 @@ function validarCPF(cpf) {
     if (!digitos) return "O CPF é obrigatório.";
     if (digitos.length !== 11) return "O CPF deve ter 11 dígitos.";
 
-    // Bloqueia CPFs compostos pelo mesmo dígito.
+    // *bloqueia CPFs compostos pelo mesmo dígito*
     if (/^(\d)\1{10}$/.test(digitos)) {
         return "CPF inválido.";
     }
 
     let soma = 0;
 
-    // Primeiro dígito verificador.
+    // *calcula o primeiro dígito verificador*
     for (let i = 0; i < 9; i++) {
         soma += parseInt(digitos[i]) * (10 - i);
     }
@@ -85,7 +85,7 @@ function validarCPF(cpf) {
 
     soma = 0;
 
-    // Segundo dígito verificador.
+    // *calcula o segundo dígito verificador*
     for (let i = 0; i < 10; i++) {
         soma += parseInt(digitos[i]) * (11 - i);
     }

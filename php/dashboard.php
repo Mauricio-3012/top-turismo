@@ -1,7 +1,8 @@
 <?php
-
 session_start();
 require_once "conexao.php";
+
+// *somente usuários autenticados podem alterar seus dados*
 
 if (!isset($_SESSION["usuario_id"])) {
     header("Location: ../pages/login.php");
@@ -42,9 +43,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($senhaAtual === "" || $senhaNova === "" || $senhaConfirmacao === "") {
             $sucesso = false;
             $mensagemErro = "Para alterar a senha, preencha os três campos de senha.";
-        } elseif (strlen($senhaNova) < 6) {
+        } elseif (
+            strlen($senhaNova) < 8
+            || !preg_match("/[a-z]/", $senhaNova)
+            || !preg_match("/[A-Z]/", $senhaNova)
+            || !preg_match("/[0-9]/", $senhaNova)
+        ) {
             $sucesso = false;
-            $mensagemErro = "A nova senha deve ter pelo menos 6 caracteres.";
+            $mensagemErro = "A nova senha deve ter no mínimo 8 caracteres, com letra maiúscula, minúscula e número.";
         } elseif ($senhaNova !== $senhaConfirmacao) {
             $sucesso = false;
             $mensagemErro = "A confirmação da nova senha não confere.";

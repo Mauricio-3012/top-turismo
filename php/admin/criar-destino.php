@@ -1,6 +1,9 @@
 <?php
 
 require_once __DIR__ . '/auth.php';
+
+// *recebe e valida os dados antes de criar um novo destino*
+
 require_once __DIR__ . '/../conexao.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -92,7 +95,7 @@ try {
     }
 
     $stmt->bind_param(
-        'ssssssssssdi',
+        'sssssssssddi',
         $nome,
         $descricao,
         $cidade,

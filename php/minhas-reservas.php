@@ -1,7 +1,8 @@
 <?php
-
 session_start();
 header("Content-Type: application/json; charset=UTF-8");
+
+// *retorna somente as reservas do usuário logado*
 
 require_once "conexao.php";
 

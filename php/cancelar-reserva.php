@@ -1,131 +1,60 @@
 <?php
-
 session_start();
-header("Content-Type: application/json; charset=UTF-8");
+// *permite cancelar somente uma reserva pertencente ao usuário logado*
+require_once __DIR__ . '/conexao.php';
 
-require_once "conexao.php";
-
-
- // mantém as respostas do endpoint de cancelamento consistentes
-function responder(
-    int $statusHttp,
-    bool $sucesso,
-    string $mensagem,
-    array $extra = []
-): never {
-    http_response_code($statusHttp);
-
-    echo json_encode(
-        array_merge(
-            [
-                "sucesso" => $sucesso,
-                "mensagem" => $mensagem,
-            ],
-            $extra
-        ),
-        JSON_UNESCAPED_UNICODE
-    );
-
+if (!isset($_SESSION['usuario_id'])) {
+    if (isset($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'application/json')) {
+        header('Content-Type: application/json; charset=UTF-8');
+        http_response_code(401);
+        echo json_encode(['sucesso'=>false,'mensagem'=>'Usuário não autenticado.'], JSON_UNESCAPED_UNICODE);
+    } else {
+        header('Location: ../pages/login.php');
+    }
     exit;
 }
 
-if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    responder(405, false, "Método não permitido.");
+$idReserva = 0;
+$isJson = isset($_SERVER['CONTENT_TYPE']) && str_contains($_SERVER['CONTENT_TYPE'], 'application/json');
+if ($isJson) {
+    $dados = json_decode(file_get_contents('php://input'), true);
+    $idReserva = filter_var($dados['id_reserva'] ?? null, FILTER_VALIDATE_INT) ?: 0;
+} else {
+    $idReserva = filter_var($_POST['id_reserva'] ?? null, FILTER_VALIDATE_INT) ?: 0;
 }
 
-if (!isset($_SESSION["usuario_id"])) {
-    responder(401, false, "Usuário não autenticado.");
+function responder($ok, $mensagem, $status = 200) {
+    global $isJson;
+    if ($isJson) {
+        header('Content-Type: application/json; charset=UTF-8');
+        http_response_code($status);
+        echo json_encode(['sucesso'=>$ok,'mensagem'=>$mensagem], JSON_UNESCAPED_UNICODE);
+    } else {
+        header('Location: ../pages/dashboard.php?' . ($ok ? 'sucesso_cancelamento=1' : 'erro=' . urlencode($mensagem)) . '#minhas-viagens');
+    }
+    exit;
 }
 
-$dados = json_decode(file_get_contents("php://input"), true);
-$id_reserva = filter_var(
-    $dados["id_reserva"] ?? null,
-    FILTER_VALIDATE_INT
-);
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') responder(false, 'Método não permitido.', 405);
+if ($idReserva < 1) responder(false, 'Reserva inválida.', 400);
 
-if (!$id_reserva || $id_reserva < 1) {
-    responder(400, false, "Reserva inválida.");
-}
-
-$id_usuario = (int) $_SESSION["usuario_id"];
-
-
- // a reserva é localizada pelo ID + ID do usuário, assim, um usuário não consegue cancelar uma reserva pertencente a outra conta apenas alterando o ID enviado pelo navegador
- 
-$sql = "
-    SELECT id_reserva, data_viagem, status
-    FROM reservas
-    WHERE id_reserva = ? AND id_usuario = ?
-    LIMIT 1
-";
-
-$stmt = $conexao->prepare($sql);
-
-if (!$stmt) {
-    responder(500, false, "Erro ao consultar a reserva.");
-}
-
-$stmt->bind_param("ii", $id_reserva, $id_usuario);
+$idUsuario = (int)$_SESSION['usuario_id'];
+$stmt = $conexao->prepare('SELECT data_viagem, status FROM reservas WHERE id_reserva = ? AND id_usuario = ? LIMIT 1');
+if (!$stmt) responder(false, 'Erro ao consultar a reserva.', 500);
+$stmt->bind_param('ii', $idReserva, $idUsuario);
 $stmt->execute();
-
 $reserva = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
-if (!$reserva) {
-    responder(404, false, "Reserva não encontrada.");
-}
+if (!$reserva) responder(false, 'Reserva não encontrada.', 404);
+if (strtolower(trim((string)$reserva['status'])) === 'cancelada') responder(false, 'Esta reserva já está cancelada.', 409);
+if (strtotime((string)$reserva['data_viagem']) < strtotime('today')) responder(false, 'Não é possível cancelar uma viagem que já passou.', 409);
 
-$statusAtual = strtolower(trim((string) $reserva["status"]));
-
-if (
-    in_array(
-        $statusAtual,
-        ["cancelada"],
-        true
-    )
-) {
-    responder(409, false, "Esta reserva não pode mais ser cancelada.");
-}
-
-$dataViagem = DateTime::createFromFormat(
-    "Y-m-d",
-    (string) $reserva["data_viagem"]
-);
-
-if (!$dataViagem) {
-    responder(500, false, "A data da reserva é inválida.");
-}
-
-if ($dataViagem < new DateTime("today")) {
-    responder(409, false, "Não é possível cancelar uma viagem que já passou.");
-}
-
-// a mesma condição do SELECT é repetida no UPDATE para evitar que uma reserva seja alterada depois de mudar de status
-$sqlUpdate = "
-    UPDATE reservas
-    SET status = 'cancelada'
-    WHERE id_reserva = ?
-      AND id_usuario = ?
-      AND status <> 'cancelada'
-";
-
-$stmtUpdate = $conexao->prepare($sqlUpdate);
-
-if (!$stmtUpdate) {
-    responder(500, false, "Erro ao preparar o cancelamento.");
-}
-
-$stmtUpdate->bind_param("ii", $id_reserva, $id_usuario);
-$atualizou = $stmtUpdate->execute();
-
-$stmtUpdate->close();
+$stmt = $conexao->prepare("UPDATE reservas SET status = 'cancelada' WHERE id_reserva = ? AND id_usuario = ? AND status <> 'cancelada'");
+if (!$stmt) responder(false, 'Erro ao preparar o cancelamento.', 500);
+$stmt->bind_param('ii', $idReserva, $idUsuario);
+$ok = $stmt->execute() && $stmt->affected_rows > 0;
+$stmt->close();
 $conexao->close();
 
-if (!$atualizou) {
-    responder(500, false, "Não foi possível cancelar a reserva.");
-}
-
-responder(200, true, "Reserva cancelada com sucesso.", [
-    "id_reserva" => $id_reserva,
-    "status" => "cancelada",
-]);
+responder($ok, $ok ? 'Reserva cancelada com sucesso.' : 'Não foi possível cancelar a reserva.', $ok ? 200 : 500);

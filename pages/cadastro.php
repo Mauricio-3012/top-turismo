@@ -29,6 +29,7 @@
                     </div>
                 <?php endif; ?>
 
+                <!-- *envia o cadastro para validação e gravação no PHP* -->
                 <form method="POST" action="../php/cadastro.php" id="formCadastro" novalidate>
                     <div class="campo-entrada">
                         <label>Nome completo</label>
@@ -71,6 +72,12 @@
                         <input type="text" id="cidade" name="cidade" placeholder="Sua cidade" required>
                     </div>
 
+                    <div class="campo-entrada">
+                        <label>Palavra-chave de recuperação</label>
+                        <input type="password" id="chave_recuperacao" name="chave_recuperacao" placeholder="Mínimo 4 caracteres" minlength="4" required>
+                        <small>Use uma palavra-chave que você consiga lembrar caso esqueça sua senha.</small>
+                    </div>
+
                     <div class="grid-2-colunas">
                         <div class="campo-entrada">
                             <label>Senha</label>
@@ -98,6 +105,7 @@
 
     <script src="../assets/js/validacoes.js"></script>
     <script>
+        // *aplica máscaras e validações rápidas para melhorar o preenchimento*
         const formCadastro = document.getElementById("formCadastro");
         const campoNome = document.getElementById("nome");
         const campoCpf = document.getElementById("cpf");
@@ -106,6 +114,7 @@
         const campoEmail = document.getElementById("email");
         const campoTelefone = document.getElementById("telefone");
         const campoCidade = document.getElementById("cidade");
+        const campoChaveRecuperacao = document.getElementById("chave_recuperacao");
         const campoSenha = document.getElementById("senha");
         const campoConfirmarSenha = document.getElementById("confirmar_senha");
 
@@ -125,6 +134,7 @@
         campoEmail.addEventListener("blur", () => validarCampo(campoEmail, validarEmail, campoEmail.value));
         campoTelefone.addEventListener("blur", () => validarCampo(campoTelefone, validarTelefone, campoTelefone.value));
         campoCidade.addEventListener("blur", () => validarCampo(campoCidade, validarCampoObrigatorio, campoCidade.value, "A cidade"));
+        campoChaveRecuperacao.addEventListener("blur", () => validarCampo(campoChaveRecuperacao, (valor) => valor.trim().length < 4 ? "A palavra-chave deve ter pelo menos 4 caracteres." : "", campoChaveRecuperacao.value));
         campoSenha.addEventListener("blur", () => validarCampo(campoSenha, validarSenha, campoSenha.value));
         campoConfirmarSenha.addEventListener("blur", () => validarCampo(campoConfirmarSenha, validarConfirmarSenha, campoSenha.value, campoConfirmarSenha.value));
 
@@ -137,6 +147,7 @@
                 validarCampo(campoEmail, validarEmail, campoEmail.value),
                 validarCampo(campoTelefone, validarTelefone, campoTelefone.value),
                 validarCampo(campoCidade, validarCampoObrigatorio, campoCidade.value, "A cidade"),
+                validarCampo(campoChaveRecuperacao, (valor) => valor.trim().length < 4 ? "A palavra-chave deve ter pelo menos 4 caracteres." : "", campoChaveRecuperacao.value),
                 validarCampo(campoSenha, validarSenha, campoSenha.value),
                 validarCampo(campoConfirmarSenha, validarConfirmarSenha, campoSenha.value, campoConfirmarSenha.value),
             ];

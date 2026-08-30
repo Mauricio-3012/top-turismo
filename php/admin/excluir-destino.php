@@ -1,6 +1,9 @@
 <?php
 
 require_once __DIR__ . '/auth.php';
+
+// *remove o destino somente depois de confirmar que ele existe*
+
 require_once __DIR__ . '/../conexao.php';
 
 $id = (int) ($_POST['id_destino'] ?? 0);

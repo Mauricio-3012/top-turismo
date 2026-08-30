@@ -1,5 +1,5 @@
 <?php
-$adminNome = $_SESSION['usuario_nome'] ?? 'Administrador';
+// *este menu aparece somente nas páginas protegidas do administrador*
 ?>
 <header>
     <nav class="navbar fixed-top navbar-expand-lg custom-bg p-3">
@@ -25,7 +25,6 @@ $adminNome = $_SESSION['usuario_nome'] ?? 'Administrador';
                         <i class="bi bi-person-circle"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" id="userAuthMenuList">
-                        <li class="px-3 py-2 small text-muted border-bottom">Olá, <strong><?= htmlspecialchars($adminNome, ENT_QUOTES, 'UTF-8') ?></strong></li>
                         <li><a class="dropdown-item" href="../pages/dashboard.php"><i class="bi bi-person-fill me-2"></i>Meu Perfil</a></li>
                         <li><a class="dropdown-item" href="dashboard.php"><i class="bi bi-speedometer2 me-2"></i>Gerenciar destinos</a></li>
                         <li><a class="dropdown-item" href="../php/logout.php"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
@@ -50,6 +49,7 @@ $adminNome = $_SESSION['usuario_nome'] ?? 'Administrador';
     </nav>
 </header>
 
+<!-- *menu alternativo usado em telas pequenas* -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="menuMobile" aria-labelledby="menuMobileLabel">
     <div class="offcanvas-header">
         <div class="d-flex align-items-center">

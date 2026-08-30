@@ -1,5 +1,6 @@
 <?php
 
+// *bloqueia o painel quando a sessão não pertence a um administrador*
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }

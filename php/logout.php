@@ -1,5 +1,6 @@
 <?php
 session_start();
+// *encerra a sessão atual e volta para a página inicial*
 
 $_SESSION = [];
 

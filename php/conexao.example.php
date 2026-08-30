@@ -1,12 +1,17 @@
 <?php
-$servidor = "[SEU_SERVIDOR]";   // geralmente "localhost"
-$usuario  = "[SEU_USUARIO]";    // geralmente "root"
-$senha    = "[SUA_SENHA]";      // a senha do seu MySQL
-$banco    = "[NOME_DO_BANCO]";  // o nome do banco de dados
-$porta    = 0000;             // a porta do MySQL
+
+$servidor = 'localhost';
+$usuario = 'root';
+$senha = '';
+$banco = 'topturismo';
+$porta = 3306;
+
+mysqli_report(MYSQLI_REPORT_OFF);
 
 $conexao = new mysqli($servidor, $usuario, $senha, $banco, $porta);
 
-if ($conexao->connect_error) {
-    die("Erro ao conectar: " . $conexao->connect_error);
+if ($conexao->connect_errno) {
+    die('Não foi possível conectar ao banco de dados.');
 }
+
+$conexao->set_charset('utf8mb4');

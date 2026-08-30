@@ -63,7 +63,7 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
             <div class="container-fluid d-flex align-items-center flex-wrap">
                 <div class="d-flex align-items-center">
                     <img src="../assets/imagens/logo-white.png" width="50" height="50" alt="Logo">
-                    <a href="index.php" class="text-a ms-2 logo-texto">TopTurismo</a>
+                    <a href="../index.php" class="text-a ms-2 logo-texto">TopTurismo</a>
                 </div>
 
                 <div class="flex-grow-1 d-none d-lg-flex justify-content-center">
@@ -82,7 +82,6 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                             <i class="bi bi-person-circle"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" id="userAuthMenuList">
-                            <li class="px-3 py-2 small text-muted border-bottom">Olá, <strong><?= htmlspecialchars($usuarioLogado["nome"], ENT_QUOTES, "UTF-8") ?></strong></li>
                             <li><a class="dropdown-item" href="#meus-dados"><i class="bi bi-person-fill me-2"></i>Meu Perfil</a></li>
                             <?php if (($_SESSION["usuario_tipo"] ?? "cliente") === "admin"): ?><li><a class="dropdown-item" href="../admin/dashboard.php"><i class="bi bi-speedometer2 me-2"></i>Painel Admin</a></li><?php endif; ?>
                             <li><a class="dropdown-item" href="../php/logout.php"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
@@ -137,7 +136,7 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                         <h4 class="fw-bold mb-4" style="color: var(--btn-bg);">
                             <i class="bi bi-person-fill me-2"></i>Meus Dados
                         </h4>
-                        <?php if (isset($_GET["sucesso"])): ?>
+                        <?php if (isset($_GET["sucesso"]) || isset($_GET["sucesso_cancelamento"])): ?>
                             <div class="alert alert-success d-flex align-items-center gap-2" role="alert">
                                 <i class="bi bi-check-circle-fill"></i> Dados atualizados com sucesso.
                             </div>
@@ -157,11 +156,11 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
     </div>
     <div class="col-md-6">
         <label class="form-label">Telefone</label>
-        <input type="text" class="form-control" id="campoTelefone" name="telefone" value="<?= htmlspecialchars($usuarioLogado["telefone"], ENT_QUOTES, "UTF-8") ?>" placeholder="Digite seu telefone" required>
+        <input type="text" class="form-control" id="campoTelefone" name="telefone" value="<?= htmlspecialchars(($usuarioLogado["telefone"] ?? ""), ENT_QUOTES, "UTF-8") ?>" placeholder="Digite seu telefone" required>
     </div>
     <div class="col-md-6">
     <label class="form-label">Cidade</label>
-    <input type="text" class="form-control" id="campoCidade" name="cidade" value="<?= htmlspecialchars($usuarioLogado["cidade"], ENT_QUOTES, "UTF-8") ?>" placeholder="Digite sua cidade" required>
+    <input type="text" class="form-control" id="campoCidade" name="cidade" value="<?= htmlspecialchars(($usuarioLogado["cidade"] ?? ""), ENT_QUOTES, "UTF-8") ?>" placeholder="Digite sua cidade" required>
     </div>
     <div class="col-12 mt-3">
         <div class="alterar-senha-box">
@@ -230,11 +229,89 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                             </a>
                         </div>
 
-                        <div id="listaReservas">
-                            <div class="text-center py-4 text-muted">
-                                <i class="bi bi-arrow-repeat me-2"></i>Preparando suas viagens...
+                        <?php if (!$reservasIniciais): ?>
+                            <div class="reserva-vazia text-center">
+                                <div class="reserva-vazia-icone"><i class="bi bi-suitcase-lg"></i></div>
+                                <h5 class="fw-bold mb-2">Você ainda não possui viagens</h5>
+                                <p class="text-muted mb-4">Faça sua primeira reserva e acompanhe tudo por aqui.</p>
+                                <a href="../index.php#reservar" class="btn btn-custom rounded-pill px-4">
+                                    <i class="bi bi-calendar-check me-1"></i> Fazer uma reserva
+                                </a>
                             </div>
-                        </div>
+                        <?php else: ?>
+                            <div class="row g-3">
+                            <?php foreach ($reservasIniciais as $indice => $reserva):
+                                $cancelavel = strtolower((string)$reserva['status']) !== 'cancelada' && strtotime((string)$reserva['data_viagem']) >= strtotime('today');
+                                $statusCancelada = strtolower((string)$reserva['status']) === 'cancelada';
+                                $img = basename((string)($reserva['img_destino'] ?? ''));
+                                $img = $img ? '../assets/imagens/' . rawurlencode($img) : '../assets/imagens/hero-bg.jpg';
+                                $chegada = 'Não informado';
+                                if (!empty($reserva['horario_ida']) && !empty($reserva['duracao_voo_minutos'])) {
+                                    [$h,$m] = array_map('intval', explode(':', substr((string)$reserva['horario_ida'],0,5)));
+                                    $totalMin = $h*60+$m+(int)$reserva['duracao_voo_minutos'];
+                                    $chegada = sprintf('%02d:%02d', intdiv($totalMin%1440,60), $totalMin%60) . ($totalMin >= 1440 ? ' (+1 dia)' : '');
+                                }
+                                $duracao = !empty($reserva['duracao_voo_minutos']) ? intdiv((int)$reserva['duracao_voo_minutos'],60).'h'.str_pad((string)((int)$reserva['duracao_voo_minutos']%60),2,'0',STR_PAD_LEFT) : 'Não informado';
+                            ?>
+                                <div class="col-12">
+                                    <article class="reserva-dashboard-card compacta">
+                                        <div class="reserva-dashboard-conteudo">
+                                            <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+                                                <div>
+                                                    <h5 class="reserva-dashboard-destino fw-bold mb-1"><i class="bi bi-geo-alt-fill me-1" style="color: var(--btn-bg);"></i><?= htmlspecialchars($reserva['nome_destino'] ?? 'Destino', ENT_QUOTES, 'UTF-8') ?></h5>
+                                                    <div class="reserva-dashboard-local"><?= htmlspecialchars($reserva['cidade_destino'] ?? '', ENT_QUOTES, 'UTF-8') ?><?= !empty($reserva['pais_destino']) ? ', '.htmlspecialchars($reserva['pais_destino'], ENT_QUOTES, 'UTF-8') : '' ?></div>
+                                                </div>
+                                                <span class="reserva-status reserva-status-<?= $statusCancelada ? 'cancelada' : 'confirmada' ?>"><i class="bi <?= $statusCancelada ? 'bi-x-circle-fill' : 'bi-check-circle-fill' ?>"></i><?= $statusCancelada ? 'Cancelada' : 'Confirmada' ?></span>
+                                            </div>
+                                            <div class="row g-2 reserva-dashboard-info">
+                                                <div class="col-6 col-md-3 reserva-dashboard-info-item"><span class="reserva-dashboard-info-label">Data</span><span class="reserva-dashboard-info-value"><i class="bi bi-calendar3 me-1"></i><?= date('d/m/Y', strtotime($reserva['data_viagem'])) ?></span></div>
+                                                <div class="col-6 col-md-3 reserva-dashboard-info-item"><span class="reserva-dashboard-info-label">Horário</span><span class="reserva-dashboard-info-value"><i class="bi bi-clock-fill me-1"></i><?= htmlspecialchars(substr((string)($reserva['horario_ida'] ?? ''),0,5) ?: 'Não informado', ENT_QUOTES, 'UTF-8') ?></span></div>
+                                                <div class="col-6 col-md-3 reserva-dashboard-info-item"><span class="reserva-dashboard-info-label">Passageiros</span><span class="reserva-dashboard-info-value"><i class="bi bi-people-fill me-1"></i><?= (int)$reserva['quantidade_passageiros'] ?></span></div>
+                                                <div class="col-6 col-md-3 reserva-dashboard-info-item"><span class="reserva-dashboard-info-label">Valor</span><span class="reserva-dashboard-info-value"><i class="bi bi-cash-coin me-1"></i><?= number_format((float)$reserva['valor_total'],2,',','.') ?></span></div>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap mt-3">
+                                                <small class="text-muted">Reserva #<?= (int)$reserva['id_reserva'] ?> · <?= htmlspecialchars($reserva['transporte'] ?? '', ENT_QUOTES, 'UTF-8') ?> · <?= htmlspecialchars($reserva['classe'] ?? '', ENT_QUOTES, 'UTF-8') ?></small>
+                                                <div class="d-flex gap-2">
+                                                    <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalDetalhes<?= (int)$reserva['id_reserva'] ?>"><i class="bi bi-eye me-1"></i>Detalhes</button>
+                                                    <?php if ($cancelavel): ?>
+                                                        <form method="post" action="../php/cancelar-reserva.php" onsubmit="return confirm('Tem certeza que deseja cancelar esta reserva?');">
+                                                            <input type="hidden" name="id_reserva" value="<?= (int)$reserva['id_reserva'] ?>">
+                                                            <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-x-circle me-1"></i>Cancelar</button>
+                                                        </form>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+
+                                <div class="modal fade" id="modalDetalhes<?= (int)$reserva['id_reserva'] ?>" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg modal-dialog-centered"><div class="modal-content">
+                                        <div class="modal-header"><h5 class="modal-title">Reserva #<?= (int)$reserva['id_reserva'] ?> — <?= htmlspecialchars($reserva['nome_destino'] ?? 'Destino', ENT_QUOTES, 'UTF-8') ?></h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button></div>
+                                        <div class="modal-body"><div class="row g-4 align-items-start">
+                                            <div class="col-md-5"><img class="modal-reserva-destino-img" src="<?= htmlspecialchars($img, ENT_QUOTES, 'UTF-8') ?>" alt="Destino da viagem" onerror="this.src='../assets/imagens/hero-bg.jpg'"></div>
+                                            <div class="col-md-7">
+                                                <div class="d-flex justify-content-between align-items-center gap-2 mb-3 flex-wrap"><strong><?= htmlspecialchars($reserva['cidade_destino'] ?? '', ENT_QUOTES, 'UTF-8') ?><?= !empty($reserva['pais_destino']) ? ', '.htmlspecialchars($reserva['pais_destino'], ENT_QUOTES, 'UTF-8') : '' ?></strong><span class="reserva-status reserva-status-<?= $statusCancelada ? 'cancelada' : 'confirmada' ?>"><?= $statusCancelada ? 'Cancelada' : 'Confirmada' ?></span></div>
+                                                <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Data da viagem</span><span class="reserva-detalhe-valor"><?= date('d/m/Y', strtotime($reserva['data_viagem'])) ?></span></div>
+                                                <?php if (!empty($reserva['data_volta'])): ?><div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Data da volta</span><span class="reserva-detalhe-valor"><?= date('d/m/Y', strtotime($reserva['data_volta'])) ?></span></div><?php endif; ?>
+                                                <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Passageiros</span><span class="reserva-detalhe-valor"><?= (int)$reserva['quantidade_passageiros'] ?></span></div>
+                                                <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Transporte</span><span class="reserva-detalhe-valor"><?= htmlspecialchars($reserva['transporte'] ?? '', ENT_QUOTES, 'UTF-8') ?></span></div>
+                                                <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Classe</span><span class="reserva-detalhe-valor"><?= htmlspecialchars($reserva['classe'] ?? '', ENT_QUOTES, 'UTF-8') ?></span></div>
+                                                <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Assento</span><span class="reserva-detalhe-valor"><?= htmlspecialchars($reserva['assento'] ?? '', ENT_QUOTES, 'UTF-8') ?> — <?= htmlspecialchars($reserva['tipo_assento'] ?? '', ENT_QUOTES, 'UTF-8') ?></span></div>
+                                                <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Pagamento</span><span class="reserva-detalhe-valor"><?= htmlspecialchars($reserva['pagamento'] ?? '', ENT_QUOTES, 'UTF-8') ?> (simulação)</span></div>
+                                                <?php if (($reserva['pagamento'] ?? '') === 'Cartão'): ?><div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Parcelamento</span><span class="reserva-detalhe-valor"><?= (int)($reserva['parcelas'] ?? 1) ?>x · juros <?= number_format((float)($reserva['taxa_juros_percentual'] ?? 0),1,',','.') ?>%</span></div><?php endif; ?>
+                                                <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Saída</span><span class="reserva-detalhe-valor"><?= htmlspecialchars(substr((string)($reserva['horario_ida'] ?? ''),0,5) ?: 'Não informado', ENT_QUOTES, 'UTF-8') ?></span></div>
+                                                <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Chegada estimada</span><span class="reserva-detalhe-valor"><?= $chegada ?></span></div>
+                                                <?php if (!empty($reserva['horario_volta'])): ?><div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Saída da volta</span><span class="reserva-detalhe-valor"><?= htmlspecialchars(substr((string)$reserva['horario_volta'],0,5), ENT_QUOTES, 'UTF-8') ?></span></div><?php endif; ?>
+                                                <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Duração</span><span class="reserva-detalhe-valor"><?= htmlspecialchars($duracao, ENT_QUOTES, 'UTF-8') ?></span></div>
+                                                <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Valor total</span><span class="reserva-detalhe-valor" style="color: var(--btn-bg);">R$ <?= number_format((float)$reserva['valor_total'],2,',','.') ?></span></div>
+                                            </div>
+                                        </div></div>
+                                    </div></div>
+                                </div>
+                            <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -276,264 +353,8 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/script.js?v=20260822-modalfix"></script>
-    <script>
-        const reservasIniciais = <?= $reservasJson ?: "[]" ?>;
-        let reservasCache = [];
-        let reservaParaCancelar = null;
 
-        function escaparHtml(valor) {
-            const div = document.createElement("div");
-            div.textContent = valor ?? "";
-            return div.innerHTML;
-        }
-
-        function formatarData(data) {
-            const partes = String(data).split("-");
-            if (partes.length !== 3) return data;
-            return `${partes[2]}/${partes[1]}/${partes[0]}`;
-        }
-
-        function formatarMoeda(valor) {
-            return Number(valor).toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL"
-            });
-        }
-
-        function textoStatus(status) {
-            return String(status).toLowerCase() === "cancelada" ? "Cancelada" : "Confirmada";
-        }
-
-        function classeStatus(status) {
-            const valor = String(status).toLowerCase();
-            return `reserva-status reserva-status-${valor.replace("í", "i")}`;
-        }
-
-        function iconeStatus(status) {
-            return String(status).toLowerCase() === "cancelada" ? "bi-x-circle-fill" : "bi-check-circle-fill";
-        }
-
-        function imagemDestino(reserva) {
-            const nome = String(reserva.img_destino || "").split(/[\\/]/).pop();
-            return nome ? `../assets/imagens/${encodeURIComponent(nome)}` : "../assets/imagens/hero-bg.jpg";
-        }
-
-        function podeCancelar(reserva) {
-            const status = String(reserva.status).toLowerCase();
-            if (status === "cancelada") return false;
-            const hoje = new Date();
-            hoje.setHours(0, 0, 0, 0);
-            const partes = String(reserva.data_viagem).split("-");
-            if (partes.length !== 3) return false;
-            const dataViagem = new Date(Number(partes[0]), Number(partes[1]) - 1, Number(partes[2]));
-            return dataViagem >= hoje;
-        }
-
-        function renderizarReservas(reservas) {
-            const lista = document.getElementById("listaReservas");
-            reservasCache = reservas;
-
-            if (!reservas.length) {
-                lista.innerHTML = `
-                    <div class="reserva-vazia text-center">
-                        <div class="reserva-vazia-icone"><i class="bi bi-suitcase-lg"></i></div>
-                        <h5 class="fw-bold mb-2">Você ainda não possui viagens</h5>
-                        <p class="text-muted mb-4">Faça sua primeira reserva e acompanhe tudo por aqui.</p>
-                        <a href="../index.php#reservar" class="btn btn-custom rounded-pill px-4">
-                            <i class="bi bi-calendar-check me-1"></i> Fazer uma reserva
-                        </a>
-                    </div>`;
-                return;
-            }
-
-            lista.innerHTML = `
-                <div class="row g-3">
-                    ${reservas.map((reserva, indice) => `
-                        <div class="col-12">
-                            <article class="reserva-dashboard-card compacta">
-                                <div class="reserva-dashboard-conteudo">
-                                    <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
-                                        <div>
-                                            <h5 class="reserva-dashboard-destino fw-bold mb-1">
-                                                <i class="bi bi-geo-alt-fill me-1" style="color: var(--btn-bg);"></i>${escaparHtml(reserva.nome_destino)}
-                                            </h5>
-                                            <div class="reserva-dashboard-local">${escaparHtml(reserva.cidade_destino)}${reserva.pais_destino ? ", " + escaparHtml(reserva.pais_destino) : ""}</div>
-                                        </div>
-                                        <span class="${classeStatus(reserva.status)}"><i class="bi ${iconeStatus(reserva.status)}"></i>${escaparHtml(textoStatus(reserva.status))}</span>
-                                    </div>
-
-                                    <div class="row g-2 reserva-dashboard-info">
-                                        <div class="col-6 col-md-3 reserva-dashboard-info-item">
-                                            <span class="reserva-dashboard-info-label">Data</span>
-                                            <span class="reserva-dashboard-info-value"><i class="bi bi-calendar3 me-1"></i>${formatarData(reserva.data_viagem)}</span>
-                                        </div>
-                                        <div class="col-6 col-md-3 reserva-dashboard-info-item">
-                                            <span class="reserva-dashboard-info-label">Horário</span>
-                                            <span class="reserva-dashboard-info-value"><i class="bi bi-clock-fill me-1"></i>${escaparHtml(String(reserva.horario_ida || "").slice(0,5))} → ${formatarChegadaReserva(reserva.horario_ida, reserva.duracao_voo_minutos)}</span>
-                                        </div>
-                                        <div class="col-6 col-md-3 reserva-dashboard-info-item">
-                                            <span class="reserva-dashboard-info-label">Passageiros</span>
-                                            <span class="reserva-dashboard-info-value"><i class="bi bi-people-fill me-1"></i>${escaparHtml(reserva.quantidade_passageiros)}</span>
-                                        </div>
-                                        <div class="col-6 col-md-3 reserva-dashboard-info-item">
-                                            <span class="reserva-dashboard-info-label">Valor</span>
-                                            <span class="reserva-dashboard-valor">${formatarMoeda(reserva.valor_total)}</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
-                                        <small class="text-muted">Reserva #${escaparHtml(reserva.id_reserva)} · ${escaparHtml(reserva.transporte)}</small>
-                                        <div class="reserva-dashboard-acoes">
-                                            <button type="button" class="btn btn-reserva-outline rounded-pill px-3 btn-detalhes-reserva" data-indice="${indice}"><i class="bi bi-eye me-1"></i>Detalhes</button>
-                                            ${podeCancelar(reserva) ? `<button type="button" class="btn btn-outline-danger rounded-pill px-3 btn-cancelar-reserva" data-indice="${indice}"><i class="bi bi-x-circle me-1"></i>Cancelar</button>` : ""}
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                    `).join("")}
-                </div>`;
-        }
-
-        function formatarDuracaoReserva(minutos) {
-            const total = Number(minutos || 0);
-            if (!total) return "Não informado";
-            return `${Math.floor(total / 60)}h${String(total % 60).padStart(2, "0")}`;
-        }
-
-        function formatarChegadaReserva(horario, duracao) {
-            if (!horario || !duracao) return "Não informado";
-            const [h, m] = String(horario).slice(0, 5).split(":").map(Number);
-            const total = h * 60 + m + Number(duracao);
-            const dia = Math.floor(total / 1440);
-            const restante = total % 1440;
-            const chegada = `${String(Math.floor(restante / 60)).padStart(2, "0")}:${String(restante % 60).padStart(2, "0")}`;
-            return chegada + (dia ? " (+1 dia)" : "");
-        }
-
-        function abrirDetalhes(indice) {
-            const reserva = reservasCache[indice];
-            if (!reserva) return;
-
-            document.getElementById("detalhesTitulo").textContent = reserva.nome_destino;
-            document.getElementById("detalhesConteudo").innerHTML = `
-                <div class="row g-4 align-items-start">
-                    <div class="col-md-5">
-                        <img class="modal-reserva-destino-img" src="${escaparHtml(imagemDestino(reserva))}" alt="Destino: ${escaparHtml(reserva.nome_destino)}" onerror="this.src='../assets/imagens/hero-bg.jpg'">
-                    </div>
-                    <div class="col-md-7">
-                        <div class="d-flex justify-content-between align-items-center gap-2 mb-3 flex-wrap">
-                            <div class="fw-bold">${escaparHtml(reserva.cidade_destino)}${reserva.pais_destino ? ", " + escaparHtml(reserva.pais_destino) : ""}</div>
-                            <span class="${classeStatus(reserva.status)}"><i class="bi ${iconeStatus(reserva.status)}"></i>${escaparHtml(textoStatus(reserva.status))}</span>
-                        </div>
-                        <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Número da reserva</span><span class="reserva-detalhe-valor">#${escaparHtml(reserva.id_reserva)}</span></div>
-                        <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Data da viagem</span><span class="reserva-detalhe-valor">${formatarData(reserva.data_viagem)}</span></div>
-                        ${reserva.data_volta ? `<div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Data da volta</span><span class="reserva-detalhe-valor">${formatarData(reserva.data_volta)}</span></div>` : ""}
-                        <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Passageiros</span><span class="reserva-detalhe-valor">${escaparHtml(reserva.quantidade_passageiros)}</span></div>
-                        <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Transporte</span><span class="reserva-detalhe-valor">${escaparHtml(reserva.transporte)}</span></div>
-                        <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Classe</span><span class="reserva-detalhe-valor">${escaparHtml(reserva.classe || "")}</span></div>
-                        <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Assento</span><span class="reserva-detalhe-valor">${escaparHtml(reserva.assento || "")} — ${escaparHtml(reserva.tipo_assento || "")}</span></div>
-                        <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Pagamento</span><span class="reserva-detalhe-valor">${escaparHtml(reserva.pagamento || "")} (simulação)</span></div>
-                        ${reserva.pagamento === "Cartão" ? `<div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Parcelamento</span><span class="reserva-detalhe-valor">${escaparHtml(reserva.parcelas || 1)}x · juros ${escaparHtml(reserva.taxa_juros_percentual || 0)}%</span></div>` : ""}
-                        ${reserva.pagamento === "Pix" ? `<div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Pagamento Pix</span><span class="reserva-detalhe-valor">À vista com desconto</span></div>` : ""}
-                        <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Saída</span><span class="reserva-detalhe-valor">${escaparHtml(reserva.horario_ida || "")}</span></div>
-                        <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Chegada estimada</span><span class="reserva-detalhe-valor">${formatarChegadaReserva(reserva.horario_ida, reserva.duracao_voo_minutos)}</span></div>
-                        ${reserva.horario_volta ? `<div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Saída da volta</span><span class="reserva-detalhe-valor">${escaparHtml(reserva.horario_volta)}</span></div>` : ""}
-                        <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Duração</span><span class="reserva-detalhe-valor">${formatarDuracaoReserva(reserva.duracao_voo_minutos)}</span></div>
-                        <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Valor total</span><span class="reserva-detalhe-valor" style="color: var(--btn-bg);">${formatarMoeda(reserva.valor_total)}</span></div>
-                    </div>
-                </div>`;
-
-            bootstrap.Modal.getOrCreateInstance(document.getElementById("modalDetalhesReserva")).show();
-        }
-
-        function abrirConfirmacaoCancelamento(indice) {
-            const reserva = reservasCache[indice];
-            if (!reserva || !podeCancelar(reserva)) return;
-
-            reservaParaCancelar = reserva;
-            document.getElementById("cancelamentoResumo").textContent = `Reserva #${reserva.id_reserva} — ${reserva.nome_destino}, com viagem em ${formatarData(reserva.data_viagem)}.`;
-            bootstrap.Modal.getOrCreateInstance(document.getElementById("modalCancelarReserva")).show();
-        }
-
-        async function confirmarCancelamento() {
-            if (!reservaParaCancelar) return;
-
-            const botao = document.getElementById("btnConfirmarCancelamento");
-            const textoOriginal = botao.innerHTML;
-            botao.disabled = true;
-            botao.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Cancelando...';
-
-            try {
-                const resposta = await fetch("../php/cancelar-reserva.php", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ id_reserva: Number(reservaParaCancelar.id_reserva) })
-                });
-                const dados = await resposta.json();
-
-                if (!resposta.ok || !dados.sucesso) {
-                    throw new Error(dados.mensagem || "Não foi possível cancelar a reserva.");
-                }
-
-                bootstrap.Modal.getOrCreateInstance(document.getElementById("modalCancelarReserva")).hide();
-                reservaParaCancelar = null;
-                await carregarReservas();
-
-            } catch (erro) {
-                alert(erro.message);
-            } finally {
-                botao.disabled = false;
-                botao.innerHTML = textoOriginal;
-            }
-        }
-
-        document.addEventListener("click", (evento) => {
-            const btnDetalhes = evento.target.closest(".btn-detalhes-reserva");
-            if (btnDetalhes) abrirDetalhes(Number(btnDetalhes.dataset.indice));
-
-            const btnCancelar = evento.target.closest(".btn-cancelar-reserva");
-            if (btnCancelar) abrirConfirmacaoCancelamento(Number(btnCancelar.dataset.indice));
-        });
-
-        async function carregarReservas() {
-            try {
-                const resposta = await fetch("../php/minhas-reservas.php", { cache: "no-store" });
-                if (resposta.status === 401) {
-                    window.location.href = "login.php";
-                    return;
-                }
-                if (!resposta.ok) throw new Error("Erro ao consultar reservas");
-
-                const dados = await resposta.json();
-                if (!dados.sucesso) throw new Error(dados.mensagem || "Não foi possível carregar as reservas.");
-                renderizarReservas(dados.reservas || []);
-            } catch (erro) {
-                console.error("Erro ao carregar reservas:", erro);
-                document.getElementById("listaReservas").innerHTML = `
-                    <div class="alert alert-danger mb-0" role="alert">
-                        <i class="bi bi-exclamation-triangle me-2"></i>
-                        Não foi possível carregar suas viagens. Tente atualizar a página.
-                    </div>`;
-            }
-        }
-
-        // Os dados do usuário e as reservas já vêm do PHP nesta primeira carga.
-        // Isso evita a tela ficar presa em “Carregando...” e mantém o conteúdo
-        // disponível mesmo antes de qualquer requisição AJAX terminar.
-        document.addEventListener("DOMContentLoaded", () => {
-            // Os modais ficam mais abaixo no HTML. Por isso, qualquer acesso
-            // aos seus botões precisa acontecer somente depois que o DOM estiver pronto.
-            const botaoConfirmarCancelamento = document.getElementById("btnConfirmarCancelamento");
-            if (botaoConfirmarCancelamento) {
-                botaoConfirmarCancelamento.addEventListener("click", confirmarCancelamento);
-            }
-
-            renderizarReservas(reservasIniciais);
-        });
-    </script>
-
-     <!-- menu mobile -->
+    <!-- menu mobile -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="menuMobile" aria-labelledby="menuMobileLabel">
         <div class="offcanvas-header">
             <div class="d-flex align-items-center">
@@ -573,8 +394,8 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
             <hr>
             <ul class="list-unstyled" id="userAuthMenuMobileList">
                 <li class="mb-2">
-                    <a href="./pages/login.php" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
-                        <i class="bi bi-box-arrow-in-right fs-4"></i> Sair
+                    <a href="../php/logout.php" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
+                        <i class="bi bi-box-arrow-right fs-4"></i> Sair
                     </a>
                 </li>
             </ul>

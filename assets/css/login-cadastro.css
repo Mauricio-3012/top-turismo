@@ -9,7 +9,7 @@
 
 body, html {
     height: 100%;
-    overflow: hidden; 
+    overflow: hidden;
     background-color: #ffffff;
 }
 
@@ -114,7 +114,7 @@ body, html {
 .secao-hero-imagem {
     flex: 1.2;
     height: 100vh;
-    background-image: url('../imagens/hero-bg.jpg'); 
+    background-image: url('../imagens/hero-bg.jpg');
     background-size: cover;
     background-position: center;
     position: relative;
@@ -135,16 +135,16 @@ body, html {
     transition: 0.3s;
 }
 .extra{
-    text-align: center; 
+    text-align: center;
     margin-top: 20px;
 }
 .extra p{
-    text-align: center; 
+    text-align: center;
     margin-top: 10px;
 }
 .extra a{
-    color: #ff7020; 
-    font-weight: 700; 
+    color: #ff7020;
+    font-weight: 700;
     text-decoration: none;
 }
 .extra a:hover{

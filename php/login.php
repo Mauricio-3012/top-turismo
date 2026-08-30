@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+// *recebe o login, valida os dados e cria a sessão do usuário*
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     require "conexao.php";
 

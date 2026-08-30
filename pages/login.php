@@ -23,8 +23,12 @@
                 <h1 class="titulo-principal">Olá!</h1>
                 <p class="subtitulo">Acesse sua conta para continuar.</p>
 
+                <?php if (($_GET["sucesso"] ?? "") === "senha"): ?>
+                    <div style="font-weight: bold; color: #166534; padding: 17px; background-color: #DCFCE7; border-radius: 15px; margin-bottom: 10px">Senha redefinida com sucesso. Faça login com sua nova senha.</div>
+                <?php endif; ?>
                 <div id="mensagem-erro" style="font-weight: bold; color: #111827; display: none; padding: 17px; background-color: #FDF0F4; border-radius: 15px; margin-bottom: 10px"></div>
 
+                <!-- *envia o e-mail e a senha para o PHP autenticar o usuário* -->
                 <form method="POST" action="../php/login.php" id="formLogin" novalidate>
                     <div class="campo-entrada">
                         <label>E-mail</label>
@@ -40,6 +44,7 @@
                 </form>
                 <div class="extra">
                     <p class="mb-3">Novo por aqui? <a href="./cadastro.php">Cadastre-se</a></p>
+                    <!-- *abre o fluxo de recuperação de senha* -->
                     <p><a href="./esqueci-senha.php">Esqueci minha senha</a></p>
                 </div>
             </div>
@@ -52,6 +57,7 @@
 
     <script src="../assets/js/validacoes.js"></script>
     <script>
+        // *mostra na tela a mensagem retornada pelo PHP após uma tentativa de login*
         document.addEventListener("DOMContentLoaded", () => {
             const params = new URLSearchParams(window.location.search);
             const erro = params.get("erro");
@@ -60,7 +66,7 @@
             if (!erro || !mensagemErro) return;
 
             const mensagens = {
-                "1": "Não econtramos seu usuário. Verifique seus dados ente novamente.",
+                "1": "Não encontramos seu usuário. Verifique seus dados e tente novamente.",
                 "2": "Preencha o e-mail e a senha para continuar.",
             };
 
@@ -68,6 +74,7 @@
             mensagemErro.style.display = "block";
         });
 
+        // *valida os campos antes de enviar o formulário ao servidor*
         const formLogin = document.getElementById("formLogin");
         const campoEmailLogin = document.getElementById("email");
         const campoSenhaLogin = document.getElementById("senha");

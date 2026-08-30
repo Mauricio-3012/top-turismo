@@ -1679,3 +1679,236 @@ a:hover {
 .reserva-dashboard-card.compacta .reserva-dashboard-info { margin: 12px 0; padding: 10px 0; }
 .reserva-dashboard-card.compacta .reserva-dashboard-info-item { min-height: 42px; }
 .reserva-dashboard-card.compacta .reserva-dashboard-destino { font-size: 1.1rem; }
+
+/* =========================================================
+   MODO ESCURO — COMPATIBILIDADE COM CLASSES DO BOOTSTRAP
+   ========================================================= */
+.dark-mode .text-muted,
+.dark-mode .form-text,
+.dark-mode small.text-muted {
+  color: var(--text-soft) !important;
+}
+
+.dark-mode .text-dark,
+.dark-mode .text-black {
+  color: var(--text) !important;
+}
+
+.dark-mode .form-label,
+.dark-mode .form-check-label,
+.dark-mode label,
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode h6,
+.dark-mode p,
+.dark-mode li,
+.dark-mode .card,
+.dark-mode .modal-content {
+  color: var(--text);
+}
+
+.dark-mode .form-control,
+.dark-mode .form-select,
+.dark-mode textarea {
+  background-color: var(--input-bg);
+  color: var(--text);
+  border-color: var(--border-subtle);
+}
+
+.dark-mode .form-control:focus,
+.dark-mode .form-select:focus {
+  background-color: var(--input-bg);
+  color: var(--text);
+  border-color: var(--btn-bg);
+}
+
+.dark-mode .form-control::placeholder,
+.dark-mode .form-select::placeholder {
+  color: var(--text-soft);
+}
+
+.dark-mode .modal-content {
+  background-color: var(--card-bg);
+  border-color: var(--border-subtle);
+}
+
+.dark-mode .btn-outline-secondary {
+  color: var(--text) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+.dark-mode .btn-outline-secondary:hover {
+  color: var(--text-inverse) !important;
+  background-color: var(--btn-bg) !important;
+  border-color: var(--btn-bg) !important;
+}
+
+.dark-mode .dropdown-menu {
+  background-color: var(--card-bg);
+  border-color: var(--border-subtle);
+}
+
+.dark-mode .dropdown-item {
+  color: var(--text);
+}
+
+.dark-mode .dropdown-item:hover,
+.dark-mode .dropdown-item:focus {
+  color: var(--btn-bg);
+  background-color: var(--surface-soft);
+}
+
+.dark-mode .alert {
+  color: var(--text);
+}
+
+/* Componentes de pagamento e mensagens que podem herdar texto escuro do Bootstrap. */
+.dark-mode .pagamento-card,
+.dark-mode .pagamento-card .pagamento-opcao,
+.dark-mode .pagamento-card .pagamento-detalhes,
+.dark-mode .pagamento-card .pix-simulacao,
+.dark-mode .pagamento-card .juros-box,
+.dark-mode .pagamento-card .pagamento-resumo-total {
+  color: var(--text) !important;
+}
+
+.dark-mode .pagamento-card .pagamento-opcao small,
+.dark-mode .pagamento-card .pix-simulacao p,
+.dark-mode .pagamento-card .juros-box span,
+.dark-mode .pagamento-card .form-text {
+  color: var(--text-soft) !important;
+}
+
+.dark-mode .pagamento-card .pagamento-opcao,
+.dark-mode .pagamento-card .pagamento-detalhes,
+.dark-mode .pagamento-card .pix-simulacao,
+.dark-mode .pagamento-card .juros-box,
+.dark-mode .pagamento-card .pagamento-resumo-total {
+  background-color: var(--surface-soft);
+  border-color: var(--border-subtle);
+}
+
+.dark-mode .pagamento-card .pagamento-opcao.ativo {
+  color: var(--text) !important;
+  border-color: var(--btn-bg);
+}
+
+.dark-mode .pagamento-card .btn-link {
+  color: #8ab4ff !important;
+}
+
+.dark-mode .reserva-confirmacao .text-muted,
+.dark-mode .reserva-confirmacao small {
+  color: var(--text-soft) !important;
+}
+
+/* A caixa de login da página inicial usava text-black do Bootstrap. */
+.dark-mode #loginModal .modal-content,
+.dark-mode #loginModal .modal-content h5,
+.dark-mode #loginModal .modal-content .text-black {
+  color: var(--text) !important;
+  background-color: var(--card-bg);
+}
+
+.dark-mode #loginModal .btn-close {
+  filter: invert(1);
+}
+
+/* A legenda branca sobre imagens continua branca nos dois temas. */
+.dark-mode .nome-destino-overlay,
+.dark-mode .descricao-destino,
+.dark-mode .destino-modal-titulo-overlay {
+  color: var(--text-inverse) !important;
+}
+
+.dark-mode .ida-badge {
+  color: #111827;
+}
+
+.dark-mode .footer-principal,
+.dark-mode .footer-principal p,
+.dark-mode .footer-principal li,
+.dark-mode .footer-principal a {
+  color: var(--text-soft);
+}
+
+/* =========================================================
+   MODO ESCURO — AJUSTES FINAIS DAS RESERVAS
+   ========================================================= */
+.dark-mode .reserva-main,
+.dark-mode .reserva-main #reservaForm,
+.dark-mode .reserva-confirmacao {
+  color: var(--text);
+}
+
+.dark-mode .reserva-main #reservaForm p,
+.dark-mode .reserva-main #reservaForm span,
+.dark-mode .reserva-confirmacao p,
+.dark-mode .reserva-confirmacao span,
+.dark-mode .reserva-confirmacao label,
+.dark-mode .resumo-item span,
+.dark-mode .preco-linha span,
+.dark-mode .preco-total span,
+.dark-mode #erroPagamento {
+  color: var(--text) !important;
+}
+
+.dark-mode .reserva-titulo p,
+.dark-mode .reserva-main .form-text,
+.dark-mode .reserva-main small,
+.dark-mode .pagamento-opcao small,
+.dark-mode .pix-simulacao p,
+.dark-mode .programacao-observacao,
+.dark-mode .programacao-viagem-grid span,
+.dark-mode .programacao-volta span {
+  color: var(--text-soft) !important;
+}
+
+.dark-mode .reserva-main a:not(.btn-custom),
+.dark-mode .reserva-confirmacao a:not(.btn-custom) {
+  color: #8ab4ff;
+}
+
+.dark-mode .reserva-main .btn-link,
+.dark-mode .reserva-confirmacao .btn-link {
+  color: #8ab4ff !important;
+}
+
+.dark-mode .reserva-main .form-control,
+.dark-mode .reserva-main .form-select,
+.dark-mode .pagamento-card .form-control,
+.dark-mode .pagamento-card .form-select {
+  background-color: var(--input-bg) !important;
+  color: var(--text) !important;
+}
+
+.dark-mode .reserva-main .form-control::placeholder,
+.dark-mode .pagamento-card .form-control::placeholder {
+  color: var(--text-soft) !important;
+}
+
+.dark-mode .reserva-main .form-select option,
+.dark-mode .pagamento-card .form-select option {
+  background-color: var(--input-bg);
+  color: var(--text);
+}
+
+.dark-mode .preco-linha strong,
+.dark-mode .preco-total strong,
+.dark-mode .reserva-destino-meta-item strong,
+.dark-mode .reserva-destino-meta-item span {
+  color: var(--text) !important;
+}
+
+.dark-mode .desconto-linha,
+.dark-mode .desconto-linha strong {
+  color: var(--success) !important;
+}
+
+.dark-mode .reserva-confirmacao .reserva-titulo-kicker,
+.dark-mode .reserva-confirmacao .reserva-titulo-kicker + h4 {
+  color: var(--btn-bg) !important;
+}

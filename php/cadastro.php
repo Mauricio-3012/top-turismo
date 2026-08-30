@@ -5,8 +5,9 @@ $erro = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     require "conexao.php";
+// *recebe os dados do formulário e prepara o cadastro no banco*
 
-    // dados recebidos do formulário
+    // *recebe os dados enviados pelo formulário*
     $nome = trim($_POST["nome"] ?? "");
     $cpf = preg_replace("/\D/", "", $_POST["cpf"] ?? "");
     $data_nascimento = trim($_POST["data_nascimento"] ?? "");
@@ -14,6 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = trim($_POST["email"] ?? "");
     $telefone = preg_replace("/\D/", "", $_POST["telefone"] ?? "");
     $cidade = trim($_POST["cidade"] ?? "");
+    $chave_recuperacao = trim($_POST["chave_recuperacao"] ?? "");
     $senha = $_POST["senha"] ?? "";
     $confirmar_senha = $_POST["confirmar_senha"] ?? "";
 
@@ -68,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         return $idade >= 18 && $idade <= 120;
     }
 
-    // validações de negócio
+    // *confere as regras de negócio antes de salvar a conta*
     if (
         $nome === ""
         || mb_strlen($nome) < 3
@@ -90,6 +92,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $erro = "Telefone inválido. Informe DDD + número.";
     } elseif ($cidade === "" || mb_strlen($cidade) < 2) {
         $erro = "Cidade inválida.";
+    } elseif (mb_strlen($chave_recuperacao) < 4) {
+        $erro = "A palavra-chave de recuperação deve ter pelo menos 4 caracteres.";
     } elseif (
         strlen($senha) < 8
         || !preg_match("/[a-z]/", $senha)
@@ -102,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if ($erro === "") {
-        // evita contas duplicadas antes do INSERT
+        // *evita contas duplicadas antes do INSERT*
         $sqlVerifica = "SELECT id FROM usuarios WHERE email = ? OR cpf = ? LIMIT 1";
         $stmtVerifica = $conexao->prepare($sqlVerifica);
 
@@ -121,14 +125,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         if ($erro === "") {
-            // criptografa senha
+            // *gera os hashes da senha e da palavra-chave de recuperação*
             $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
+            $chave_hash = password_hash($chave_recuperacao, PASSWORD_DEFAULT);
 
             $sql = "
                 INSERT INTO usuarios
-                    (nome, cpf, data_nascimento, genero, email, telefone, cidade, senha, tipo)
+                    (nome, cpf, data_nascimento, genero, email, telefone, cidade, senha, chave_recuperacao_hash, tipo)
                 VALUES
-                    (?, ?, ?, ?, ?, ?, ?, ?, 'cliente')
+                    (?, ?, ?, ?, ?, ?, ?, ?, ?, 'cliente')
             ";
 
             $stmt = $conexao->prepare($sql);
@@ -137,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $erro = "Erro ao preparar o cadastro.";
             } else {
                 $stmt->bind_param(
-                    "ssssssss",
+                    "sssssssss",
                     $nome,
                     $cpf,
                     $data_nascimento,
@@ -145,13 +150,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $email,
                     $telefone,
                     $cidade,
-                    $senha_hash
+                    $senha_hash,
+                    $chave_hash
                 );
 
                 if ($stmt->execute()) {
                     $novoId = $conexao->insert_id;
 
-                    // o usuário já entra autenticado após o cadastro
+                    // *cria a sessão para o usuário recém-cadastrado*
                     session_regenerate_id(true);
                     $_SESSION["usuario_id"] = $novoId;
                     $_SESSION["usuario_nome"] = $nome;
@@ -173,7 +179,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $conexao->close();
 
     if ($erro !== "") {
-        // reabre a página para exibir a mensagem sem criar uma nova rota
+        // *reabre a página para mostrar o erro do cadastro*
         require __DIR__ . "/../pages/cadastro.php";
         exit;
     }

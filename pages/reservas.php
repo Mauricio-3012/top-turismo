@@ -1,9 +1,17 @@
 <?php
 session_start();
+
+// *garante que somente usuários logados possam abrir o formulário de reserva*
 if (!isset($_SESSION["usuario_id"])) {
     header("Location: login.php");
     exit;
 }
+
+require_once __DIR__ . "/../php/destinos-data.php";
+require_once __DIR__ . "/../php/programacao-dados.php";
+$destinos = buscarDestinos();
+$hoje = date("Y-m-d");
+$limiteData = date("Y-m-d", strtotime("+9 months"));
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -16,7 +24,7 @@ if (!isset($_SESSION["usuario_id"])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
 </head>
-<body class="pagina-reservas">
+<body class="pagina-reservas" data-logado="1">
 <header>
     <nav class="navbar fixed-top navbar-expand-lg custom-bg p-3">
         <div class="container-fluid d-flex align-items-center flex-wrap">
@@ -30,8 +38,11 @@ if (!isset($_SESSION["usuario_id"])) {
                         <i class="bi bi-person-circle"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" id="userAuthMenuList">
-                        <li><a class="dropdown-item" href="login.php"><i class="bi bi-box-arrow-in-right me-2"></i>Entrar</a></li>
-                        <li><a class="dropdown-item" href="cadastro.php"><i class="bi bi-person-plus me-2"></i>Cadastre-se</a></li>
+                        <li><a class="dropdown-item" href="dashboard.php"><i class="bi bi-person-fill me-2"></i>Meu Perfil</a></li>
+                        <?php if (($_SESSION["usuario_tipo"] ?? "cliente") === "admin"): ?>
+                        <li><a class="dropdown-item" href="../admin/dashboard.php"><i class="bi bi-speedometer2 me-2"></i>Painel Admin</a></li>
+                        <?php endif; ?>
+                        <li><a class="dropdown-item" href="../php/logout.php"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
                     </ul>
                 </div>
                 <div class="dropdown">
@@ -47,7 +58,8 @@ if (!isset($_SESSION["usuario_id"])) {
 </header>
 
 <main class="reserva-main">
-    <form id="reservaForm" class="shadow-lg w-100 p-3 rounded-3" style="max-width: 760px;">
+    <!-- *o JavaScript cuida da interação e o PHP faz a validação definitiva* -->
+    <form id="reservaForm" class="shadow-lg w-100 p-3 rounded-3" style="max-width: 760px;" data-hoje="<?= $hoje ?>" data-limite="<?= $limiteData ?>">
         <div class="p-2 form-info"><a href="../index.php" class="btn-voltar"><i class="bi bi-arrow-left-circle"></i> Voltar</a></div>
         <div class="p-2">
             <h2>Reserve sua Viagem</h2>
@@ -73,7 +85,27 @@ if (!isset($_SESSION["usuario_id"])) {
         </div>
         <div class="mb-2 p-2">
             <label for="destino" class="form-label">Destino</label>
-            <select id="destino" class="form-select" required><option value="">Carregando destinos...</option></select>
+            <select id="destino" class="form-select" required>
+                <option value="">Selecione o destino</option>
+<?php foreach ($destinos as $destino):
+    // *o PHP define o horário de cada destino, inclusive os novos destinos*
+    $aviao = programacaoPorId((int)$destino['id_destino'], 'Avião');
+    $onibus = programacaoPorId((int)$destino['id_destino'], 'Ônibus');
+?>
+                <option value="<?= (int)$destino['id_destino'] ?>"
+                    data-preco="<?= htmlspecialchars((string)$destino['preco_destino'], ENT_QUOTES, 'UTF-8') ?>"
+                    data-nome="<?= htmlspecialchars($destino['nome_destino'], ENT_QUOTES, 'UTF-8') ?>"
+                    data-imagem="../<?= htmlspecialchars(ltrim($destino['img_destino'], './'), ENT_QUOTES, 'UTF-8') ?>"
+                    data-saida-aviao="<?= htmlspecialchars($aviao['saida'], ENT_QUOTES, 'UTF-8') ?>"
+                    data-volta-aviao="<?= htmlspecialchars($aviao['volta'], ENT_QUOTES, 'UTF-8') ?>"
+                    data-duracao-aviao="<?= (int)$aviao['duracao'] ?>"
+                    data-saida-onibus="<?= htmlspecialchars($onibus['saida'], ENT_QUOTES, 'UTF-8') ?>"
+                    data-volta-onibus="<?= htmlspecialchars($onibus['volta'], ENT_QUOTES, 'UTF-8') ?>"
+                    data-duracao-onibus="<?= (int)$onibus['duracao'] ?>">
+                    <?= htmlspecialchars($destino['nome_destino'] . ' - ' . $destino['pais_destino'], ENT_QUOTES, 'UTF-8') ?>
+                </option>
+<?php endforeach; ?>
+            </select>
             <div class="campo-erro" id="erro-destino"></div>
         </div>
         <div class="mb-2 p-2">
@@ -237,34 +269,7 @@ if (!isset($_SESSION["usuario_id"])) {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/validacoes.js"></script>
-<script src="../assets/js/script.js?v=20260828-reserva-pagamento"></script>
-<script>
-document.addEventListener("DOMContentLoaded", async () => {
-    const selectDestino = document.getElementById("destino");
-    try {
-        const resposta = await fetch("../php/destinos.php", { headers: { "Accept": "application/json" } });
-        if (!resposta.ok) throw new Error("Não foi possível carregar os destinos.");
-        const destinos = await resposta.json();
-        if (!Array.isArray(destinos)) throw new Error("Resposta de destinos inválida.");
-        selectDestino.innerHTML = '<option value="">Selecione o destino</option>';
-        const params = new URLSearchParams(window.location.search);
-        const alvo = String(params.get("destino") || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
-        destinos.forEach(destino => {
-            const option = document.createElement("option");
-            option.value = destino.id_destino;
-            option.textContent = `${destino.nome_destino} - ${destino.pais_destino}`;
-            option.dataset.preco = destino.preco_destino;
-            option.dataset.nome = destino.nome_destino;
-            const nomes = [destino.nome_destino, destino.cidade_destino, destino.id_destino].map(v => String(v).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim());
-            if (alvo && nomes.includes(alvo)) option.selected = true;
-            selectDestino.appendChild(option);
-        });
-        selectDestino.dispatchEvent(new Event("change"));
-    } catch (erro) {
-        console.error(erro);
-        selectDestino.innerHTML = '<option value="">Erro ao carregar destinos</option>';
-    }
-});
-</script>
+<script src="../assets/js/script.js?v=20260829-final"></script>
+<script src="../assets/js/reservas.js?v=20260830-clean"></script>
 </body>
 </html>
