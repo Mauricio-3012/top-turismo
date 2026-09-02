@@ -51,7 +51,7 @@ require_once __DIR__ . '/conexao.php';
 
 $hash = password_hash($novaSenha, PASSWORD_DEFAULT);
 
-$stmt = $conexao->prepare('UPDATE usuarios SET senha = ? WHERE id = ?');
+$stmt = $conexao->prepare('UPDATE usuarios SET senha = ? WHERE id = ? LIMIT 1');
 
 if (!$stmt) {
     header('Location: ../pages/login.php?erro=' . urlencode('Não foi possível atualizar sua senha. Tente novamente.'));
@@ -69,7 +69,8 @@ unset(
     $_SESSION['etapa_recuperacao'],
     $_SESSION['recuperacao_email'],
     $_SESSION['pergunta_recuperacao'],
-    $_SESSION['recuperacao_expira']
+    $_SESSION['recuperacao_expira'],
+    $_SESSION['pergunta_recuperacao']
 );
 
 if (!$sucesso) {

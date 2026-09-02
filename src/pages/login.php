@@ -15,9 +15,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao'])) {
     $acao = $_POST['acao'];
 
     if ($acao === 'verificar_email') {
-        $email = trim($_POST['email'] ?? '');
+        // Uma nova tentativa de recuperação sempre começa do zero.
+        unset(
+            $_SESSION['id_recuperacao'],
+            $_SESSION['etapa_recuperacao'],
+            $_SESSION['recuperacao_email'],
+            $_SESSION['pergunta_recuperacao'],
+            $_SESSION['recuperacao_expira']
+        );
+
+        $email = mb_strtolower(trim((string) ($_POST['email'] ?? '')), 'UTF-8');
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $conexao->close();
             header('Location: login.php?recuperacao=1&erro=' . urlencode('Informe um e-mail válido.'));
             exit;
         }
@@ -27,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao'])) {
         );
 
         if (!$stmt) {
+            $conexao->close();
             header('Location: login.php?recuperacao=1&erro=' . urlencode('Não foi possível iniciar a recuperação. Tente novamente.'));
             exit;
         }
@@ -35,8 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao'])) {
         $stmt->execute();
         $usuario = $stmt->get_result()->fetch_assoc();
         $stmt->close();
+        $conexao->close();
 
         if (!$usuario || empty($usuario['pergunta_seguranca']) || empty($usuario['resposta_seguranca_hash'])) {
+            $conexao->close();
             header('Location: login.php?recuperacao=1&erro=' . urlencode('Não foi possível iniciar a recuperação com esse e-mail.'));
             exit;
         }
@@ -89,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao'])) {
             || empty($usuario['resposta_seguranca_hash'])
             || !password_verify($respostaNormalizada, $usuario['resposta_seguranca_hash'])
         ) {
-            header('Location: login.php?erro=' . urlencode('Resposta incorreta. Tente novamente.'));
+            header('Location: login.php?etapa=2&erro=' . urlencode('Resposta incorreta. Tente novamente.'));
             exit;
         }
 
@@ -125,19 +138,27 @@ if (isset($_GET['cancelar_recuperacao'])) {
 }
 
 $etapaRecuperacao = (int) ($_SESSION['etapa_recuperacao'] ?? 1);
+if (isset($_GET['etapa']) && $_GET['etapa'] === '2' && !empty($_SESSION['id_recuperacao'])) {
+    $etapaRecuperacao = 2;
+}
 $emailRecuperacao = $_SESSION['recuperacao_email'] ?? '';
 
 if ($etapaRecuperacao < 1 || $etapaRecuperacao > 3) {
     $etapaRecuperacao = 1;
 }
 
-if ($etapaRecuperacao > 1 && $emailRecuperacao === '') {
+if ($etapaRecuperacao > 1 && ($emailRecuperacao === '' || empty($_SESSION['recuperacao_expira']) || time() > (int) $_SESSION['recuperacao_expira'])) {
     $etapaRecuperacao = 1;
     unset($_SESSION['id_recuperacao'], $_SESSION['etapa_recuperacao'], $_SESSION['pergunta_recuperacao'], $_SESSION['recuperacao_expira']);
 }
 
-$erro = $_GET['erro'] ?? '';
-$sucesso = $_GET['sucesso'] ?? '';
+$erro = (string) ($_GET['erro'] ?? '');
+$sucesso = (string) ($_GET['sucesso'] ?? '');
+if ($etapaRecuperacao > 1 && $erro !== '' && $etapaRecuperacao === 2) {
+    // Mantém a etapa da pergunta quando a resposta estiver incorreta.
+    // O usuário não precisa reiniciar a recuperação.
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">

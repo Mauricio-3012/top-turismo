@@ -16,6 +16,7 @@ O projeto também possui uma área administrativa para gerenciamento dos destino
 - Login e logout.
 - Controle de sessão.
 - Atualização de dados pessoais.
+- Atualização da pergunta e resposta de segurança.
 - Alteração de senha.
 - Exclusão de conta.
 - Recuperação e redefinição de senha.
@@ -234,6 +235,8 @@ Armazena os dados dos usuários, incluindo:
 - Pergunta de segurança.
 - Hash da resposta de segurança.
 - Tipo de usuário.
+
+A pergunta e a resposta de segurança podem ser atualizadas pelo perfil do usuário. A resposta é armazenada somente como hash.
 
 Os tipos disponíveis são:
 

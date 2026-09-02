@@ -14,8 +14,17 @@ $respostaEnviada = false;
 
 function responder(int $status, bool $sucesso, string $mensagem, array $dados = []): never
 {
-    global $respostaEnviada;
+    global $respostaEnviada, $conexao;
     $respostaEnviada = true;
+
+    if (isset($conexao) && $conexao instanceof mysqli && $conexao->errno === 0) {
+        // Se uma transação estiver aberta, desfaz alterações antes de responder.
+        try {
+            $conexao->rollback();
+        } catch (Throwable $e) {
+            // Não interrompe a resposta de erro ao usuário.
+        }
+    }
 
     while (ob_get_level() > 0) {
         ob_end_clean();
@@ -290,6 +299,24 @@ if (!$programacao) {
     responder(400, false, 'A programação desta viagem não está disponível.');
 }
 
+// Reserva uma linha do destino durante a verificação dos assentos.
+// Isso evita que duas requisições simultâneas reservem o mesmo assento
+// entre a consulta de disponibilidade e o INSERT.
+if (!$conexao->begin_transaction()) {
+    responder(500, false, 'Não foi possível iniciar a transação da reserva.');
+}
+
+$stmtBloqueio = $conexao->prepare('SELECT id_destino FROM destinos WHERE id_destino = ? LIMIT 1 FOR UPDATE');
+if (!$stmtBloqueio) {
+    responder(500, false, 'Não foi possível bloquear o destino para a reserva.');
+}
+$stmtBloqueio->bind_param('i', $idDestino);
+if (!$stmtBloqueio->execute()) {
+    $stmtBloqueio->close();
+    responder(500, false, 'Não foi possível validar a disponibilidade do destino.');
+}
+$stmtBloqueio->close();
+
 // Confere os assentos novamente no servidor.
 $stmt = $conexao->prepare(
     "SELECT assento FROM reservas
@@ -407,6 +434,11 @@ if (!$stmt->execute()) {
 
 $idReserva = $stmt->insert_id;
 $stmt->close();
+
+if (!$conexao->commit()) {
+    responder(500, false, 'A reserva foi processada, mas não foi possível confirmar a transação. Tente novamente.');
+}
+
 $conexao->close();
 
 responder(201, true, 'Reserva confirmada com sucesso!', [

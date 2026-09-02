@@ -10,7 +10,7 @@ require_once __DIR__ . "/../php/conexao.php";
 
 $idUsuario = (int) $_SESSION["usuario_id"];
 
-$stmtUsuario = $conexao->prepare("SELECT id, nome, email, telefone, cidade FROM usuarios WHERE id = ? LIMIT 1");
+$stmtUsuario = $conexao->prepare("SELECT id, nome, email, telefone, cidade, pergunta_seguranca FROM usuarios WHERE id = ? LIMIT 1");
 $stmtUsuario->bind_param("i", $idUsuario);
 $stmtUsuario->execute();
 $usuarioLogado = $stmtUsuario->get_result()->fetch_assoc();
@@ -179,16 +179,49 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                 <div class="col-md-4">
                     <label class="form-label" for="senhaNova">Nova senha</label>
                     <div class="input-group">
-                        <input type="password" class="form-control" id="senhaNova" name="senha_nova" minlength="6" autocomplete="new-password" placeholder="Mínimo 6 caracteres">
+                        <input type="password" class="form-control" id="senhaNova" name="senha_nova" minlength="8" autocomplete="new-password" placeholder="Mínimo 8 caracteres">
                         <button class="btn btn-outline-secondary btn-toggle-senha" type="button" data-target="senhaNova" aria-label="Mostrar senha"><i class="bi bi-eye"></i></button>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label" for="senhaConfirmacao">Confirmar nova senha</label>
                     <div class="input-group">
-                        <input type="password" class="form-control" id="senhaConfirmacao" name="senha_confirmacao" minlength="6" autocomplete="new-password" placeholder="Repita a nova senha">
+                        <input type="password" class="form-control" id="senhaConfirmacao" name="senha_confirmacao" minlength="8" autocomplete="new-password" placeholder="Repita a nova senha">
                         <button class="btn btn-outline-secondary btn-toggle-senha" type="button" data-target="senhaConfirmacao" aria-label="Mostrar senha"><i class="bi bi-eye"></i></button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 mt-3">
+        <div class="alterar-senha-box">
+            <div class="mb-3">
+                <h6 class="fw-bold mb-1"><i class="bi bi-question-circle me-2"></i>Recuperação de senha</h6>
+                <p class="text-muted small mb-0">Atualize sua pergunta e resposta caso precise recuperar sua senha.</p>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="perguntaSeguranca">Pergunta de segurança</label>
+                    <select class="form-select" id="perguntaSeguranca" name="pergunta_seguranca">
+                        <option value="">Não alterar</option>
+                        <?php
+                        $perguntasSeguranca = [
+                            "Qual é o nome do seu primeiro pet?",
+                            "Qual é o nome da sua cidade natal?",
+                            "Qual era o nome da sua escola?",
+                            "Qual é o seu destino turístico favorito?"
+                        ];
+                        foreach ($perguntasSeguranca as $pergunta):
+                        ?>
+                            <option value="<?= htmlspecialchars($pergunta, ENT_QUOTES, "UTF-8") ?>" <?= ($usuarioLogado["pergunta_seguranca"] ?? "") === $pergunta ? "selected" : "" ?>><?= htmlspecialchars($pergunta, ENT_QUOTES, "UTF-8") ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <small class="text-muted">Atual: <?= htmlspecialchars($usuarioLogado["pergunta_seguranca"] ?? "Não cadastrada", ENT_QUOTES, "UTF-8") ?></small>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="respostaSeguranca">Nova resposta</label>
+                    <input type="text" class="form-control" id="respostaSeguranca" name="resposta_seguranca" minlength="2" maxlength="255" placeholder="Digite a resposta">
                 </div>
             </div>
         </div>
