@@ -29,8 +29,8 @@ $limiteData = date("Y-m-d", strtotime("+9 months"));
     <nav class="navbar fixed-top navbar-expand-lg custom-bg p-3">
         <div class="container-fluid d-flex align-items-center flex-wrap">
             <div class="d-flex align-items-center">
-                <a href="../index.php"><img src="../assets/imagens/logo-white.png" width="50" height="50" alt="Logo TopTurismo"></a>
-                <a href="../index.php" class="text-a ms-2 logo-texto">TopTurismo</a>
+                <a href="../../public/index.php"><img src="../assets/imagens/logo-white.png" width="50" height="50" alt="Logo TopTurismo"></a>
+                <a href="../../public/index.php" class="text-a ms-2 logo-texto">TopTurismo</a>
             </div>
             <div class="d-flex align-items-center ms-auto gap-3">
                 <div class="dropdown">
@@ -60,7 +60,7 @@ $limiteData = date("Y-m-d", strtotime("+9 months"));
 <main class="reserva-main">
     <!-- *o JavaScript cuida da interação e o PHP faz a validação definitiva* -->
     <form id="reservaForm" class="shadow-lg w-100 p-3 rounded-3" style="max-width: 760px;" data-hoje="<?= $hoje ?>" data-limite="<?= $limiteData ?>">
-        <div class="p-2 form-info"><a href="../index.php" class="btn-voltar"><i class="bi bi-arrow-left-circle"></i> Voltar</a></div>
+        <div class="p-2 form-info"><a href="../../public/index.php" class="btn-voltar"><i class="bi bi-arrow-left-circle"></i> Voltar</a></div>
         <div class="p-2">
             <h2>Reserve sua Viagem</h2>
             <p>Escolha sua viagem e seu assento. O horário é definido pela programação disponível da TopTurismo.</p>
@@ -255,7 +255,7 @@ $limiteData = date("Y-m-d", strtotime("+9 months"));
         <h3>Reserva confirmada com sucesso!</h3>
         <p id="sucessoMensagem">Sua viagem foi registrada e já está disponível em Minhas Viagens.</p>
         <div class="sucesso-codigo">Número da reserva: <strong id="numeroReservaSucesso">#---</strong></div>
-        <div class="sucesso-acoes"><a href="dashboard.php#minhas-viagens" class="btn btn-custom"><i class="bi bi-suitcase-lg me-1"></i>Ver minhas viagens</a><a href="../index.php" class="btn btn-outline-secondary rounded-pill">Voltar ao início</a></div>
+        <div class="sucesso-acoes"><a href="dashboard.php#minhas-viagens" class="btn btn-custom"><i class="bi bi-suitcase-lg me-1"></i>Ver minhas viagens</a><a href="../../public/index.php" class="btn btn-outline-secondary rounded-pill">Voltar ao início</a></div>
     </section>
 </main>
 
