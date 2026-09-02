@@ -10,12 +10,12 @@ $isAdmin = (($_SESSION["usuario_tipo"] ?? "cliente") === "admin");
         <meta charset="utf-8" />
         <meta content="width=device-width, initial-scale=1.0" name="viewport" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="../src/assets/css/style.css" rel="stylesheet" />
+        <link href="./assets/css/style.css" rel="stylesheet" />
         <link
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
             rel="stylesheet"
         />
-        <link href="../src/assets/imagens/logo-favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <link href="./assets/imagens/logo-favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <title>TopTurismo - Reserva de Viagens</title>
     </head>
     <body data-logado="<?= isset($_SESSION['usuario_id']) ? '1' : '0' ?>">
@@ -23,8 +23,8 @@ $isAdmin = (($_SESSION["usuario_tipo"] ?? "cliente") === "admin");
             <nav class="navbar fixed-top navbar-expand-lg custom-bg p-3">
                 <div class="container-fluid d-flex align-items-center flex-wrap">
                     <div class="d-flex align-items-center">
-                        <img alt="Logo" height="50" src="../src/assets/imagens/logo-white.png" width="50" />
-                        <a class="text-a ms-2 logo-texto" href="../public/index.php">TopTurismo</a>
+                        <img alt="Logo" height="50" src="./assets/imagens/logo-white.png" width="50" />
+                        <a class="text-a ms-2 logo-texto" href="index.php">TopTurismo</a>
                     </div>
                     <div class="flex-grow-1 d-none d-lg-flex justify-content-center">
                         <ul class="navbar-nav flex-row gap-4">
@@ -34,7 +34,7 @@ $isAdmin = (($_SESSION["usuario_tipo"] ?? "cliente") === "admin");
                             <li class="nav-item"><a class="nav-link text-white" href="#contato" data-section-link="contato">Contato</a></li>
 <!-- *mostra o painel administrativo somente para administradores* -->
 <?php if ($isAdmin): ?>
-                            <li class="nav-item"><a class="nav-link text-white" href="../src/admin/dashboard.php">Gerenciar destinos</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" href="./admin/dashboard.php">Gerenciar destinos</a></li>
                             <?php endif; ?>
                         </ul>
                     </div>
@@ -52,12 +52,12 @@ $isAdmin = (($_SESSION["usuario_tipo"] ?? "cliente") === "admin");
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" id="userAuthMenuList">
 <?php if (isset($_SESSION["usuario_id"])): ?>
-                                <li><a class="dropdown-item" href="../src/pages/dashboard.php"><i class="bi bi-person-fill me-2"></i>Meu Perfil</a></li>
-                                <?php if ($isAdmin): ?><li><a class="dropdown-item" href="../src/admin/dashboard.php"><i class="bi bi-speedometer2 me-2"></i>Painel Admin</a></li><?php endif; ?>
-                                <li><a class="dropdown-item" href="../src/php/logout.php"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
+                                <li><a class="dropdown-item" href="./pages/dashboard.php"><i class="bi bi-person-fill me-2"></i>Meu Perfil</a></li>
+                                <?php if ($isAdmin): ?><li><a class="dropdown-item" href="./admin/dashboard.php"><i class="bi bi-speedometer2 me-2"></i>Painel Admin</a></li><?php endif; ?>
+                                <li><a class="dropdown-item" href="./php/logout.php"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
 <?php else: ?>
-                                <li><a class="dropdown-item" href="../src/pages/login.php"><i class="bi bi-box-arrow-in-right me-2"></i>Entrar</a></li>
-                                <li><a class="dropdown-item" href="../src/pages/cadastro.php"><i class="bi bi-person-plus me-2"></i>Cadastre-se</a></li>
+                                <li><a class="dropdown-item" href="./pages/login.php"><i class="bi bi-box-arrow-in-right me-2"></i>Entrar</a></li>
+                                <li><a class="dropdown-item" href="./pages/cadastro.php"><i class="bi bi-person-plus me-2"></i>Cadastre-se</a></li>
 <?php endif; ?>
                             </ul>
                         </div>
@@ -110,37 +110,37 @@ $isAdmin = (($_SESSION["usuario_tipo"] ?? "cliente") === "admin");
                     </div>
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img alt="Rio" class="img-opacidade w-100" src="../src/assets/imagens/rio-de-janeiro.jpg" />
+                            <img alt="Rio" class="img-opacidade w-100" src="./assets/imagens/rio-de-janeiro.jpg" />
                             <div class="carousel-caption">
                                 <h3>Rio de Janeiro</h3>
                             </div>
                         </div>
                         <div class="carousel-item">
-                            <img alt="Salvador" class="img-opacidade w-100" src="../src/assets/imagens/maceio.jpg" />
+                            <img alt="Salvador" class="img-opacidade w-100" src="./assets/imagens/maceio.jpg" />
                             <div class="carousel-caption">
                                 <h3>Maceió</h3>
                             </div>
                         </div>
                         <div class="carousel-item">
-                            <img alt="Maranhão" class="img-opacidade w-100" src="../src/assets/imagens/foz-do-iguacu.jpg" />
+                            <img alt="Maranhão" class="img-opacidade w-100" src="./assets/imagens/foz-do-iguacu.jpg" />
                             <div class="carousel-caption">
                                 <h3>Foz do Iguaçu</h3>
                             </div>
                         </div>
                         <div class="carousel-item">
-                            <img alt="Maranhão" class="img-opacidade w-100" src="../src/assets/imagens/amazonia.jpg" />
+                            <img alt="Maranhão" class="img-opacidade w-100" src="./assets/imagens/amazonia.jpg" />
                             <div class="carousel-caption">
                                 <h3>Manaus</h3>
                             </div>
                         </div>
                         <div class="carousel-item">
-                            <img alt="Maranhão" class="img-opacidade w-100" src="../src/assets/imagens/sao-paulo.jpg" />
+                            <img alt="Maranhão" class="img-opacidade w-100" src="./assets/imagens/sao-paulo.jpg" />
                             <div class="carousel-caption">
                                 <h3>São Paulo</h3>
                             </div>
                         </div>
                         <div class="carousel-item">
-                            <img alt="Maranhão" class="img-opacidade w-100" src="../src/assets/imagens/gramado.jpg" />
+                            <img alt="Maranhão" class="img-opacidade w-100" src="./assets/imagens/gramado.jpg" />
                             <div class="carousel-caption">
                                 <h3>Gramado</h3>
                             </div>
@@ -208,7 +208,7 @@ $isAdmin = (($_SESSION["usuario_tipo"] ?? "cliente") === "admin");
                             <img
                                 alt="Sobre a TopTurismo"
                                 class="img-fluid rounded"
-                                src="../src/assets/imagens/hero-bg.jpg"
+                                src="./assets/imagens/hero-bg.jpg"
                             />
                         </div>
                         <div class="col-md-6">
@@ -255,16 +255,16 @@ $isAdmin = (($_SESSION["usuario_tipo"] ?? "cliente") === "admin");
                     <div class="row">
 <?php
 // *carrega a função que consulta os destinos no banco de dados*
-require_once __DIR__ . '/../src/php/destinos-data.php';
+require_once __DIR__ . '/php/destinos-data.php';
 // *busca os destinos antes de montar os cards da página*
 $destinos = buscarDestinos();
 foreach ($destinos as $destino):
     $nome = htmlspecialchars($destino['nome_destino'], ENT_QUOTES, 'UTF-8');
     $local = htmlspecialchars($destino['cidade_destino'] . ($destino['estado_destino'] ? ' - ' . $destino['estado_destino'] : ''), ENT_QUOTES, 'UTF-8');
     $descricao = htmlspecialchars($destino['descricao_destino'], ENT_QUOTES, 'UTF-8');
-    $imagem = '../src/' . ltrim($destino['img_destino'], './');
-    $foto2 = $destino['img_destino_2'] ? '../src/' . ltrim($destino['img_destino_2'], './') : '';
-    $foto3 = $destino['img_destino_3'] ? '../src/' . ltrim($destino['img_destino_3'], './') : '';
+    $imagem = './' . ltrim($destino['img_destino'], './');
+    $foto2 = $destino['img_destino_2'] ? './' . ltrim($destino['img_destino_2'], './') : '';
+    $foto3 = $destino['img_destino_3'] ? './' . ltrim($destino['img_destino_3'], './') : '';
     $fotos = implode('|', array_filter([$foto2, $foto3]));
     $maps = htmlspecialchars(implode(', ', array_filter([$destino['nome_destino'], $destino['cidade_destino'], $destino['estado_destino'], $destino['pais_destino'] ?: 'Brasil'])), ENT_QUOTES, 'UTF-8');
     $avaliacao = number_format((float)$destino['avaliacao_destino'], 1, '.', '');
@@ -307,7 +307,7 @@ foreach ($destinos as $destino):
 <?php if ($isAdmin): ?>
                     <!-- *mostra o acesso rápido ao formulário de novos destinos somente para administradores* -->
                     <div class="text-center mt-3">
-                        <a href="../src/admin/adicionar-destino.php" class="btn btn-custom btn-lg rounded-pill px-4">
+                        <a href="./admin/adicionar-destino.php" class="btn btn-custom btn-lg rounded-pill px-4">
                             <i class="bi bi-plus-circle me-2"></i>Adicionar destino
                         </a>
                     </div>
@@ -372,7 +372,7 @@ foreach ($destinos as $destino):
             </div>
         </footer>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="../src/assets/js/script.js"></script>
+        <script src="./assets/js/script.js"></script>
 
         <div
             aria-hidden="true"
@@ -417,7 +417,7 @@ foreach ($destinos as $destino):
                                 </div>
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
-                                        <img alt="Destino" id="destinoModalImagem" src="../src/assets/imagens/hero-bg.jpg" />
+                                        <img alt="Destino" id="destinoModalImagem" src="./assets/imagens/hero-bg.jpg" />
                                     </div>
                                     <div class="carousel-item">
                                         <div class="destino-modal-foto-placeholder">
@@ -485,7 +485,7 @@ foreach ($destinos as $destino):
                                 rel="noopener noreferrer"
                                 target="_blank"
                             >
-                                <img class="google-maps-icon" src="../src/assets/imagens/google-maps.svg" alt="" aria-hidden="true">
+                                <img class="google-maps-icon" src="./assets/imagens/google-maps.svg" alt="" aria-hidden="true">
                             </a>
                         </div>
                         <div class="text-center pt-3">
@@ -514,8 +514,8 @@ foreach ($destinos as $destino):
                         <i class="bi bi-lock-fill fs-1 text-black mb-3"></i>
                         <h5 class="mb-3">Faça login ou cadastre-se para continuar</h5>
                         <div class="d-flex justify-content-center gap-2">
-                            <a class="btn btn-custom" href="../src/pages/login.php"> Fazer Login</a>
-                            <a class="btn btn-custom" href="../src/pages/cadastro.php">Cadastrar</a>
+                            <a class="btn btn-custom" href="pages/login.php"> Fazer Login</a>
+                            <a class="btn btn-custom" href="pages/cadastro.php">Cadastrar</a>
                         </div>
                     </div>
                 </div>
@@ -526,7 +526,7 @@ foreach ($destinos as $destino):
         <div aria-labelledby="menuMobileLabel" class="offcanvas offcanvas-end" id="menuMobile" tabindex="-1">
             <div class="offcanvas-header">
                 <div class="d-flex align-items-center">
-                    <img alt="Logo" height="35" src="../src/assets/imagens/logo-favicon.ico" width="35" />
+                    <img alt="Logo" height="35" src="./assets/imagens/logo-favicon.ico" width="35" />
                     <span class="ms-2 fw-bold" id="menuMobileLabel">TopTurismo</span>
                 </div>
                 <button aria-label="Fechar" class="btn-close" data-bs-dismiss="offcanvas" type="button"></button>
@@ -555,7 +555,7 @@ foreach ($destinos as $destino):
                     </li>
                     <?php if ($isAdmin): ?>
                     <li class="mb-2">
-                        <a class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item" href="../src/admin/dashboard.php">
+                        <a class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item" href="./admin/dashboard.php">
                             <i class="bi bi-speedometer2 fs-4"></i> Gerenciar destinos
                         </a>
                     </li>
@@ -564,12 +564,12 @@ foreach ($destinos as $destino):
                 <hr />
                 <ul class="list-unstyled" id="userAuthMenuMobileList">
 <?php if (isset($_SESSION["usuario_id"])): ?>
-                    <li class="mb-2"><a href="../src/pages/dashboard.php" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item"><i class="bi bi-person-circle fs-4"></i> Meu Painel</a></li>
-                    <?php if ($isAdmin): ?><li class="mb-2"><a href="../src/admin/dashboard.php" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item"><i class="bi bi-speedometer2 fs-4"></i> Painel Admin</a></li><?php endif; ?>
-                    <li><a href="../src/php/logout.php" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item"><i class="bi bi-box-arrow-right fs-4"></i> Sair</a></li>
+                    <li class="mb-2"><a href="./pages/dashboard.php" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item"><i class="bi bi-person-circle fs-4"></i> Meu Painel</a></li>
+                    <?php if ($isAdmin): ?><li class="mb-2"><a href="./admin/dashboard.php" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item"><i class="bi bi-speedometer2 fs-4"></i> Painel Admin</a></li><?php endif; ?>
+                    <li><a href="./php/logout.php" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item"><i class="bi bi-box-arrow-right fs-4"></i> Sair</a></li>
 <?php else: ?>
-                    <li class="mb-2"><a class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item" href="../src/pages/login.php"><i class="bi bi-box-arrow-in-right fs-4"></i> Entrar</a></li>
-                    <li><a class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item" href="../src/pages/cadastro.php"><i class="bi bi-person-plus fs-4"></i> Cadastre-se</a></li>
+                    <li class="mb-2"><a class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item" href="./pages/login.php"><i class="bi bi-box-arrow-in-right fs-4"></i> Entrar</a></li>
+                    <li><a class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item" href="./pages/cadastro.php"><i class="bi bi-person-plus fs-4"></i> Cadastre-se</a></li>
 <?php endif; ?>
                 </ul>
             </div>

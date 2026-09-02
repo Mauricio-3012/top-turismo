@@ -10,7 +10,7 @@ require_once __DIR__ . "/../php/conexao.php";
 
 $idUsuario = (int) $_SESSION["usuario_id"];
 
-$stmtUsuario = $conexao->prepare("SELECT id, nome, email, telefone, cidade, pergunta_seguranca FROM usuarios WHERE id = ? LIMIT 1");
+$stmtUsuario = $conexao->prepare("SELECT id, nome, email, telefone, cidade FROM usuarios WHERE id = ? LIMIT 1");
 $stmtUsuario->bind_param("i", $idUsuario);
 $stmtUsuario->execute();
 $usuarioLogado = $stmtUsuario->get_result()->fetch_assoc();
@@ -63,15 +63,15 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
             <div class="container-fluid d-flex align-items-center flex-wrap">
                 <div class="d-flex align-items-center">
                     <img src="../assets/imagens/logo-white.png" width="50" height="50" alt="Logo">
-                    <a href="../../public/index.php" class="text-a ms-2 logo-texto">TopTurismo</a>
+                    <a href="../index.php" class="text-a ms-2 logo-texto">TopTurismo</a>
                 </div>
 
                 <div class="flex-grow-1 d-none d-lg-flex justify-content-center">
                     <ul class="navbar-nav flex-row gap-4">
-                        <li class="nav-item"><a class="nav-link text-white" href="../../public/index.php#destinos">Destinos</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="../../public/index.php#reservar">Fazer Reserva</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="../../public/index.php#sobre-nos">Sobre nós</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="../../public/index.php#contato">Contato</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="../index.php#destinos">Destinos</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="../index.php#reservar">Fazer Reserva</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="../index.php#sobre-nos">Sobre nós</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="../index.php#contato">Contato</a></li>
                     </ul>
                 </div>
 
@@ -179,49 +179,16 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                 <div class="col-md-4">
                     <label class="form-label" for="senhaNova">Nova senha</label>
                     <div class="input-group">
-                        <input type="password" class="form-control" id="senhaNova" name="senha_nova" minlength="8" autocomplete="new-password" placeholder="Mínimo 8 caracteres">
+                        <input type="password" class="form-control" id="senhaNova" name="senha_nova" minlength="6" autocomplete="new-password" placeholder="Mínimo 6 caracteres">
                         <button class="btn btn-outline-secondary btn-toggle-senha" type="button" data-target="senhaNova" aria-label="Mostrar senha"><i class="bi bi-eye"></i></button>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label" for="senhaConfirmacao">Confirmar nova senha</label>
                     <div class="input-group">
-                        <input type="password" class="form-control" id="senhaConfirmacao" name="senha_confirmacao" minlength="8" autocomplete="new-password" placeholder="Repita a nova senha">
+                        <input type="password" class="form-control" id="senhaConfirmacao" name="senha_confirmacao" minlength="6" autocomplete="new-password" placeholder="Repita a nova senha">
                         <button class="btn btn-outline-secondary btn-toggle-senha" type="button" data-target="senhaConfirmacao" aria-label="Mostrar senha"><i class="bi bi-eye"></i></button>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12 mt-3">
-        <div class="alterar-senha-box">
-            <div class="mb-3">
-                <h6 class="fw-bold mb-1"><i class="bi bi-question-circle me-2"></i>Recuperação de senha</h6>
-                <p class="text-muted small mb-0">Atualize sua pergunta e resposta caso precise recuperar sua senha.</p>
-            </div>
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label" for="perguntaSeguranca">Pergunta de segurança</label>
-                    <select class="form-select" id="perguntaSeguranca" name="pergunta_seguranca">
-                        <option value="">Não alterar</option>
-                        <?php
-                        $perguntasSeguranca = [
-                            "Qual é o nome do seu primeiro pet?",
-                            "Qual é o nome da sua cidade natal?",
-                            "Qual era o nome da sua escola?",
-                            "Qual é o seu destino turístico favorito?"
-                        ];
-                        foreach ($perguntasSeguranca as $pergunta):
-                        ?>
-                            <option value="<?= htmlspecialchars($pergunta, ENT_QUOTES, "UTF-8") ?>" <?= ($usuarioLogado["pergunta_seguranca"] ?? "") === $pergunta ? "selected" : "" ?>><?= htmlspecialchars($pergunta, ENT_QUOTES, "UTF-8") ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <small class="text-muted">Atual: <?= htmlspecialchars($usuarioLogado["pergunta_seguranca"] ?? "Não cadastrada", ENT_QUOTES, "UTF-8") ?></small>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label" for="respostaSeguranca">Nova resposta</label>
-                    <input type="text" class="form-control" id="respostaSeguranca" name="resposta_seguranca" minlength="2" maxlength="255" placeholder="Digite a resposta">
                 </div>
             </div>
         </div>
@@ -257,7 +224,7 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                                 </h4>
                                 <p class="text-muted mb-0">Suas reservas e status.</p>
                             </div>
-                            <a href="../../public/index.php#reservar" class="btn btn-custom rounded-pill px-4">
+                            <a href="../index.php#reservar" class="btn btn-custom rounded-pill px-4">
                                 <i class="bi bi-plus-circle me-1"></i> Nova reserva
                             </a>
                         </div>
@@ -267,7 +234,7 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                                 <div class="reserva-vazia-icone"><i class="bi bi-suitcase-lg"></i></div>
                                 <h5 class="fw-bold mb-2">Você ainda não possui viagens</h5>
                                 <p class="text-muted mb-4">Faça sua primeira reserva e acompanhe tudo por aqui.</p>
-                                <a href="../../public/index.php#reservar" class="btn btn-custom rounded-pill px-4">
+                                <a href="../index.php#reservar" class="btn btn-custom rounded-pill px-4">
                                     <i class="bi bi-calendar-check me-1"></i> Fazer uma reserva
                                 </a>
                             </div>
@@ -399,27 +366,27 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
         <div class="offcanvas-body">
             <ul class="list-unstyled">
                 <li class="mb-2">
-                    <a href="../../public/index.php" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
+                    <a href="../index.php" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
                         <i class="bi bi-house fs-4"></i> Início
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="../../public/index.php#destinos" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
+                    <a href="../index.php#destinos" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
                         <i class="bi bi-geo-alt fs-4"></i> Destinos
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="../../public/index.php#reservar" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
+                    <a href="../index.php#reservar" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
                         <i class="bi bi-calendar-check fs-4"></i> Fazer Reserva
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="../../public/index.php#sobre-nos" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
+                    <a href="../index.php#sobre-nos" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
                         <i class="bi bi-info-circle fs-4"></i> Sobre nós
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="../../public/index.php#contato" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
+                    <a href="../index.php#contato" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
                         <i class="bi bi-telephone fs-4"></i> Contato
                     </a>
                 </li>

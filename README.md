@@ -1,12 +1,26 @@
 # TopTurismo
 
-> Sistema web de turismo e reservas desenvolvido com PHP, MySQL, JavaScript, HTML, CSS e Bootstrap.
+> Sistema de reserva de viagens web desenvolvido com PHP, MySQL, JavaScript, HTML, CSS e Bootstrap.
 
-O **TopTurismo** é uma aplicação web desenvolvida como projeto integrador do curso Técnico em Informática para Internet. O sistema simula uma plataforma de turismo na qual usuários podem consultar destinos nacionais, realizar reservas e acompanhar suas viagens.
+O **TopTurismo** é uma aplicação web desenvolvida como projeto integrador no curso Técnico em Informática para Internet com o objetivo de simular uma plataforma de turismo, permitindo que usuários consultem destinos nacionais, realizem reservas de viagens e acompanhem suas viagens.
 
-O projeto também possui uma área administrativa para gerenciamento dos destinos.
+O sistema também possui uma área administrativa, permitindo o gerenciamento dos destinos disponíveis na plataforma.
 
----
+## Sobre o projeto
+
+O TopTurismo foi desenvolvido com foco no aprendizado e na aplicação prática de conceitos de desenvolvimento web, integração entre frontend e backend, banco de dados relacional, autenticação de usuários e operações CRUD.
+
+### Objetivos
+
+- Desenvolver uma aplicação web completa.
+- Praticar integração entre PHP e MySQL.
+- Trabalhar com autenticação e sessões.
+- Utilizar operações CRUD.
+- Desenvolver um sistema de reservas.
+- Aplicar validações no frontend e backend.
+- Trabalhar com organização de arquivos e separação de responsabilidades.
+- Criar uma interface responsiva utilizando Bootstrap.
+- Aplicar conceitos básicos de segurança.
 
 ## Funcionalidades
 
@@ -15,200 +29,158 @@ O projeto também possui uma área administrativa para gerenciamento dos destino
 - Cadastro de usuários.
 - Login e logout.
 - Controle de sessão.
-- Atualização de dados pessoais.
-- Atualização da pergunta e resposta de segurança.
+- Visualização dos dados pessoais.
 - Alteração de senha.
-- Exclusão de conta.
-- Recuperação e redefinição de senha.
-
-### Recuperação de senha
-
-O fluxo foi organizado seguindo o padrão utilizado no **movieAppMat**, mantendo a recuperação dentro da própria tela de login:
-
-```text
-Login
-  ↓
-Esqueci minha senha
-  ↓
-E-mail da conta
-  ↓
-Palavra-chave de recuperação
-  ↓
-Nova senha
-  ↓
-Login novamente
-```
-
-A senha e a resposta da pergunta de segurança são armazenadas com `password_hash()` e verificadas com `password_verify()`. A pergunta é exibida durante a recuperação, enquanto a resposta nunca é armazenada em texto puro.
-
-A etapa de recuperação possui expiração de 15 minutos e a sessão é regenerada após a validação da resposta de segurança.
+- Exclusão da conta.
+- Recuperação de senha.
+- Redefinição de senha por palavra-chave de recuperação.
 
 ### Destinos
 
 - Listagem de destinos nacionais.
-- Busca e filtros.
 - Cards com informações dos destinos.
-- Avaliação e popularidade.
-- Galeria de imagens.
+- Preço por passageiro.
+- Avaliação dos destinos.
+- Filtro de destinos.
+- Busca por destinos.
 - Informações detalhadas.
-- Localização através do Google Maps.
+- Galeria com múltiplas imagens.
+- Integração com localização através do Google Maps.
+
+A base inicial possui 16 destinos brasileiros.
 
 ### Reservas
 
 O usuário autenticado pode realizar uma reserva seguindo o fluxo:
 
 ```text
-Destino
-  ↓
-Passageiros
-  ↓
+Escolha do destino
+        ↓
+Quantidade de passageiros
+        ↓
 Tipo de viagem
-  ↓
-Data
-  ↓
+        ↓
+Data da viagem
+        ↓
 Transporte
-  ↓
+        ↓
 Classe
-  ↓
-Assentos
-  ↓
-Revisão
-  ↓
+        ↓
+Escolha dos assentos
+        ↓
+Revisão da reserva
+        ↓
 Pagamento
-  ↓
+        ↓
 Confirmação
 ```
 
-As reservas ficam armazenadas no banco e podem ser consultadas em **Minhas Viagens**.
+As reservas são armazenadas no banco de dados e posteriormente exibidas na área **Minhas Viagens**.
 
 Também é possível cancelar uma reserva.
 
 ### Área administrativa
 
-Administradores podem:
+Usuários com perfil de administrador possuem acesso a recursos exclusivos:
 
-- Acessar o dashboard.
-- Adicionar destinos.
-- Editar destinos.
-- Excluir destinos.
-- Gerenciar as imagens dos destinos.
+- Dashboard administrativo.
+- Cadastro de destinos.
+- Edição de destinos.
+- Exclusão de destinos.
+- Gerenciamento dos destinos disponíveis.
+- Upload de imagens dos destinos.
 
----
+Quando um novo destino é cadastrado pelo administrador, seus dados passam a fazer parte da base de destinos utilizada pelo sistema.
 
-## Tecnologias
+## Tecnologias utilizadas
 
-- HTML5
-- CSS3
-- JavaScript
-- PHP
-- MySQL
-- Bootstrap
-- Git
-- GitHub
-- Visual Studio Code
-
----
+<p align="left">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" width="45" alt="HTML5" title="HTML5"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" width="45" alt="CSS3" title="CSS3"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" width="45" alt="JavaScript" title="JavaScript"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" width="45" alt="PHP" title="PHP"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" width="45" alt="MySQL" title="MySQL"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" width="45" alt="Bootstrap" title="Bootstrap"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" width="45" alt="Git" title="Git"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" width="45" alt="GitHub" title="GitHub"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" width="45" alt="Visual Studio Code" title="Visual Studio Code"/>
+</p>
 
 ## Estrutura do projeto
-
-A estrutura segue uma organização semelhante à utilizada no **movieAppMat**, separando arquivos públicos, páginas, lógica PHP e recursos estáticos.
 
 ```text
 top-turismo/
 │
-├── public/
-│   └── index.php
+├── admin/
+│   ├── adicionar-destino.php
+│   ├── dashboard.php
+│   ├── editar-destino.php
+│   └── _navbar.php
 │
-├── src/
+├── assets/
+│   ├── css/
+│   │   ├── bootstrap/
+│   │   ├── admin.css
+│   │   ├── login-cadastro.css
+│   │   └── style.css
+│   │
+│   ├── imagens/
+│   │   ├── destinos/
+│   │   ├── logo.png
+│   │   ├── logo-white.png
+│   │   ├── google-maps.svg
+│   │   └── top-turismo-preview.gif
+│   │
+│   └── js/
+│       ├── bootstrap/
+│       ├── reservas.js
+│       ├── script.js
+│       └── validacoes.js
+│
+├── pages/
+│   ├── cadastro.php
+│   ├── dashboard.php
+│   ├── esqueci-senha.php
+│   ├── login.php
+│   ├── redefinir-senha.php
+│   └── reservas.php
+│
+├── php/
 │   ├── admin/
-│   │   ├── _navbar.php
-│   │   ├── adicionar-destino.php
-│   │   ├── dashboard.php
-│   │   └── editar-destino.php
+│   │   ├── auth.php
+│   │   ├── criar-destino.php
+│   │   ├── editar-destino.php
+│   │   └── excluir-destino.php
 │   │
-│   ├── assets/
-│   │   ├── css/
-│   │   │   ├── bootstrap/
-│   │   │   ├── admin.css
-│   │   │   ├── login-cadastro.css
-│   │   │   └── style.css
-│   │   │
-│   │   ├── imagens/
-│   │   │   └── ...
-│   │   │
-│   │   └── js/
-│   │       ├── reservas.js
-│   │       ├── script.js
-│   │       └── validacoes.js
-│   │
-│   ├── pages/
-│   │   ├── cadastro.php
-│   │   ├── dashboard.php
-│   │   ├── login.php
-│   │   └── reservas.php
-│   │
-│   └── php/
-│       ├── admin/
-│       │   ├── auth.php
-│       │   ├── criar-destino.php
-│       │   ├── editar-destino.php
-│       │   └── excluir-destino.php
-│       │
-│       ├── assentos-disponiveis.php
-│       ├── cadastro.php
-│       ├── cancelar-reserva.php
-│       ├── conexao.example.php
-│       ├── criar-reserva.php
-│       ├── dashboard.php
-│       ├── destinos-data.php
-│       ├── destinos.php
-│       ├── excluir-conta.php
-│       ├── login.php
-│       ├── logout.php
-│       ├── minhas-reservas.php
-│       ├── processar_nova_senha.php
-│       ├── programacao-dados.php
-│       ├── programacao.php
-│       └── usuario-logado.php
+│   ├── assentos-disponiveis.php
+│   ├── cadastro.php
+│   ├── cancelar-reserva.php
+│   ├── conexao.example.php
+│   ├── criar-reserva.php
+│   ├── dashboard.php
+│   ├── destinos-data.php
+│   ├── destinos.php
+│   ├── esqueci-senha.php
+│   ├── excluir-conta.php
+│   ├── login.php
+│   ├── logout.php
+│   ├── minhas-reservas.php
+│   ├── programacao.php
+│   ├── programacao-dados.php
+│   ├── redefinir-senha.php
+│   └── usuario-logado.php
 │
 ├── sql/
-│   ├── topturismo-backup.sql
-│   └── migracao_pergunta_seguranca.sql
+│   └── topturismo-backup.sql
 │
 ├── .gitignore
+├── index.php
 └── README.md
 ```
 
-### Responsabilidades
-
-```text
-public/
-    Ponto de entrada público da aplicação.
-
-src/pages/
-    Telas exibidas ao usuário.
-
-src/php/
-    Regras de negócio, autenticação e comunicação com o banco.
-
-src/php/admin/
-    Operações administrativas.
-
-src/admin/
-    Telas da área administrativa.
-
-src/assets/
-    CSS, JavaScript, imagens e outros recursos visuais.
-
-sql/
-    Estrutura e dados iniciais do banco.
-```
-
----
-
 ## Banco de dados
 
-O projeto utiliza **MySQL**.
+O projeto utiliza **MySQL** como banco de dados.
 
 O arquivo:
 
@@ -216,29 +188,15 @@ O arquivo:
 sql/topturismo-backup.sql
 ```
 
-contém a estrutura inicial do banco. Para um banco TopTurismo que já existe, utilize `sql/migracao_pergunta_seguranca.sql` para adicionar os campos de segurança sem recriar as tabelas.
+contém a estrutura inicial do banco e os destinos cadastrados.
 
 ### Principais tabelas
 
 #### `usuarios`
 
-Armazena os dados dos usuários, incluindo:
+Armazena os dados dos usuários cadastrados, incluindo informações pessoais, credenciais e tipo de usuário.
 
-- Nome.
-- CPF.
-- Data de nascimento.
-- Gênero.
-- E-mail.
-- Telefone.
-- Cidade.
-- Senha.
-- Pergunta de segurança.
-- Hash da resposta de segurança.
-- Tipo de usuário.
-
-A pergunta e a resposta de segurança podem ser atualizadas pelo perfil do usuário. A resposta é armazenada somente como hash.
-
-Os tipos disponíveis são:
+O campo `tipo` diferencia usuários comuns de administradores:
 
 ```text
 cliente
@@ -247,69 +205,104 @@ admin
 
 #### `destinos`
 
-Armazena os dados dos destinos turísticos, incluindo informações de localização, descrição, imagens, preço, avaliação e popularidade.
+Armazena as informações dos destinos turísticos, como:
+
+- Nome.
+- Descrição.
+- Cidade.
+- Estado.
+- País.
+- Região.
+- Imagens.
+- Preço.
+- Avaliação.
+- Popularidade.
 
 #### `reservas`
 
-Armazena as reservas realizadas pelos usuários, incluindo destino, passageiros, datas, transporte, classe, assentos, pagamento, valor e status.
+Armazena as reservas realizadas pelos usuários, incluindo:
 
----
+- Usuário.
+- Destino.
+- Data da viagem.
+- Data de volta.
+- Tipo de viagem.
+- Quantidade de passageiros.
+- Transporte.
+- Classe.
+- Assentos.
+- Forma de pagamento.
+- Parcelas.
+- Horários.
+- Duração.
+- Valor total.
+- Status.
 
 ## Instalação
 
 ### Requisitos
 
-- XAMPP ou servidor Apache equivalente.
-- PHP.
+Para executar o projeto localmente, recomenda-se:
+
+- XAMPP.
+- Apache.
 - MySQL.
+- PHP.
 - Navegador atualizado.
 
 ### 1. Clonar o projeto
 
 ```bash
 git clone https://github.com/seu-usuario/top-turismo.git
+```
+
+Entre na pasta:
+
+```bash
 cd top-turismo
 ```
 
 ### 2. Configurar o servidor
 
-Coloque o projeto dentro do diretório do Apache.
+Coloque a pasta do projeto no diretório do servidor Apache.
 
-No XAMPP:
+No XAMPP, normalmente:
 
 ```text
 C:\xampp\htdocs\
 ```
 
-Exemplo:
+A estrutura ficará semelhante a:
 
 ```text
 C:\xampp\htdocs\top-turismo\
 ```
 
-### 3. Criar o banco
+### 3. Criar o banco de dados
 
-Abra o **phpMyAdmin**, crie o banco `topturismo` e importe:
+Abra o **phpMyAdmin** e importe:
 
 ```text
 sql/topturismo-backup.sql
 ```
 
+O script contém a estrutura inicial necessária para executar o projeto.
+
 ### 4. Configurar a conexão
 
-Copie:
+O projeto possui um arquivo de exemplo:
 
 ```text
-src/php/conexao.example.php
+php/conexao.example.php
 ```
 
-para:
+Faça uma cópia e renomeie para:
 
 ```text
-src/php/conexao.php
+php/conexao.php
 ```
 
-Configure os dados do seu MySQL:
+Depois configure os dados do seu MySQL:
 
 ```php
 $servidor = 'localhost';
@@ -319,114 +312,228 @@ $banco = 'topturismo';
 $porta = 3306;
 ```
 
-O arquivo `conexao.php` está no `.gitignore` para evitar o envio de credenciais locais ao GitHub.
+> O arquivo `php/conexao.php` deve permanecer fora do GitHub caso contenha credenciais locais. O `.gitignore` do projeto já deve ser utilizado para evitar o envio dessas informações.
 
----
+## Executando o projeto
 
-## Executando
-
-Com Apache e MySQL ligados, acesse:
+Com **Apache** e **MySQL** ligados no XAMPP, abra:
 
 ```text
-http://localhost/top-turismo/public/
+http://localhost/top-turismo/
 ```
 
-Login:
+A página inicial apresenta os destinos disponíveis.
+
+Para acessar o sistema de usuários:
 
 ```text
-http://localhost/top-turismo/src/pages/login.php
+http://localhost/top-turismo/pages/login.php
 ```
-
----
 
 ## Área administrativa
 
-O sistema possui dois tipos de usuário:
+O sistema possui dois níveis de usuário:
 
 | Tipo | Permissões |
 |---|---|
-| Cliente | Navegar, reservar e gerenciar suas viagens |
+| Cliente | Navegar, cadastrar-se, reservar e gerenciar suas viagens |
 | Administrador | Recursos do cliente + gerenciamento de destinos |
 
-Para transformar um usuário em administrador, altere o campo `tipo` no banco para:
+O administrador pode:
 
 ```text
-admin
+Dashboard
+   ↓
+Adicionar destino
+   ↓
+Editar destino
+   ↓
+Excluir destino
 ```
 
----
+Para utilizar a área administrativa, é necessário possuir um usuário com:
+
+```text
+tipo = admin
+```
+
+no banco de dados.
 
 ## Segurança
 
-O projeto aplica algumas práticas básicas de segurança:
+O projeto utiliza algumas práticas básicas de segurança:
 
-- `password_hash()` para armazenamento de senhas.
-- `password_verify()` para validação.
-- Consultas preparadas com MySQLi.
+- Senhas armazenadas com `password_hash()`.
+- Verificação de senhas com `password_verify()`.
 - Controle de acesso por sessão.
-- Regeneração de sessão durante autenticação e recuperação.
-- Expiração do fluxo de recuperação de senha.
-- Validação no frontend e backend.
-- Credenciais do banco separadas do código versionado.
+- Proteção das páginas administrativas.
+- Separação das credenciais do banco através do `.gitignore`.
+- Validações no frontend e backend.
+- Uso de consultas preparadas em operações sensíveis.
+- Armazenamento seguro de informações de recuperação.
 
-O sistema possui finalidade acadêmica. O módulo de pagamento é apenas uma simulação e não deve receber dados reais de cartão.
+### Pagamento
 
----
+O pagamento presente no sistema possui finalidade exclusivamente acadêmica.
+
+Nenhuma transação financeira real é realizada.
+
+Dados reais de cartão não devem ser utilizados.
+
+## Recuperação de senha
+
+O sistema possui um fluxo de recuperação baseado em:
+
+```text
+Esqueci minha senha
+        ↓
+E-mail
+        ↓
+Palavra-chave de recuperação
+        ↓
+Nova senha
+```
+
+A palavra-chave de recuperação é armazenada de forma protegida no banco de dados.
+
+## Organização do código
+
+O projeto procura separar as responsabilidades entre frontend e backend.
+
+O JavaScript é utilizado principalmente para comportamentos de interface, como:
+
+- Seleção de assentos.
+- Navegação entre etapas.
+- Máscaras.
+- Interações da página.
+- Comportamentos visuais.
+
+O PHP fica responsável pelas regras principais do sistema, como:
+
+- Autenticação.
+- Sessões.
+- Comunicação com o banco.
+- Cadastro de usuários.
+- Criação de reservas.
+- Validações.
+- Gerenciamento dos destinos.
+
+Essa divisão facilita a manutenção do projeto e evita concentrar regras importantes somente no JavaScript.
+
+## Responsividade
+
+A interface foi desenvolvida para diferentes tamanhos de tela utilizando:
+
+- Bootstrap.
+- CSS personalizado.
+- Grid responsivo.
+- Componentes adaptáveis.
+
+O objetivo é proporcionar uma experiência adequada em computadores e dispositivos móveis.
+
+## Destinos disponíveis
+
+A versão inicial possui destinos nacionais, incluindo:
+
+- Maceió.
+- Rio de Janeiro.
+- Salvador.
+- Gramado.
+- São Paulo.
+- Foz do Iguaçu.
+- Lençóis Maranhenses.
+- Manaus.
+- Florianópolis.
+- Curitiba.
+- Fernando de Noronha.
+- Campo Grande.
+- Fortaleza.
+- Goiânia.
+- Jericoacoara.
+- Porto Alegre.
+
+Novos destinos podem ser adicionados através da área administrativa.
 
 ## Fluxo de teste
 
+Para testar o sistema completo:
+
 ```text
-1. Abrir o TopTurismo
+1. Acessar o TopTurismo
 2. Criar uma conta
 3. Fazer login
-4. Consultar os destinos
-5. Iniciar uma reserva
-6. Escolher passageiros, data, transporte e assentos
-7. Finalizar a simulação
-8. Conferir a reserva em Minhas Viagens
-9. Testar o cancelamento
-10. Sair da conta
-11. Testar "Esqueci minha senha"
-12. Informar o e-mail
-13. Visualizar a pergunta de segurança
-14. Responder à pergunta de segurança
-15. Criar uma nova senha
-15. Fazer login com a nova senha
+4. Escolher um destino
+5. Abrir os detalhes
+6. Iniciar uma reserva
+7. Escolher passageiros
+8. Selecionar ida/volta
+9. Definir data
+10. Escolher transporte
+11. Escolher classe
+12. Selecionar assentos
+13. Revisar a reserva
+14. Simular o pagamento
+15. Confirmar
+16. Acessar "Minhas Viagens"
+17. Conferir a reserva
+18. Testar o cancelamento
 ```
 
----
+## Objetivo do projeto
 
-## Melhorias futuras
+O TopTurismo foi desenvolvido como projeto integrador para aplicar conhecimentos de desenvolvimento web e integração de sistemas com banco de dados.
 
-- Recuperação por e-mail.
+Durante o desenvolvimento foram trabalhados conceitos como:
+
+- Desenvolvimento frontend.
+- Desenvolvimento backend.
+- PHP.
+- MySQL.
+- SQL.
+- Sessões.
+- Autenticação.
+- Validação de formulários.
+- Relacionamento entre tabelas.
+- Manipulação de arquivos.
+- JavaScript.
+- Bootstrap.
+- Responsividade.
+- Git e GitHub.
+- Organização de projetos.
+
+## Possíveis melhorias futuras
+
 - Integração com APIs de mapas.
-- Integração com companhias aéreas.
-- Gateway de pagamento real.
 - Sistema de avaliações.
+- Integração com APIs de companhias aéreas.
+- Integração com gateway de pagamento.
+- Envio de e-mails.
+- Recuperação de senha por e-mail.
 - Dashboard administrativo com estatísticas.
 - Relatórios de reservas.
 - Sistema de cupons.
+- Histórico de alterações.
 - Melhorias de acessibilidade.
-- API própria para destinos.
-
----
+- API própria para os destinos.
 
 ## Projeto Integrador
 
 **TopTurismo**  
-Sistema web de turismo e reservas desenvolvido no curso Técnico em Informática para Internet pelo Senac.
+Sistema web de turismo e reservas desenvolvido no curso Técnico em informática para Internet pelo Senac.
 
 ### Stack
 
 ```text
-HTML + CSS + JavaScript + Bootstrap
-                 ↓
-                PHP
-                 ↓
-               MySQL
+HTML5 + CSS3
+      ↓
+JavaScript + Bootstrap
+      ↓
+PHP
+      ↓
+MySQL
 ```
 
-## Autores
+## Autores e Colaboradores
 
 - Maurício Alves
 - David Lucas

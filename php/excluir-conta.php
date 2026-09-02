@@ -76,7 +76,7 @@ try {
     session_destroy();
     $conexao->close();
 
-    header("Location: ../../public/index.php?contaExcluida=1");
+    header("Location: ../index.php?contaExcluida=1");
     exit();
 } catch (Throwable $erro) {
     try {

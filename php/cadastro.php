@@ -15,8 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = trim($_POST["email"] ?? "");
     $telefone = preg_replace("/\D/", "", $_POST["telefone"] ?? "");
     $cidade = trim($_POST["cidade"] ?? "");
-    $pergunta_seguranca = trim($_POST["pergunta_seguranca"] ?? "");
-    $resposta_seguranca = trim($_POST["resposta_seguranca"] ?? "");
+    $chave_recuperacao = trim($_POST["chave_recuperacao"] ?? "");
     $senha = $_POST["senha"] ?? "";
     $confirmar_senha = $_POST["confirmar_senha"] ?? "";
 
@@ -93,10 +92,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $erro = "Telefone inválido. Informe DDD + número.";
     } elseif ($cidade === "" || mb_strlen($cidade) < 2) {
         $erro = "Cidade inválida.";
-    } elseif ($pergunta_seguranca === "") {
-        $erro = "Selecione uma pergunta de segurança.";
-    } elseif (mb_strlen($resposta_seguranca) < 2) {
-        $erro = "A resposta da pergunta deve ter pelo menos 2 caracteres.";
+    } elseif (mb_strlen($chave_recuperacao) < 4) {
+        $erro = "A palavra-chave de recuperação deve ter pelo menos 4 caracteres.";
     } elseif (
         strlen($senha) < 8
         || !preg_match("/[a-z]/", $senha)
@@ -128,15 +125,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         if ($erro === "") {
-            // *gera os hashes da senha e da resposta de segurança*
+            // *gera os hashes da senha e da palavra-chave de recuperação*
             $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
-            $resposta_hash = password_hash(mb_strtolower($resposta_seguranca, 'UTF-8'), PASSWORD_DEFAULT);
+            $chave_hash = password_hash($chave_recuperacao, PASSWORD_DEFAULT);
 
             $sql = "
                 INSERT INTO usuarios
-                    (nome, cpf, data_nascimento, genero, email, telefone, cidade, senha, pergunta_seguranca, resposta_seguranca_hash, tipo)
+                    (nome, cpf, data_nascimento, genero, email, telefone, cidade, senha, chave_recuperacao_hash, tipo)
                 VALUES
-                    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'cliente')
+                    (?, ?, ?, ?, ?, ?, ?, ?, ?, 'cliente')
             ";
 
             $stmt = $conexao->prepare($sql);
@@ -145,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $erro = "Erro ao preparar o cadastro.";
             } else {
                 $stmt->bind_param(
-                    "ssssssssss",
+                    "sssssssss",
                     $nome,
                     $cpf,
                     $data_nascimento,
@@ -154,8 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $telefone,
                     $cidade,
                     $senha_hash,
-                    $pergunta_seguranca,
-                    $resposta_hash
+                    $chave_hash
                 );
 
                 if ($stmt->execute()) {

@@ -6,15 +6,15 @@
         <div class="container-fluid d-flex align-items-center flex-wrap">
             <div class="d-flex align-items-center">
                 <img src="../assets/imagens/logo-white.png" width="50" height="50" alt="Logo">
-                <a href="../../public/index.php" class="text-a ms-2 logo-texto">TopTurismo</a>
+                <a href="../index.php" class="text-a ms-2 logo-texto">TopTurismo</a>
             </div>
 
             <div class="flex-grow-1 d-none d-lg-flex justify-content-center">
                 <ul class="navbar-nav flex-row gap-4">
-                    <li class="nav-item"><a class="nav-link text-white" href="../../public/index.php#destinos">Destinos</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="../../public/index.php#reservar">Fazer Reserva</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="../../public/index.php#sobre-nos">Sobre nós</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="../../public/index.php#contato">Contato</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../index.php#destinos">Destinos</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../index.php#reservar">Fazer Reserva</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../index.php#sobre-nos">Sobre nós</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="../index.php#contato">Contato</a></li>
                     <li class="nav-item"><a class="nav-link text-white fw-semibold" href="dashboard.php">Gerenciar destinos</a></li>
                 </ul>
             </div>
@@ -60,10 +60,10 @@
     </div>
     <div class="offcanvas-body">
         <ul class="list-unstyled">
-            <li class="mb-2"><a class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item" href="../../public/index.php#destinos"><i class="bi bi-geo-alt fs-4"></i> Destinos</a></li>
-            <li class="mb-2"><a class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item" href="../../public/index.php#reservar"><i class="bi bi-calendar-check fs-4"></i> Fazer Reserva</a></li>
-            <li class="mb-2"><a class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item" href="../../public/index.php#sobre-nos"><i class="bi bi-info-circle fs-4"></i> Sobre nós</a></li>
-            <li class="mb-2"><a class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item" href="../../public/index.php#contato"><i class="bi bi-telephone fs-4"></i> Contato</a></li>
+            <li class="mb-2"><a class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item" href="../index.php#destinos"><i class="bi bi-geo-alt fs-4"></i> Destinos</a></li>
+            <li class="mb-2"><a class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item" href="../index.php#reservar"><i class="bi bi-calendar-check fs-4"></i> Fazer Reserva</a></li>
+            <li class="mb-2"><a class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item" href="../index.php#sobre-nos"><i class="bi bi-info-circle fs-4"></i> Sobre nós</a></li>
+            <li class="mb-2"><a class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item" href="../index.php#contato"><i class="bi bi-telephone fs-4"></i> Contato</a></li>
             <li class="mb-2"><a class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item" href="dashboard.php"><i class="bi bi-speedometer2 fs-4"></i> Gerenciar destinos</a></li>
         </ul>
         <hr>

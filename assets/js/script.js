@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const destino = botao.dataset.destino || "";
       if (logado) {
         const query = destino ? "?destino=" + encodeURIComponent(destino) : "";
-        window.location.href = "../src/pages/reservas.php" + query;
+        window.location.href = "pages/reservas.php" + query;
       } else if (modalLogin) {
         modalLogin.show();
       }
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!card) return;
 
     const titulo = card.querySelector(".nome-destino-overlay")?.textContent.trim() || "Destino";
-    const imagem = card.querySelector(".card-img-top")?.getAttribute("src") || "../src/assets/imagens/hero-bg.jpg";
+    const imagem = card.querySelector(".card-img-top")?.getAttribute("src") || "./assets/imagens/hero-bg.jpg";
     const descricao = card.querySelector(".descricao-destino")?.textContent.replace(/\s+/g, " ").trim()
       || "Conheça este destino com a TopTurismo.";
     const precoTexto = card.querySelector(".preco-badge")?.textContent.replace(/\s+/g, " ").trim() || "R$ 0";
@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (elMaps) {
       elMaps.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(nomeMaps)}`;
       elMaps.setAttribute("aria-label", `Abrir ${nomeMaps} no Google Maps`);
-      elMaps.innerHTML = '<img class="google-maps-icon" src="../src/assets/imagens/google-maps.svg" alt="Google Maps">';
+      elMaps.innerHTML = '<img class="google-maps-icon" src="./assets/imagens/google-maps.svg" alt="Google Maps">';
     }
 
     // O carrossel sempre mantém exatamente 3 posições.
@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const destino = destinoModalAtual;
     const logado = document.body.dataset.logado === "1";
     if (logado) {
-      window.location.href = `../src/pages/reservas.php?destino=${encodeURIComponent(destino)}`;
+      window.location.href = `pages/reservas.php?destino=${encodeURIComponent(destino)}`;
     } else {
       modal.hide();
       const loginModalElement = document.getElementById("loginModal");
