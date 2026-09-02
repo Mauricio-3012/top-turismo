@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao'])) {
         }
 
         $stmt = $conexao->prepare(
-            'SELECT id, chave_recuperacao_hash FROM usuarios WHERE email = ? LIMIT 1'
+            'SELECT id, pergunta_seguranca, resposta_seguranca_hash FROM usuarios WHERE email = ? LIMIT 1'
         );
 
         if (!$stmt) {
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao'])) {
         $usuario = $stmt->get_result()->fetch_assoc();
         $stmt->close();
 
-        if (!$usuario || empty($usuario['chave_recuperacao_hash'])) {
+        if (!$usuario || empty($usuario['pergunta_seguranca']) || empty($usuario['resposta_seguranca_hash'])) {
             header('Location: login.php?recuperacao=1&erro=' . urlencode('Não foi possível iniciar a recuperação com esse e-mail.'));
             exit;
         }
@@ -45,21 +45,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao'])) {
         $_SESSION['id_recuperacao'] = (int) $usuario['id'];
         $_SESSION['etapa_recuperacao'] = 2;
         $_SESSION['recuperacao_expira'] = time() + 900;
+        $_SESSION['pergunta_recuperacao'] = $usuario['pergunta_seguranca'];
 
         header('Location: login.php');
         exit;
     }
 
-    if ($acao === 'validar_chave') {
+    if ($acao === 'validar_resposta') {
         $idUsuario = (int) ($_SESSION['id_recuperacao'] ?? 0);
         $expira = (int) ($_SESSION['recuperacao_expira'] ?? 0);
-        $chave = trim($_POST['chave_recuperacao'] ?? '');
+        $resposta = trim($_POST['resposta_seguranca'] ?? '');
 
         if (!$idUsuario || time() > $expira) {
             unset(
                 $_SESSION['id_recuperacao'],
                 $_SESSION['etapa_recuperacao'],
                 $_SESSION['recuperacao_email'],
+                $_SESSION['pergunta_recuperacao'],
                 $_SESSION['recuperacao_expira']
             );
             header('Location: login.php?erro=' . urlencode('Sua recuperação expirou. Comece novamente.'));
@@ -67,11 +69,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao'])) {
         }
 
         $stmt = $conexao->prepare(
-            'SELECT chave_recuperacao_hash FROM usuarios WHERE id = ? LIMIT 1'
+            'SELECT resposta_seguranca_hash FROM usuarios WHERE id = ? LIMIT 1'
         );
 
         if (!$stmt) {
-            header('Location: login.php?erro=' . urlencode('Não foi possível validar sua palavra-chave.'));
+            header('Location: login.php?erro=' . urlencode('Não foi possível validar sua resposta.'));
             exit;
         }
 
@@ -80,12 +82,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao'])) {
         $usuario = $stmt->get_result()->fetch_assoc();
         $stmt->close();
 
+        $respostaNormalizada = mb_strtolower($resposta, 'UTF-8');
+
         if (
             !$usuario
-            || empty($usuario['chave_recuperacao_hash'])
-            || !password_verify($chave, $usuario['chave_recuperacao_hash'])
+            || empty($usuario['resposta_seguranca_hash'])
+            || !password_verify($respostaNormalizada, $usuario['resposta_seguranca_hash'])
         ) {
-            header('Location: login.php?erro=' . urlencode('Palavra-chave incorreta.'));
+            header('Location: login.php?erro=' . urlencode('Resposta incorreta. Tente novamente.'));
             exit;
         }
 
@@ -93,26 +97,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao'])) {
         $_SESSION['id_recuperacao'] = $idUsuario;
         $_SESSION['etapa_recuperacao'] = 3;
         $_SESSION['recuperacao_expira'] = time() + 900;
-        unset($_SESSION['recuperacao_email']);
 
         header('Location: login.php');
         exit;
     }
+
 }
 
 /*
  * O fluxo de recuperação segue o mesmo padrão do movieAppMat:
  * 1. usuário informa o e-mail;
- * 2. confirma a palavra-chave de recuperação;
+ * 2. responde à pergunta de segurança cadastrada;
  * 3. cria uma nova senha.
  *
- * A palavra-chave continua armazenada como hash no banco.
+ * A resposta de segurança continua armazenada como hash no banco.
  */
 if (isset($_GET['cancelar_recuperacao'])) {
     unset(
         $_SESSION['id_recuperacao'],
         $_SESSION['etapa_recuperacao'],
         $_SESSION['recuperacao_email'],
+        $_SESSION['pergunta_recuperacao'],
         $_SESSION['recuperacao_expira']
     );
     header('Location: login.php');
@@ -128,7 +133,7 @@ if ($etapaRecuperacao < 1 || $etapaRecuperacao > 3) {
 
 if ($etapaRecuperacao > 1 && $emailRecuperacao === '') {
     $etapaRecuperacao = 1;
-    unset($_SESSION['id_recuperacao'], $_SESSION['etapa_recuperacao'], $_SESSION['recuperacao_expira']);
+    unset($_SESSION['id_recuperacao'], $_SESSION['etapa_recuperacao'], $_SESSION['pergunta_recuperacao'], $_SESSION['recuperacao_expira']);
 }
 
 $erro = $_GET['erro'] ?? '';
@@ -198,19 +203,26 @@ $sucesso = $_GET['sucesso'] ?? '';
                     <div id="bloco-recuperacao">
                         <h1 class="titulo-principal">Confirme sua identidade</h1>
                         <p class="subtitulo">
-                            Digite a palavra-chave de recuperação cadastrada na sua conta.
+                            Responda à pergunta de segurança cadastrada na sua conta.
                         </p>
 
                         <form method="POST" action="login.php">
-                            <input type="hidden" name="acao" value="validar_chave">
+                            <input type="hidden" name="acao" value="validar_resposta">
 
                             <div class="campo-entrada">
-                                <label for="chave_recuperacao">Palavra-chave de recuperação</label>
-                                <input type="password" id="chave_recuperacao" name="chave_recuperacao"
-                                    placeholder="Digite sua palavra-chave" minlength="4" required>
+                                <label>Pergunta de segurança</label>
+                                <div class="campo-pergunta" style="padding: 14px 16px; background: #f5f7fb; border-radius: 12px; font-weight: 600;">
+                                    <?= htmlspecialchars($_SESSION['pergunta_recuperacao'] ?? '', ENT_QUOTES, 'UTF-8') ?>
+                                </div>
                             </div>
 
-                            <button type="submit" class="botao-continuar">Validar palavra-chave</button>
+                            <div class="campo-entrada">
+                                <label for="resposta_seguranca">Resposta</label>
+                                <input type="text" id="resposta_seguranca" name="resposta_seguranca"
+                                    placeholder="Digite sua resposta" minlength="2" maxlength="255" required>
+                            </div>
+
+                            <button type="submit" class="botao-continuar">Validar resposta</button>
                         </form>
 
                         <div class="extra">

@@ -68,6 +68,7 @@ unset(
     $_SESSION['id_recuperacao'],
     $_SESSION['etapa_recuperacao'],
     $_SESSION['recuperacao_email'],
+    $_SESSION['pergunta_recuperacao'],
     $_SESSION['recuperacao_expira']
 );
 

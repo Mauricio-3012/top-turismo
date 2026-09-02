@@ -73,9 +73,20 @@
                     </div>
 
                     <div class="campo-entrada">
-                        <label>Palavra-chave de recuperação</label>
-                        <input type="password" id="chave_recuperacao" name="chave_recuperacao" placeholder="Mínimo 4 caracteres" minlength="4" required>
-                        <small>Use uma palavra-chave que você consiga lembrar caso esqueça sua senha.</small>
+                        <label for="pergunta_seguranca">Pergunta de segurança</label>
+                        <select id="pergunta_seguranca" name="pergunta_seguranca" required>
+                            <option value="">Selecione uma pergunta</option>
+                            <option value="Qual é o nome do seu primeiro pet?">Qual é o nome do seu primeiro pet?</option>
+                            <option value="Qual é o nome da sua cidade natal?">Qual é o nome da sua cidade natal?</option>
+                            <option value="Qual era o nome da sua escola?">Qual era o nome da sua escola?</option>
+                            <option value="Qual é o seu destino turístico favorito?">Qual é o seu destino turístico favorito?</option>
+                        </select>
+                    </div>
+
+                    <div class="campo-entrada">
+                        <label for="resposta_seguranca">Resposta da pergunta</label>
+                        <input type="text" id="resposta_seguranca" name="resposta_seguranca" placeholder="Digite sua resposta" minlength="2" maxlength="255" required>
+                        <small>Essa resposta será usada para confirmar sua identidade caso esqueça sua senha.</small>
                     </div>
 
                     <div class="grid-2-colunas">
@@ -114,7 +125,8 @@
         const campoEmail = document.getElementById("email");
         const campoTelefone = document.getElementById("telefone");
         const campoCidade = document.getElementById("cidade");
-        const campoChaveRecuperacao = document.getElementById("chave_recuperacao");
+        const campoPerguntaSeguranca = document.getElementById("pergunta_seguranca");
+        const campoRespostaSeguranca = document.getElementById("resposta_seguranca");
         const campoSenha = document.getElementById("senha");
         const campoConfirmarSenha = document.getElementById("confirmar_senha");
 
@@ -134,7 +146,8 @@
         campoEmail.addEventListener("blur", () => validarCampo(campoEmail, validarEmail, campoEmail.value));
         campoTelefone.addEventListener("blur", () => validarCampo(campoTelefone, validarTelefone, campoTelefone.value));
         campoCidade.addEventListener("blur", () => validarCampo(campoCidade, validarCampoObrigatorio, campoCidade.value, "A cidade"));
-        campoChaveRecuperacao.addEventListener("blur", () => validarCampo(campoChaveRecuperacao, (valor) => valor.trim().length < 4 ? "A palavra-chave deve ter pelo menos 4 caracteres." : "", campoChaveRecuperacao.value));
+        campoPerguntaSeguranca.addEventListener("change", () => validarCampo(campoPerguntaSeguranca, validarCampoObrigatorio, campoPerguntaSeguranca.value, "A pergunta de segurança"));
+        campoRespostaSeguranca.addEventListener("blur", () => validarCampo(campoRespostaSeguranca, (valor) => valor.trim().length < 2 ? "A resposta deve ter pelo menos 2 caracteres." : "", campoRespostaSeguranca.value));
         campoSenha.addEventListener("blur", () => validarCampo(campoSenha, validarSenha, campoSenha.value));
         campoConfirmarSenha.addEventListener("blur", () => validarCampo(campoConfirmarSenha, validarConfirmarSenha, campoSenha.value, campoConfirmarSenha.value));
 
@@ -147,7 +160,8 @@
                 validarCampo(campoEmail, validarEmail, campoEmail.value),
                 validarCampo(campoTelefone, validarTelefone, campoTelefone.value),
                 validarCampo(campoCidade, validarCampoObrigatorio, campoCidade.value, "A cidade"),
-                validarCampo(campoChaveRecuperacao, (valor) => valor.trim().length < 4 ? "A palavra-chave deve ter pelo menos 4 caracteres." : "", campoChaveRecuperacao.value),
+                validarCampo(campoPerguntaSeguranca, validarCampoObrigatorio, campoPerguntaSeguranca.value, "A pergunta de segurança"),
+                validarCampo(campoRespostaSeguranca, (valor) => valor.trim().length < 2 ? "A resposta deve ter pelo menos 2 caracteres." : "", campoRespostaSeguranca.value),
                 validarCampo(campoSenha, validarSenha, campoSenha.value),
                 validarCampo(campoConfirmarSenha, validarConfirmarSenha, campoSenha.value, campoConfirmarSenha.value),
             ];

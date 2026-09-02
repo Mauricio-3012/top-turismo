@@ -38,9 +38,9 @@ Nova senha
 Login novamente
 ```
 
-A palavra-chave e a senha são armazenadas com `password_hash()` e verificadas com `password_verify()`.
+A senha e a resposta da pergunta de segurança são armazenadas com `password_hash()` e verificadas com `password_verify()`. A pergunta é exibida durante a recuperação, enquanto a resposta nunca é armazenada em texto puro.
 
-A etapa de recuperação possui expiração de 15 minutos e a sessão é regenerada após a validação da palavra-chave.
+A etapa de recuperação possui expiração de 15 minutos e a sessão é regenerada após a validação da resposta de segurança.
 
 ### Destinos
 
@@ -171,7 +171,8 @@ top-turismo/
 │       └── usuario-logado.php
 │
 ├── sql/
-│   └── topturismo-backup.sql
+│   ├── topturismo-backup.sql
+│   └── migracao_pergunta_seguranca.sql
 │
 ├── .gitignore
 └── README.md
@@ -214,7 +215,7 @@ O arquivo:
 sql/topturismo-backup.sql
 ```
 
-contém a estrutura inicial do banco.
+contém a estrutura inicial do banco. Para um banco TopTurismo que já existe, utilize `sql/migracao_pergunta_seguranca.sql` para adicionar os campos de segurança sem recriar as tabelas.
 
 ### Principais tabelas
 
@@ -230,7 +231,8 @@ Armazena os dados dos usuários, incluindo:
 - Telefone.
 - Cidade.
 - Senha.
-- Hash da palavra-chave de recuperação.
+- Pergunta de segurança.
+- Hash da resposta de segurança.
 - Tipo de usuário.
 
 Os tipos disponíveis são:
@@ -383,8 +385,9 @@ O sistema possui finalidade acadêmica. O módulo de pagamento é apenas uma sim
 10. Sair da conta
 11. Testar "Esqueci minha senha"
 12. Informar o e-mail
-13. Informar a palavra-chave
-14. Criar uma nova senha
+13. Visualizar a pergunta de segurança
+14. Responder à pergunta de segurança
+15. Criar uma nova senha
 15. Fazer login com a nova senha
 ```
 
@@ -407,8 +410,7 @@ O sistema possui finalidade acadêmica. O módulo de pagamento é apenas uma sim
 
 ## Projeto Integrador
 
-**TopTurismo**
-
+**TopTurismo**  
 Sistema web de turismo e reservas desenvolvido no curso Técnico em Informática para Internet pelo Senac.
 
 ### Stack
