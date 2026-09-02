@@ -2,7 +2,7 @@
 
 > Sistema de reserva de viagens web desenvolvido com PHP, MySQL, JavaScript, HTML, CSS e Bootstrap.
 
-O **TopTurismo** é uma aplicação web desenvolvida como projeto integrador com o objetivo de simular uma plataforma de turismo, permitindo que usuários consultem destinos nacionais, realizem reservas de viagens e acompanhem suas viagens.
+O **TopTurismo** é uma aplicação web desenvolvida como projeto integrador no curso Técnico em Informática para Internet com o objetivo de simular uma plataforma de turismo, permitindo que usuários consultem destinos nacionais, realizem reservas de viagens e acompanhem suas viagens.
 
 O sistema também possui uma área administrativa, permitindo o gerenciamento dos destinos disponíveis na plataforma.
 
