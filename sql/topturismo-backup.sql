@@ -1,14 +1,11 @@
--- ============================================================
 -- TOPTURISMO - BANCO DE DADOS BASE
--- Versão compatível com o projeto refatorado
--- MySQL 8.x / MariaDB recente
+-- Banco de dados base para o funcionamento do sistema
 --
 -- IMPORTANTE:
--- 1. Este arquivo recria o banco do zero.
+-- 1. Este arquivo cria o banco do zero.
 -- 2. Execute somente se puder apagar as tabelas atuais.
 -- 3. O projeto NÃO precisa de uma tabela de programação:
 --    os horários são definidos pelo PHP em programacao-dados.php.
--- ============================================================
 
 CREATE DATABASE IF NOT EXISTS topturismo
   CHARACTER SET utf8mb4
@@ -25,9 +22,7 @@ DROP TABLE IF EXISTS usuarios;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
--- ============================================================
 -- USUÁRIOS
--- ============================================================
 CREATE TABLE usuarios (
     id INT NOT NULL AUTO_INCREMENT,
     nome VARCHAR(100) DEFAULT NULL,
@@ -45,9 +40,8 @@ CREATE TABLE usuarios (
     UNIQUE KEY uk_usuarios_cpf (cpf)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ============================================================
+
 -- DESTINOS
--- ============================================================
 CREATE TABLE destinos (
     id_destino INT NOT NULL AUTO_INCREMENT,
     nome_destino VARCHAR(255) NOT NULL,
@@ -87,9 +81,7 @@ VALUES
 (15, 'Jericoacoara', 'Vilarejo paradisíaco cercado por dunas, lagoas e praias de águas tranquilas.', 'Jijoca de Jericoacoara', 'CE', 'Brasil', 'nordeste', 'assets/imagens/Jericoacoara.png', 'assets/imagens/destinos/jericoacoara/foto-2.png', 'assets/imagens/destinos/jericoacoara/foto-3.jpg', 750.00, 4.9, 5),
 (16, 'Porto Alegre', 'A capital gaúcha reúne tradição, gastronomia, cultura e belas áreas ao ar livre.', 'Porto Alegre', 'RS', 'Brasil', 'sul', 'assets/imagens/porto-alegre.jpg', 'assets/imagens/destinos/porto-alegre/foto-2.png', 'assets/imagens/destinos/porto-alegre/foto-3.jpg', 700.00, 4.5, 4);
 
--- ============================================================
 -- RESERVAS
--- ============================================================
 CREATE TABLE reservas (
     id_reserva INT NOT NULL AUTO_INCREMENT,
     id_usuario INT NOT NULL,
@@ -126,13 +118,8 @@ CREATE TABLE reservas (
 -- *os usuários são criados pelo formulário de cadastro*
 -- *as reservas são criadas pelo formulário de reservas*
 
--- ============================================================
 -- CONFERÊNCIA RÁPIDA
--- ============================================================
 SELECT 'Banco TopTurismo criado com sucesso.' AS mensagem;
 
 -- *base limpa: 0 usuários, 16 destinos e 0 reservas no início*
-
--- ============================================================
 -- FIM
--- ============================================================
