@@ -1,3 +1,0 @@
--- TopTurismo
--- Este arquivo foi substituído pela base limpa do projeto.
--- Use: database/topturismo-base.sql
