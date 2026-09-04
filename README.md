@@ -538,3 +538,55 @@ MySQL
 - Maurício Alves
 - David Lucas
 - Fabiano Assunção
+## Recuperação e redefinição de senha
+
+O fluxo atual de recuperação utiliza a **pergunta de recuperação + resposta** cadastradas pelo usuário.
+
+Fluxo:
+
+```text
+E-mail
+  ↓
+Pergunta de recuperação
+  ↓
+Resposta correta
+  ↓
+Autorização temporária (15 minutos)
+  ↓
+Nova senha + confirmação
+  ↓
+Senha salva com password_hash()
+  ↓
+Login
+```
+
+### Estrutura usada no banco
+
+- `usuarios.pergunta_recuperacao` — pergunta escolhida no cadastro.
+- `usuarios.resposta_recuperacao_hash` — resposta armazenada com hash.
+- `usuarios.senha` — senha principal armazenada com `password_hash()`.
+- `chave_recuperacao_hash` permanece apenas para compatibilidade com contas antigas.
+
+> Importante: a coluna `pergunta_recuperacao` deve ter pelo menos `VARCHAR(100)`. Versões antigas do projeto usavam `VARCHAR(30)`, o que causava erro/truncamento em perguntas maiores.
+
+### Instalação do banco
+
+Para uma instalação nova, importe:
+
+```text
+sql/top-turismo-base.sql
+```
+
+Esse arquivo cria o banco `topturismo`, as tabelas e os 16 destinos iniciais.
+
+Se você já possui um banco criado por uma versão anterior, use:
+
+```text
+sql/migracao-recuperacao-senha.sql
+```
+
+Depois confira em `src/php/conexao.php` o host, usuário, senha e porta do MySQL/MariaDB da sua máquina.
+
+### Senhas
+
+Nunca coloque senhas de usuários em texto puro no banco. O cadastro e a redefinição usam `password_hash()` e o login usa `password_verify()`.
