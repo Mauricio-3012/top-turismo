@@ -7,6 +7,7 @@
     <title>Cadastro - TopTurismo</title>
     <link rel="stylesheet" href="../assets/css/login-cadastro.css">
     <link rel="shortcut icon" href="../assets/imagens/logo-favicon.ico" type="image/x-icon">
+<script>window.TOP_TURISMO_BASE = "../../";</script>
 </head>
 
 <body>
@@ -14,7 +15,7 @@
         <section class="secao-login">
             <div class="conteudo-central">
                 <header class="logotipo">
-                    <a href="../index.php">
+                    <a href="../../public/index.php">
                         <img src="../assets/imagens/logo-favicon.ico" alt="Logo">
                         <span>TopTurismo</span>
                     </a>
@@ -73,9 +74,21 @@
                     </div>
 
                     <div class="campo-entrada">
-                        <label>Palavra-chave de recuperação</label>
-                        <input type="password" id="chave_recuperacao" name="chave_recuperacao" placeholder="Mínimo 4 caracteres" minlength="4" required>
-                        <small>Use uma palavra-chave que você consiga lembrar caso esqueça sua senha.</small>
+                        <label for="pergunta_recuperacao">Pergunta de recuperação</label>
+                        <select id="pergunta_recuperacao" name="pergunta_recuperacao" required>
+                            <option value="">Selecione uma pergunta</option>
+                            <option value="pet">Qual é o nome do seu pet?</option>
+                            <option value="cidade_natal">Qual é a sua cidade natal?</option>
+                            <option value="comida">Qual é a sua comida favorita?</option>
+                            <option value="apelido">Qual era o seu apelido de infância?</option>
+                            <option value="escola">Qual era o nome da sua primeira escola?</option>
+                        </select>
+                    </div>
+
+                    <div class="campo-entrada">
+                        <label for="resposta_recuperacao">Resposta de recuperação</label>
+                        <input type="text" id="resposta_recuperacao" name="resposta_recuperacao" placeholder="Digite sua resposta" minlength="2" required autocomplete="off">
+                        <small>Você usará essa resposta para recuperar sua senha caso esqueça.</small>
                     </div>
 
                     <div class="grid-2-colunas">
@@ -99,7 +112,7 @@
         </section>
 
         <section class="secao-hero-imagem">
-            <a href="../index.php" class="botao-fechar-tela" title="Sair">✕</a>
+            <a href="../../public/index.php" class="botao-fechar-tela" title="Sair">✕</a>
         </section>
     </main>
 
@@ -114,7 +127,8 @@
         const campoEmail = document.getElementById("email");
         const campoTelefone = document.getElementById("telefone");
         const campoCidade = document.getElementById("cidade");
-        const campoChaveRecuperacao = document.getElementById("chave_recuperacao");
+        const campoPerguntaRecuperacao = document.getElementById("pergunta_recuperacao");
+        const campoRespostaRecuperacao = document.getElementById("resposta_recuperacao");
         const campoSenha = document.getElementById("senha");
         const campoConfirmarSenha = document.getElementById("confirmar_senha");
 
@@ -134,7 +148,8 @@
         campoEmail.addEventListener("blur", () => validarCampo(campoEmail, validarEmail, campoEmail.value));
         campoTelefone.addEventListener("blur", () => validarCampo(campoTelefone, validarTelefone, campoTelefone.value));
         campoCidade.addEventListener("blur", () => validarCampo(campoCidade, validarCampoObrigatorio, campoCidade.value, "A cidade"));
-        campoChaveRecuperacao.addEventListener("blur", () => validarCampo(campoChaveRecuperacao, (valor) => valor.trim().length < 4 ? "A palavra-chave deve ter pelo menos 4 caracteres." : "", campoChaveRecuperacao.value));
+        campoPerguntaRecuperacao.addEventListener("change", () => validarCampo(campoPerguntaRecuperacao, validarCampoObrigatorio, campoPerguntaRecuperacao.value, "A pergunta"));
+        campoRespostaRecuperacao.addEventListener("blur", () => validarCampo(campoRespostaRecuperacao, (valor) => valor.trim().length < 2 ? "A resposta deve ter pelo menos 2 caracteres." : "", campoRespostaRecuperacao.value));
         campoSenha.addEventListener("blur", () => validarCampo(campoSenha, validarSenha, campoSenha.value));
         campoConfirmarSenha.addEventListener("blur", () => validarCampo(campoConfirmarSenha, validarConfirmarSenha, campoSenha.value, campoConfirmarSenha.value));
 
@@ -147,7 +162,8 @@
                 validarCampo(campoEmail, validarEmail, campoEmail.value),
                 validarCampo(campoTelefone, validarTelefone, campoTelefone.value),
                 validarCampo(campoCidade, validarCampoObrigatorio, campoCidade.value, "A cidade"),
-                validarCampo(campoChaveRecuperacao, (valor) => valor.trim().length < 4 ? "A palavra-chave deve ter pelo menos 4 caracteres." : "", campoChaveRecuperacao.value),
+                validarCampo(campoPerguntaRecuperacao, validarCampoObrigatorio, campoPerguntaRecuperacao.value, "A pergunta"),
+                validarCampo(campoRespostaRecuperacao, (valor) => valor.trim().length < 2 ? "A resposta deve ter pelo menos 2 caracteres." : "", campoRespostaRecuperacao.value),
                 validarCampo(campoSenha, validarSenha, campoSenha.value),
                 validarCampo(campoConfirmarSenha, validarConfirmarSenha, campoSenha.value, campoConfirmarSenha.value),
             ];

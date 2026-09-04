@@ -8,13 +8,13 @@ require_once __DIR__ . '/../conexao.php';
 
 $id = (int) ($_POST['id_destino'] ?? 0);
 if ($id <= 0 || $_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../../admin/dashboard.php');
+    header('Location: ../../pages/admin/dashboard.php');
     exit;
 }
 
 function voltarErro(string $mensagem, int $id): never
 {
-    header('Location: ../../admin/editar-destino.php?id=' . $id . '&erro=' . urlencode($mensagem));
+    header('Location: ../../pages/admin/editar-destino.php?id=' . $id . '&erro=' . urlencode($mensagem));
     exit;
 }
 
@@ -67,5 +67,5 @@ $stmt->bind_param('sssssssssddii', $nome, $descricao, $cidade, $estado, $pais, $
 if (!$stmt->execute()) voltarErro('Não foi possível salvar as alterações.', $id);
 $stmt->close();
 $conexao->close();
-header('Location: ../../admin/dashboard.php?sucesso=Destino+atualizado+com+sucesso.');
+header('Location: ../../pages/admin/dashboard.php?sucesso=Destino+atualizado+com+sucesso.');
 exit;

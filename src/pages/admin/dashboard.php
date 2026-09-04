@@ -1,9 +1,9 @@
 <?php
 // *confere se o usuário logado realmente é administrador*
-require_once __DIR__ . '/../php/admin/auth.php';
+require_once __DIR__ . '/../../php/admin/auth.php';
 
 // *abre a conexão para carregar os destinos cadastrados*
-require_once __DIR__ . '/../php/conexao.php';
+require_once __DIR__ . '/../../php/conexao.php';
 
 // *busca os destinos que serão exibidos no painel administrativo*
 $resultado = $conexao->query(
@@ -25,9 +25,10 @@ $erro = trim($_GET['erro'] ?? '');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administração - TopTurismo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/admin.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script>window.TOP_TURISMO_BASE = "../../../";</script>
 </head>
 <body>
     <?php require __DIR__ . '/_navbar.php'; ?>
@@ -118,7 +119,7 @@ $erro = trim($_GET['erro'] ?? '');
                             <?php foreach ($destinos as $destino): ?>
                                 <tr>
                                     <td data-label="Imagem">
-                                        <img src="../<?= htmlspecialchars($destino['img_destino']) ?>" alt="<?= htmlspecialchars($destino['nome_destino']) ?>">
+                                        <img src="../../<?= htmlspecialchars($destino['img_destino']) ?>" alt="<?= htmlspecialchars($destino['nome_destino']) ?>">
                                     </td>
                                     <td data-label="Destino"><strong><?= htmlspecialchars($destino['nome_destino']) ?></strong></td>
                                     <td data-label="Local">
@@ -136,7 +137,7 @@ $erro = trim($_GET['erro'] ?? '');
                                                 <i class="bi bi-pencil"></i> Editar
                                             </a>
                                             <!-- *envia o id para o PHP excluir o destino com segurança* -->
-                                            <form method="post" action="../php/admin/excluir-destino.php" onsubmit="return confirm('Excluir este destino? Esta ação não pode ser desfeita.');">
+                                            <form method="post" action="../../php/admin/excluir-destino.php" onsubmit="return confirm('Excluir este destino? Esta ação não pode ser desfeita.');">
                                                 <input type="hidden" name="id_destino" value="<?= (int) $destino['id_destino'] ?>">
                                                 <button class="btn btn-sm btn-outline-danger" type="submit">
                                                     <i class="bi bi-trash"></i> Excluir
@@ -154,6 +155,6 @@ $erro = trim($_GET['erro'] ?? '');
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/script.js"></script>
+    <script src="../../assets/js/script.js"></script>
 </body>
 </html>

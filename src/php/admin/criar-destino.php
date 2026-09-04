@@ -7,13 +7,13 @@ require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/../conexao.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../../admin/adicionar-destino.php');
+    header('Location: ../../pages/admin/adicionar-destino.php');
     exit;
 }
 
 function voltarComErro(string $mensagem): never
 {
-    header('Location: ../../admin/adicionar-destino.php?erro=' . urlencode($mensagem));
+    header('Location: ../../pages/admin/adicionar-destino.php?erro=' . urlencode($mensagem));
     exit;
 }
 
@@ -116,7 +116,7 @@ try {
 
     $stmt->close();
     $conexao->close();
-    header('Location: ../../admin/dashboard.php?sucesso=Destino+adicionado+com+sucesso.');
+    header('Location: ../../pages/admin/dashboard.php?sucesso=Destino+adicionado+com+sucesso.');
     exit;
 } catch (Throwable $e) {
     foreach ($caminhos as $caminho) {

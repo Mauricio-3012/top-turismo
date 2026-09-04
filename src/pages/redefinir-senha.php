@@ -19,13 +19,14 @@ $erro = $_GET["erro"] ?? "";
     <title>Redefinir senha - TopTurismo</title>
     <link rel="stylesheet" href="../assets/css/login-cadastro.css">
     <link rel="shortcut icon" href="../assets/imagens/logo-favicon.ico" type="image/x-icon">
+<script>window.TOP_TURISMO_BASE = "../../";</script>
 </head>
 <body>
     <main class="container-principal">
         <section class="secao-login">
             <div class="conteudo-central">
                 <header class="logotipo">
-                    <a href="../index.php">
+                    <a href="../../public/index.php">
                         <img src="../assets/imagens/logo-favicon.ico" alt="Logo">
                         <span>TopTurismo</span>
                     </a>
@@ -57,7 +58,7 @@ $erro = $_GET["erro"] ?? "";
         </section>
 
         <section class="secao-hero-imagem">
-            <a href="../index.php" class="botao-fechar-tela" title="Sair">✕</a>
+            <a href="../../public/index.php" class="botao-fechar-tela" title="Sair">✕</a>
         </section>
     </main>
 </body>

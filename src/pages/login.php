@@ -7,6 +7,7 @@
     <title>Login - TopTurismo</title>
     <link rel="stylesheet" href="../assets/css/login-cadastro.css">
     <link rel="shortcut icon" href="../assets/imagens/logo-favicon.ico" type="image/x-icon">
+<script>window.TOP_TURISMO_BASE = "../../";</script>
 </head>
 
 <body>
@@ -14,7 +15,7 @@
         <section class="secao-login">
             <div class="conteudo-central">
                 <header class="logotipo">
-                    <a href="../index.php">
+                    <a href="../../public/index.php">
                         <img src="../assets/imagens/logo-favicon.ico" alt="Logo">
                         <span>TopTurismo</span>
                     </a>
@@ -51,7 +52,7 @@
         </section>
 
         <section class="secao-hero-imagem">
-            <a href="../index.php" class="botao-fechar-tela" title="Sair">✕</a>
+            <a href="../../public/index.php" class="botao-fechar-tela" title="Sair">✕</a>
         </section>
     </main>
 

@@ -55,6 +55,7 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="shortcut icon" href="../assets/imagens/logo-favicon.ico" type="image/x-icon">
     <title>Meu Perfil - TopTurismo</title>
+<script>window.TOP_TURISMO_BASE = "../../";</script>
 </head>
 
 <body>
@@ -63,15 +64,15 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
             <div class="container-fluid d-flex align-items-center flex-wrap">
                 <div class="d-flex align-items-center">
                     <img src="../assets/imagens/logo-white.png" width="50" height="50" alt="Logo">
-                    <a href="../index.php" class="text-a ms-2 logo-texto">TopTurismo</a>
+                    <a href="../../public/index.php" class="text-a ms-2 logo-texto">TopTurismo</a>
                 </div>
 
                 <div class="flex-grow-1 d-none d-lg-flex justify-content-center">
                     <ul class="navbar-nav flex-row gap-4">
-                        <li class="nav-item"><a class="nav-link text-white" href="../index.php#destinos">Destinos</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="../index.php#reservar">Fazer Reserva</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="../index.php#sobre-nos">Sobre nós</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="../index.php#contato">Contato</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="../../public/index.php#destinos">Destinos</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="../../public/index.php#reservar">Fazer Reserva</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="../../public/index.php#sobre-nos">Sobre nós</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="../../public/index.php#contato">Contato</a></li>
                     </ul>
                 </div>
 
@@ -83,7 +84,7 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" id="userAuthMenuList">
                             <li><a class="dropdown-item" href="#meus-dados"><i class="bi bi-person-fill me-2"></i>Meu Perfil</a></li>
-                            <?php if (($_SESSION["usuario_tipo"] ?? "cliente") === "admin"): ?><li><a class="dropdown-item" href="../admin/dashboard.php"><i class="bi bi-speedometer2 me-2"></i>Painel Admin</a></li><?php endif; ?>
+                            <?php if (($_SESSION["usuario_tipo"] ?? "cliente") === "admin"): ?><li><a class="dropdown-item" href="admin/dashboard.php"><i class="bi bi-speedometer2 me-2"></i>Painel Admin</a></li><?php endif; ?>
                             <li><a class="dropdown-item" href="../php/logout.php"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
                         </ul>
                     </div>
@@ -224,7 +225,7 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                                 </h4>
                                 <p class="text-muted mb-0">Suas reservas e status.</p>
                             </div>
-                            <a href="../index.php#reservar" class="btn btn-custom rounded-pill px-4">
+                            <a href="../../public/index.php#reservar" class="btn btn-custom rounded-pill px-4">
                                 <i class="bi bi-plus-circle me-1"></i> Nova reserva
                             </a>
                         </div>
@@ -234,7 +235,7 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                                 <div class="reserva-vazia-icone"><i class="bi bi-suitcase-lg"></i></div>
                                 <h5 class="fw-bold mb-2">Você ainda não possui viagens</h5>
                                 <p class="text-muted mb-4">Faça sua primeira reserva e acompanhe tudo por aqui.</p>
-                                <a href="../index.php#reservar" class="btn btn-custom rounded-pill px-4">
+                                <a href="../../public/index.php#reservar" class="btn btn-custom rounded-pill px-4">
                                     <i class="bi bi-calendar-check me-1"></i> Fazer uma reserva
                                 </a>
                             </div>
@@ -366,27 +367,27 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
         <div class="offcanvas-body">
             <ul class="list-unstyled">
                 <li class="mb-2">
-                    <a href="../index.php" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
+                    <a href="../../public/index.php" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
                         <i class="bi bi-house fs-4"></i> Início
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="../index.php#destinos" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
+                    <a href="../../public/index.php#destinos" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
                         <i class="bi bi-geo-alt fs-4"></i> Destinos
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="../index.php#reservar" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
+                    <a href="../../public/index.php#reservar" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
                         <i class="bi bi-calendar-check fs-4"></i> Fazer Reserva
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="../index.php#sobre-nos" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
+                    <a href="../../public/index.php#sobre-nos" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
                         <i class="bi bi-info-circle fs-4"></i> Sobre nós
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="../index.php#contato" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
+                    <a href="../../public/index.php#contato" class="d-flex align-items-center gap-3 p-2 rounded menu-mobile-item">
                         <i class="bi bi-telephone fs-4"></i> Contato
                     </a>
                 </li>

@@ -8,7 +8,7 @@ require_once __DIR__ . '/../conexao.php';
 
 $id = (int) ($_POST['id_destino'] ?? 0);
 if ($id <= 0) {
-    header('Location: ../../admin/dashboard.php?erro=Destino+inválido.');
+    header('Location: ../../pages/admin/dashboard.php?erro=Destino+inválido.');
     exit;
 }
 
@@ -19,7 +19,7 @@ $destino = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
 if (!$destino) {
-    header('Location: ../../admin/dashboard.php?erro=Destino+não+encontrado.');
+    header('Location: ../../pages/admin/dashboard.php?erro=Destino+não+encontrado.');
     exit;
 }
 
@@ -31,7 +31,7 @@ if (!$stmt->execute()) {
         : 'Não foi possível excluir o destino.';
     $stmt->close();
     $conexao->close();
-    header('Location: ../../admin/dashboard.php?erro=' . urlencode($mensagem));
+    header('Location: ../../pages/admin/dashboard.php?erro=' . urlencode($mensagem));
     exit;
 }
 $stmt->close();
@@ -47,5 +47,5 @@ foreach ($arquivos as $arquivoRelativo) {
 $pasta = dirname(dirname(__DIR__) . '/' . ltrim($destino['img_destino'], '/'));
 if (is_dir($pasta)) @rmdir($pasta);
 
-header('Location: ../../admin/dashboard.php?sucesso=Destino+excluído+com+sucesso.');
+header('Location: ../../pages/admin/dashboard.php?sucesso=Destino+excluído+com+sucesso.');
 exit;

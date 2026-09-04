@@ -34,6 +34,8 @@ CREATE TABLE usuarios (
     cidade VARCHAR(100) DEFAULT NULL,
     senha VARCHAR(255) DEFAULT NULL,
     chave_recuperacao_hash VARCHAR(255) DEFAULT NULL,
+    pergunta_recuperacao VARCHAR(30) DEFAULT NULL,
+    resposta_recuperacao_hash VARCHAR(255) DEFAULT NULL,
     tipo ENUM('admin', 'cliente') NOT NULL DEFAULT 'cliente',
     PRIMARY KEY (id),
     UNIQUE KEY uk_usuarios_email (email),

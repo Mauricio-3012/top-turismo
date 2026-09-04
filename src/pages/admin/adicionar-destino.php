@@ -1,6 +1,6 @@
 <?php
 // *protege o formulário para que somente administradores possam criar destinos*
-require_once __DIR__ . '/../php/admin/auth.php';
+require_once __DIR__ . '/../../php/admin/auth.php';
 
 $erro = trim($_GET['erro'] ?? '');
 ?>
@@ -11,9 +11,10 @@ $erro = trim($_GET['erro'] ?? '');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar destino - TopTurismo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/admin.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script>window.TOP_TURISMO_BASE = "../../../";</script>
 </head>
 <body>
     <?php require __DIR__ . '/_navbar.php'; ?>
@@ -31,7 +32,7 @@ $erro = trim($_GET['erro'] ?? '');
                 <?php endif; ?>
 
                 <!-- *envia os dados e as imagens para o PHP cadastrar o destino* -->
-                <form class="admin-form" action="../php/admin/criar-destino.php" method="post" enctype="multipart/form-data">
+                <form class="admin-form" action="../../php/admin/criar-destino.php" method="post" enctype="multipart/form-data">
                     <div class="row g-3">
                         <div class="col-md-8">
                             <label class="form-label" for="nome_destino">Nome do destino *</label>
@@ -114,6 +115,6 @@ $erro = trim($_GET['erro'] ?? '');
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/script.js"></script>
+    <script src="../../assets/js/script.js"></script>
 </body>
 </html>

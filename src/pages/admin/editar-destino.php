@@ -1,7 +1,7 @@
 <?php
 // *confere o acesso antes de carregar os dados do destino*
-require_once __DIR__ . '/../php/admin/auth.php';
-require_once __DIR__ . '/../php/conexao.php';
+require_once __DIR__ . '/../../php/admin/auth.php';
+require_once __DIR__ . '/../../php/conexao.php';
 
 $id = (int) ($_GET['id'] ?? 0);
 
@@ -27,9 +27,10 @@ $erro = trim($_GET['erro'] ?? '');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar destino - TopTurismo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/admin.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<script>window.TOP_TURISMO_BASE = "../../../";</script>
 </head>
 <body>
     <?php require __DIR__ . '/_navbar.php'; ?>
@@ -47,7 +48,7 @@ $erro = trim($_GET['erro'] ?? '');
                 <?php endif; ?>
 
                 <!-- *envia as alterações para o PHP atualizar o banco* -->
-                <form class="admin-form" action="../php/admin/editar-destino.php" method="post" enctype="multipart/form-data">
+                <form class="admin-form" action="../../php/admin/editar-destino.php" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="id_destino" value="<?= $id ?>">
 
                     <div class="row g-3">
@@ -113,7 +114,7 @@ $erro = trim($_GET['erro'] ?? '');
                             <div class="col-md-4">
                                 <label class="form-label">Imagem <?= $indice + 1 ?> <small class="text-muted">(opcional)</small></label>
                                 <?php if ($imagem): ?>
-                                    <img class="admin-preview mb-2" src="../<?= htmlspecialchars($imagem) ?>" alt="Imagem <?= $indice + 1 ?>">
+                                    <img class="admin-preview mb-2" src="../../<?= htmlspecialchars($imagem) ?>" alt="Imagem <?= $indice + 1 ?>">
                                 <?php endif; ?>
                                 <input class="form-control" type="file" name="<?= $indice === 0 ? 'imagem_principal' : 'imagem_' . ($indice + 1) ?>" accept="image/jpeg,image/png,image/webp">
                             </div>
@@ -132,6 +133,6 @@ $erro = trim($_GET['erro'] ?? '');
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/script.js"></script>
+    <script src="../../assets/js/script.js"></script>
 </body>
 </html>

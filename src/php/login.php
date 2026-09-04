@@ -6,7 +6,7 @@ session_start();
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     require "conexao.php";
 
-    $email = trim($_POST["email"] ?? "");
+    $email = mb_strtolower(trim($_POST["email"] ?? ""), "UTF-8");
     $senha = $_POST["senha"] ?? "";
 
     if ($email === "" || $senha === "") {
@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $usuario = $resultado->fetch_assoc();
     $stmt->close();
 
-    if ($usuario && password_verify($senha, $usuario["senha"])) {
+    if ($usuario && !empty($usuario["senha"]) && password_verify($senha, $usuario["senha"])) {
         session_regenerate_id(true);
 
         $_SESSION["usuario_id"] = $usuario["id"];
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $conexao->close();
 
-        header($usuario["tipo"] === "admin" ? "Location: ../admin/dashboard.php" : "Location: ../pages/dashboard.php");
+        header($usuario["tipo"] === "admin" ? "Location: ../pages/admin/dashboard.php" : "Location: ../pages/dashboard.php");
         exit;
     }
 
