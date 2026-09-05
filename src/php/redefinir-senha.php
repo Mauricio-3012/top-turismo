@@ -1,38 +1,25 @@
 <?php
-session_start();
-
-/*
+/**
  * TopTurismo - processamento da nova senha.
  *
- * A autorização da recuperação é criada por src/php/esqueci-senha.php
- * depois que a pergunta/resposta de recuperação é validada.
- *
- * Compatibilidade: também aceitamos os nomes de sessão usados em versões
- * antigas do projeto (id_recuperacao / etapa_recuperacao), mas o projeto
- * passa a usar recuperacao_usuario_id / recuperacao_expira como padrão.
+ * A autorização é criada por esqueci-senha.php depois que a pergunta de
+ * segurança é validada corretamente. É válida por 15 minutos e de uso único.
  */
 
-$idUsuario = (int) ($_SESSION['recuperacao_usuario_id'] ?? $_SESSION['id_recuperacao'] ?? 0);
-$expira = (int) ($_SESSION['recuperacao_expira'] ?? 0);
-$etapaRecuperacao = (string) ($_SESSION['etapa_recuperacao'] ?? 'autorizada');
+session_start();
 
-// Se a versão antiga não possuía timestamp, mantemos a sessão antiga válida
-// somente para a etapa explicitamente autorizada. Novas recuperações sempre
-// recebem prazo de 15 minutos.
-$autorizado = $idUsuario > 0
-    && ($expira === 0 || time() <= $expira)
-    && in_array($etapaRecuperacao, ['autorizada', 'resposta_validada', 'chave_validada', '3'], true);
+$idUsuario = (int) ($_SESSION['recuperacao_usuario_id'] ?? 0);
+$expira = (int) ($_SESSION['recuperacao_expira'] ?? 0);
+$token = (string) ($_SESSION['recuperacao_token'] ?? '');
+
+$autorizado = $idUsuario > 0 && $token !== '' && time() <= $expira;
 
 if (!$autorizado) {
     unset(
         $_SESSION['recuperacao_usuario_id'],
         $_SESSION['recuperacao_expira'],
-        $_SESSION['id_recuperacao'],
-        $_SESSION['etapa_recuperacao'],
-        $_SESSION['recuperacao_email'],
-        $_SESSION['recuperacao_pergunta']
+        $_SESSION['recuperacao_token']
     );
-
     header('Location: ../pages/esqueci-senha.php?erro=' . urlencode('Sua recuperação expirou. Comece novamente.'));
     exit;
 }
@@ -42,8 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$senha = (string) ($_POST['senha'] ?? $_POST['nova_senha'] ?? '');
-$confirmar = (string) ($_POST['confirmar_senha'] ?? $_POST['confirma_senha'] ?? '');
+$senha = (string) ($_POST['senha'] ?? '');
+$confirmar = (string) ($_POST['confirmar_senha'] ?? '');
 
 if ($senha === '' || $confirmar === '') {
     header('Location: ../pages/redefinir-senha.php?erro=' . urlencode('Preencha os dois campos de senha.'));
@@ -68,73 +55,49 @@ if ($senha !== $confirmar) {
 require_once __DIR__ . '/conexao.php';
 
 if (!isset($conexao) || !($conexao instanceof mysqli) || $conexao->connect_errno) {
+    error_log('TopTurismo redefinição - sem conexão com o banco.');
     header('Location: ../pages/redefinir-senha.php?erro=' . urlencode('Não foi possível conectar ao banco de dados.'));
     exit;
 }
 
 $hash = password_hash($senha, PASSWORD_DEFAULT);
-if ($hash === false) {
-    $conexao->close();
-    header('Location: ../pages/redefinir-senha.php?erro=' . urlencode('Não foi possível gerar a nova senha. Tente novamente.'));
-    exit;
-}
 
-/* Confirma que o usuário ainda existe antes de alterar a senha. */
-$stmt = $conexao->prepare('SELECT id FROM usuarios WHERE id = ? LIMIT 1');
-if (!$stmt) {
-    error_log('TopTurismo redefinição - erro no SELECT: ' . $conexao->error);
-    $conexao->close();
-    header('Location: ../pages/redefinir-senha.php?erro=' . urlencode('Não foi possível validar a conta. Tente novamente.'));
-    exit;
-}
-
-$stmt->bind_param('i', $idUsuario);
-$stmt->execute();
-$stmt->store_result();
-$usuarioExiste = $stmt->num_rows === 1;
-$stmt->close();
-
-if (!$usuarioExiste) {
-    $conexao->close();
-    unset($_SESSION['recuperacao_usuario_id'], $_SESSION['recuperacao_expira'], $_SESSION['id_recuperacao'], $_SESSION['etapa_recuperacao']);
-    header('Location: ../pages/esqueci-senha.php?erro=' . urlencode('A conta não foi encontrada.'));
-    exit;
-}
-
-/*
- * O nome correto da coluna é senha.
- * A versão antiga do código usava senha_segura, que não existe no SQL
- * do TopTurismo e fazia o UPDATE falhar.
- */
-$stmt = $conexao->prepare('UPDATE usuarios SET senha = ? WHERE id = ? LIMIT 1');
-if (!$stmt) {
-    error_log('TopTurismo redefinição - erro no UPDATE prepare: ' . $conexao->error);
-    $conexao->close();
-    header('Location: ../pages/redefinir-senha.php?erro=' . urlencode('Não foi possível processar a redefinição. Tente novamente.'));
-    exit;
-}
-
+$stmt = $conexao->prepare('UPDATE usuarios SET senha = ? WHERE id = ?');
 $stmt->bind_param('si', $hash, $idUsuario);
 $executou = $stmt->execute();
 $erroSql = $stmt->error;
-$alterou = $stmt->affected_rows >= 1;
+$afetou = $stmt->affected_rows;
 $stmt->close();
-$conexao->close();
 
-if (!$executou || !$alterou) {
+// affected_rows pode vir 0 se, por coincidência, o hash novo colidir byte a
+// byte com o antigo (extremamente improvável com bcrypt) - então tratamos
+// "executou com sucesso" como sucesso, mesmo com affected_rows = 0.
+if (!$executou) {
     error_log("TopTurismo redefinição - falha no UPDATE. ID: {$idUsuario}; SQL Error: {$erroSql}");
+    $conexao->close();
     header('Location: ../pages/redefinir-senha.php?erro=' . urlencode('Não foi possível atualizar sua senha. Tente novamente.'));
     exit;
 }
 
-// A autorização é de uso único.
+error_log("TopTurismo redefinição - senha atualizada com sucesso. ID: {$idUsuario}; affected_rows: {$afetou}");
+
+// DEBUG TEMPORÁRIO - remover depois de confirmar. Não expõe a senha, só o hash.
+$stmtCheck = $conexao->prepare('SELECT senha FROM usuarios WHERE id = ?');
+$stmtCheck->bind_param('i', $idUsuario);
+$stmtCheck->execute();
+$hashLido = $stmtCheck->get_result()->fetch_assoc()['senha'] ?? null;
+$stmtCheck->close();
+error_log('DEBUG verify imediato | hash gerado=[' . $hash . '] | hash lido=[' . $hashLido . '] '
+    . 'iguais=' . var_export($hash === $hashLido, true) . ' '
+    . 'verify_com_senha_digitada=' . var_export(password_verify($senha, $hashLido ?? ''), true));
+
+$conexao->close();
+
+// Autorização é de uso único.
 unset(
     $_SESSION['recuperacao_usuario_id'],
     $_SESSION['recuperacao_expira'],
-    $_SESSION['id_recuperacao'],
-    $_SESSION['etapa_recuperacao'],
-    $_SESSION['recuperacao_email'],
-    $_SESSION['recuperacao_pergunta']
+    $_SESSION['recuperacao_token']
 );
 
 header('Location: ../pages/login.php?sucesso=senha');

@@ -271,6 +271,6 @@ $limiteData = date("Y-m-d", strtotime("+9 months"));
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../assets/js/validacoes.js"></script>
 <script src="../assets/js/script.js?v=20260829-final"></script>
-<script src="../assets/js/reservas.js?v=20260830-clean"></script>
+<script src="../assets/js/reservas.js?v=20260904-destino-fix"></script>
 </body>
 </html>

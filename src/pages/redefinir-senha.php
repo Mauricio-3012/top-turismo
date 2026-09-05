@@ -1,16 +1,14 @@
 <?php
 session_start();
 
-$idRecuperacao = (int) ($_SESSION["recuperacao_usuario_id"] ?? $_SESSION["id_recuperacao"] ?? 0);
+$idRecuperacao = (int) ($_SESSION["recuperacao_usuario_id"] ?? 0);
 $expiraRecuperacao = (int) ($_SESSION["recuperacao_expira"] ?? 0);
-$etapaRecuperacao = (string) ($_SESSION["etapa_recuperacao"] ?? "autorizada");
+$tokenRecuperacao = (string) ($_SESSION["recuperacao_token"] ?? "");
 
-$autorizado = $idRecuperacao > 0
-    && ($expiraRecuperacao === 0 || time() <= $expiraRecuperacao)
-    && in_array($etapaRecuperacao, ["autorizada", "resposta_validada", "chave_validada", "3"], true);
+$autorizado = $idRecuperacao > 0 && $tokenRecuperacao !== "" && time() <= $expiraRecuperacao;
 
 if (!$autorizado) {
-    header("Location: ./esqueci-senha.php?erro=Sua recuperação expirou. Comece novamente.");
+    header("Location: ./esqueci-senha.php?erro=" . urlencode("Sua recuperação expirou. Comece novamente."));
     exit;
 }
 

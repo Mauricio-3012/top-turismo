@@ -296,7 +296,7 @@ foreach ($destinos as $destino):
                                     <div class="card-overlay">
                                         <div class="overlay-conteudo">
                                             <p class="descricao-destino"><?= $descricao ?></p>
-                                            <button class="btn btn-custom btn-ver-mais p-4" data-destino="<?= $nome ?>" type="button">
+                                            <button class="btn btn-custom btn-ver-mais p-4" data-destino="<?= (int)$destino['id_destino'] ?>" type="button">
                                                 <i class="bi bi-info-circle"></i> Mais Detalhes
                                             </button>
                                         </div>
@@ -332,7 +332,7 @@ foreach ($destinos as $destino):
                                 </p>
                             </div>
                             <div class="col-lg-5 text-lg-end text-center">
-                                <button class="btn-custom btn btn-lg text-white px-5 py-3 btn-reservar" data-destino="">
+                                <button class="btn-custom btn btn-lg text-white px-5 py-3 btn-reservar" data-id-destino="">
                                     <i class="bi bi-calendar-check me-2"></i>Fazer uma reserva
                                 </button>
                                 <p class="small text-muted mt-3 mb-0">

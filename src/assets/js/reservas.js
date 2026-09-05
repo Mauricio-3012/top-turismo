@@ -305,7 +305,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const botao = $("finalizarPagamento");
         botao.disabled = true;
         botao.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processando...';
-        const dados = { id_destino: Number($("destino").value), data_viagem: $("dataIda").value, data_volta: $("tipoViagem").value === "ida_volta" ? $("dataVolta").value : null, tipo_viagem: $("tipoViagem").value, quantidade_passageiros: Number($("passageiros").value), transporte: $("transporte").value, classe: $("classe").value, assento: assentos.join(", "), pagamento, parcelas: pagamento === "Cartão" ? Number($("parcelas").value) : 1 };
+        const idDestino = Number($("destino").value);
+        if (!Number.isInteger(idDestino) || idDestino <= 0) {
+            $("erroPagamento").textContent = "Selecione um destino válido antes de finalizar a reserva.";
+            return;
+        }
+        const dados = { id_destino: idDestino, data_viagem: $("dataIda").value, data_volta: $("tipoViagem").value === "ida_volta" ? $("dataVolta").value : null, tipo_viagem: $("tipoViagem").value, quantidade_passageiros: Number($("passageiros").value), transporte: $("transporte").value, classe: $("classe").value, assento: assentos.join(", "), pagamento, parcelas: pagamento === "Cartão" ? Number($("parcelas").value) : 1 };
 
         try {
             const resposta = await fetch("../php/criar-reserva.php", { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(dados) });
@@ -345,7 +350,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // *permite abrir a reserva já com o destino escolhido no card*
     const destinoInicial = new URLSearchParams(location.search).get("destino");
-    if (destinoInicial) $("destino").value = destinoInicial;
+    if (destinoInicial) {
+        const opcaoInicial = [...$("destino").options].find(opcao => String(opcao.value) === String(destinoInicial));
+        if (opcaoInicial) $("destino").value = opcaoInicial.value;
+    }
     $("dataIda").min = hoje;
     $("dataIda").max = limite;
     $("dataVolta").min = hoje;

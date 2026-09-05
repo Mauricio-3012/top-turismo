@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   botoesReservar.forEach((botao) => {
     botao.addEventListener("click", () => {
-      const destino = botao.dataset.destino || "";
+      const destino = botao.dataset.idDestino || botao.dataset.destino || "";
       if (logado) {
         const query = destino ? "?destino=" + encodeURIComponent(destino) : "";
         window.location.href = (window.TOP_TURISMO_BASE || "../") + "src/pages/reservas.php" + query;
@@ -203,10 +203,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   btnReservarModal?.addEventListener("click", () => {
-    const destino = destinoModalAtual;
+    const destino = String(destinoModalAtual || "").trim();
     const logado = document.body.dataset.logado === "1";
-    if (logado) {
-      window.location.href = `${window.TOP_TURISMO_BASE || "../"}src/pages/reservas.php?destino=${encodeURIComponent(destino)}`;
+    if (logado && /^\d+$/.test(destino) && Number(destino) > 0) {
+      const params = new URLSearchParams({ destino });
+      window.location.href = `${window.TOP_TURISMO_BASE || "../"}src/pages/reservas.php?${params.toString()}`;
     } else {
       modal.hide();
       const loginModalElement = document.getElementById("loginModal");
