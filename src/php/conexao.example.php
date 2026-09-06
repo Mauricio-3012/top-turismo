@@ -6,7 +6,7 @@
  * Não envie o conexao.php para o GitHub.
  */
 
-$servidor = '[nome do servidor]'; // Servidor do banco. Geralmente "localhost".
+$servidor = '[nome do servidor]'; // Servidor do banco. Geralmente "127.0.0.1".
 $usuario = '[nome do usuário]'; // Usuário do banco. Geralmente "root" no XAMPP.
 $senha = '[senha do banco]'; // Senha do banco.
 $banco = '[nome do banco]'; // Nome do banco de dados.

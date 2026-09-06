@@ -95,7 +95,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if ($erro === "") {
             $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
-            $resposta_hash = password_hash(mb_strtolower($resposta_recuperacao, 'UTF-8'), PASSWORD_DEFAULT);
+            // Normaliza a resposta antes de criar o hash, igual ao fluxo de recuperação.
+            $resposta_normalizada = mb_strtolower(preg_replace('/\s+/', ' ', trim($resposta_recuperacao)), 'UTF-8');
+            $resposta_hash = password_hash($resposta_normalizada, PASSWORD_DEFAULT);
 
             $sql = "INSERT INTO usuarios
                 (nome, cpf, data_nascimento, genero, email, telefone, cidade,

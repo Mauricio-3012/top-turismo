@@ -1,125 +1,167 @@
 <?php
-/**
- * TopTurismo - início da recuperação de senha (e-mail + pergunta de segurança).
- *
- * Fluxo:
- *   1) etapa=email     -> usuário informa o e-mail
- *   2) etapa=pergunta   -> usuário responde a pergunta de segurança cadastrada
- *   3) sucesso          -> autoriza a sessão a acessar redefinir-senha.php
- */
-
+// Recuperação de senha do TopTurismo.
+// O fluxo usa um token salvo no banco, e não depende da sessão do navegador.
 session_start();
-
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../pages/esqueci-senha.php');
-    exit;
-}
-
 require_once __DIR__ . '/conexao.php';
 
-if (!isset($conexao) || !($conexao instanceof mysqli) || $conexao->connect_errno) {
-    error_log('TopTurismo recuperação - sem conexão com o banco.');
-    header('Location: ../pages/esqueci-senha.php?erro=' . urlencode('Não foi possível conectar ao banco de dados.'));
+function redirecionar(string $url): void
+{
+    header('Location: ' . $url);
     exit;
 }
 
-$etapa = $_POST['etapa'] ?? 'email';
+function respostaNormalizada(string $valor): string
+{
+    $valor = trim($valor);
+    $valor = preg_replace('/\s+/', ' ', $valor) ?? $valor;
+    return mb_strtolower($valor, 'UTF-8');
+}
 
-/* ---------- Etapa 1: recebe o e-mail ---------- */
-if ($etapa === 'email') {
-    // Começa uma recuperação nova: limpa qualquer tentativa anterior.
-    session_unset_recuperacao();
+// Garante que a tabela usada pela recuperação exista mesmo se o banco antigo
+// ainda estiver sendo usado. Isso evita depender de uma migração manual.
+$criarTabela = $conexao->query("\n    CREATE TABLE IF NOT EXISTS recuperacoes_senha (\n        id INT NOT NULL AUTO_INCREMENT,\n        id_usuario INT NOT NULL,\n        token_hash CHAR(64) NOT NULL,\n        expira_em DATETIME NOT NULL,\n        verificado TINYINT(1) NOT NULL DEFAULT 0,\n        criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n        PRIMARY KEY (id),\n        UNIQUE KEY uk_recuperacao_token (token_hash),\n        KEY idx_recuperacao_usuario (id_usuario),\n        CONSTRAINT fk_recuperacao_usuario\n            FOREIGN KEY (id_usuario) REFERENCES usuarios(id)\n            ON DELETE CASCADE ON UPDATE CASCADE\n    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci\n");
 
-    $email = mb_strtolower(trim($_POST['email'] ?? ''), 'UTF-8');
+if (!$criarTabela) {
+    error_log('TopTurismo recuperação - erro ao criar tabela: ' . $conexao->error);
+    redirecionar('../pages/esqueci-senha.php?erro=' . urlencode('Não foi possível iniciar a recuperação.'));
+}
+
+$acao = (string) ($_POST['acao'] ?? '');
+
+// =========================================================
+// ETAPA 1: recebe o e-mail
+// =========================================================
+if ($acao === 'email') {
+    $email = mb_strtolower(trim((string) ($_POST['email'] ?? '')), 'UTF-8');
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $conexao->close();
-        header('Location: ../pages/esqueci-senha.php?erro=' . urlencode('E-mail inválido.'));
-        exit;
+        redirecionar('../pages/esqueci-senha.php?erro=' . urlencode('Digite um e-mail válido.'));
     }
 
     $stmt = $conexao->prepare(
-        'SELECT id, pergunta_recuperacao, resposta_recuperacao_hash FROM usuarios WHERE email = ? LIMIT 1'
+        'SELECT id, pergunta_recuperacao, resposta_recuperacao_hash
+         FROM usuarios WHERE email = ? LIMIT 1'
     );
+
+    if (!$stmt) {
+        error_log('TopTurismo recuperação - SELECT: ' . $conexao->error);
+        redirecionar('../pages/esqueci-senha.php?erro=' . urlencode('Não foi possível consultar a conta.'));
+    }
+
     $stmt->bind_param('s', $email);
     $stmt->execute();
-    $usuario = $stmt->get_result()->fetch_assoc();
+    $stmt->bind_result($idUsuario, $pergunta, $respostaHash);
+    $encontrou = $stmt->fetch();
+    $stmt->close();
+
+    if (!$encontrou || (int) $idUsuario <= 0 || !$pergunta || !$respostaHash) {
+        $conexao->close();
+        redirecionar('../pages/esqueci-senha.php?erro=' . urlencode('Não encontramos uma conta com esse e-mail.'));
+    }
+
+    // Um token novo invalida recuperações anteriores daquele usuário.
+    $stmt = $conexao->prepare('DELETE FROM recuperacoes_senha WHERE id_usuario = ?');
+    if ($stmt) {
+        $id = (int) $idUsuario;
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    $token = bin2hex(random_bytes(32));
+    $tokenHash = hash('sha256', $token);
+    $expiraEm = date('Y-m-d H:i:s', time() + (30 * 60));
+
+    $stmt = $conexao->prepare(
+        'INSERT INTO recuperacoes_senha (id_usuario, token_hash, expira_em, verificado)
+         VALUES (?, ?, ?, 0)'
+    );
+
+    if (!$stmt) {
+        error_log('TopTurismo recuperação - INSERT: ' . $conexao->error);
+        $conexao->close();
+        redirecionar('../pages/esqueci-senha.php?erro=' . urlencode('Não foi possível iniciar a recuperação.'));
+    }
+
+    $id = (int) $idUsuario;
+    $stmt->bind_param('iss', $id, $tokenHash, $expiraEm);
+    $ok = $stmt->execute();
     $stmt->close();
     $conexao->close();
 
-    if (!$usuario || empty($usuario['pergunta_recuperacao']) || empty($usuario['resposta_recuperacao_hash'])) {
-        // Mensagem genérica de propósito: não revela se o e-mail existe ou não.
-        error_log('TopTurismo recuperação - e-mail sem conta/pergunta cadastrada.');
-        header('Location: ../pages/esqueci-senha.php?erro=' . urlencode('Não encontramos uma conta com esse e-mail.'));
-        exit;
+    if (!$ok) {
+        redirecionar('../pages/esqueci-senha.php?erro=' . urlencode('Não foi possível iniciar a recuperação.'));
     }
 
-    $_SESSION['recuperacao_email'] = $email;
-    $_SESSION['recuperacao_pergunta'] = $usuario['pergunta_recuperacao'];
-
-    header('Location: ../pages/esqueci-senha.php?etapa=pergunta');
-    exit;
+    redirecionar('../pages/esqueci-senha.php?etapa=pergunta&token=' . urlencode($token));
 }
 
-/* ---------- Etapa 2: valida a resposta da pergunta de segurança ---------- */
-if ($etapa === 'pergunta') {
-    $email = $_SESSION['recuperacao_email'] ?? '';
-    $resposta = trim($_POST['resposta_recuperacao'] ?? '');
+// =========================================================
+// ETAPA 2: valida a pergunta de segurança
+// =========================================================
+if ($acao === 'resposta') {
+    $token = trim((string) ($_POST['token'] ?? ''));
+    $resposta = respostaNormalizada((string) ($_POST['resposta_recuperacao'] ?? ''));
 
-    if ($email === '' || $resposta === '') {
+    if (!preg_match('/^[a-f0-9]{64}$/', $token)) {
         $conexao->close();
-        header('Location: ../pages/esqueci-senha.php?etapa=pergunta&erro=' . urlencode('Informe a resposta da pergunta.'));
-        exit;
+        redirecionar('../pages/esqueci-senha.php?erro=' . urlencode('Sua recuperação expirou. Comece novamente.'));
     }
 
+    if ($resposta === '') {
+        $conexao->close();
+        redirecionar('../pages/esqueci-senha.php?etapa=pergunta&token=' . urlencode($token) . '&erro=' . urlencode('Digite a resposta da pergunta.'));
+    }
+
+    $tokenHash = hash('sha256', $token);
+
     $stmt = $conexao->prepare(
-        'SELECT id, resposta_recuperacao_hash FROM usuarios WHERE email = ? LIMIT 1'
+        'SELECT r.id, r.id_usuario, r.expira_em, u.email, u.pergunta_recuperacao, u.resposta_recuperacao_hash
+         FROM recuperacoes_senha r
+         INNER JOIN usuarios u ON u.id = r.id_usuario
+         WHERE r.token_hash = ? LIMIT 1'
     );
-    $stmt->bind_param('s', $email);
+
+    if (!$stmt) {
+        error_log('TopTurismo recuperação - SELECT token: ' . $conexao->error);
+        redirecionar('../pages/esqueci-senha.php?erro=' . urlencode('Não foi possível validar a recuperação.'));
+    }
+
+    $stmt->bind_param('s', $tokenHash);
     $stmt->execute();
-    $usuario = $stmt->get_result()->fetch_assoc();
+    $stmt->bind_result($idRecuperacao, $idUsuario, $expiraEm, $email, $pergunta, $respostaHash);
+    $encontrou = $stmt->fetch();
+    $stmt->close();
+
+    if (!$encontrou || strtotime($expiraEm) < time()) {
+        $conexao->close();
+        redirecionar('../pages/esqueci-senha.php?erro=' . urlencode('Sua recuperação expirou. Comece novamente.'));
+    }
+
+    if (!password_verify($resposta, (string) $respostaHash)) {
+        $conexao->close();
+        redirecionar('../pages/esqueci-senha.php?etapa=pergunta&token=' . urlencode($token) . '&erro=' . urlencode('Resposta incorreta. Tente novamente.'));
+    }
+
+    $stmt = $conexao->prepare('UPDATE recuperacoes_senha SET verificado = 1 WHERE id = ?');
+    if (!$stmt) {
+        error_log('TopTurismo recuperação - UPDATE verificado: ' . $conexao->error);
+        $conexao->close();
+        redirecionar('../pages/esqueci-senha.php?etapa=pergunta&token=' . urlencode($token) . '&erro=' . urlencode('Não foi possível continuar.'));
+    }
+
+    $id = (int) $idRecuperacao;
+    $stmt->bind_param('i', $id);
+    $ok = $stmt->execute();
     $stmt->close();
     $conexao->close();
 
-    $respostaNormalizada = mb_strtolower(preg_replace('/\s+/', ' ', $resposta), 'UTF-8');
-
-    if (
-        !$usuario
-        || empty($usuario['resposta_recuperacao_hash'])
-        || !password_verify($respostaNormalizada, $usuario['resposta_recuperacao_hash'])
-    ) {
-        error_log('TopTurismo recuperação - resposta incorreta para o usuário id=' . ($usuario['id'] ?? '?'));
-        header('Location: ../pages/esqueci-senha.php?etapa=pergunta&erro=' . urlencode('Resposta incorreta.'));
-        exit;
+    if (!$ok) {
+        redirecionar('../pages/esqueci-senha.php?etapa=pergunta&token=' . urlencode($token) . '&erro=' . urlencode('Não foi possível continuar.'));
     }
 
-    // Autoriza a troca de senha por 15 minutos, com um token de uso único.
-    session_regenerate_id(true);
-    $_SESSION['recuperacao_usuario_id'] = (int) $usuario['id'];
-    $_SESSION['recuperacao_expira'] = time() + 900;
-    $_SESSION['recuperacao_token'] = bin2hex(random_bytes(16));
-    unset($_SESSION['recuperacao_email'], $_SESSION['recuperacao_pergunta']);
-
-    error_log('TopTurismo recuperação - autorizado id=' . $usuario['id'] . ' até ' . date('H:i:s', $_SESSION['recuperacao_expira']));
-
-    header('Location: ../pages/redefinir-senha.php');
-    exit;
+    redirecionar('../pages/redefinir-senha.php?token=' . urlencode($token));
 }
 
 $conexao->close();
-header('Location: ../pages/esqueci-senha.php');
-exit;
-
-/**
- * Remove todas as variáveis de sessão usadas pelo fluxo de recuperação.
- */
-function session_unset_recuperacao(): void
-{
-    unset(
-        $_SESSION['recuperacao_usuario_id'],
-        $_SESSION['recuperacao_expira'],
-        $_SESSION['recuperacao_token'],
-        $_SESSION['recuperacao_email'],
-        $_SESSION['recuperacao_pergunta']
-    );
-}
+redirecionar('../pages/esqueci-senha.php?erro=' . urlencode('Etapa de recuperação inválida.'));

@@ -67,8 +67,10 @@
             if (!erro || !mensagemErro) return;
 
             const mensagens = {
-                "1": "Não encontramos seu usuário. Verifique seus dados e tente novamente.",
+                "1": "Não encontramos um usuário com esse e-mail.",
                 "2": "Preencha o e-mail e a senha para continuar.",
+                "3": "Não foi possível consultar o banco de dados. Verifique a conexão.",
+                "4": "Senha incorreta. Verifique sua senha e tente novamente.",
             };
 
             mensagemErro.textContent = mensagens[erro] || "Não foi possível fazer login. Tente novamente.";
