@@ -6,11 +6,11 @@
  * Não envie o conexao.php para o GitHub.
  */
 
-$servidor = '[nome do servidor]'; // Servidor do banco. Geralmente "127.0.0.1".
-$usuario = '[nome do usuário]'; // Usuário do banco. Geralmente "root" no XAMPP.
+$servidor = '[nome do servidor]'; // Servidor do banco. Geralmente "localhost".
+$usuario = '[nome do usuário]'; // Usuário do banco. Geralmente "root".
 $senha = '[senha do banco]'; // Senha do banco.
 $banco = '[nome do banco]'; // Nome do banco de dados.
-$porta = '[porta do MySQL]'; // Porta do MySQL. Geralmente 3306.
+$porta = '[porta do MySQL]'; // Porta do MySQL.
 
 mysqli_report(MYSQLI_REPORT_OFF);
 
