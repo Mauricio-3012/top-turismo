@@ -19,21 +19,11 @@
                 </ul>
             </div>
 
-            <div class="d-flex align-items-center ms-auto gap-3">
-                <div class="dropdown">
-                    <a href="#" class="text-white fs-4 user-icon dropdown-toggle" id="userAuthMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person-circle"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end" id="userAuthMenuList">
-                        <li><a class="dropdown-item" href="../dashboard.php"><i class="bi bi-person-fill me-2"></i>Meu Perfil</a></li>
-                        <li><a class="dropdown-item" href="dashboard.php"><i class="bi bi-speedometer2 me-2"></i>Gerenciar destinos</a></li>
-                        <li><a class="dropdown-item" href="../../php/logout.php"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
-                    </ul>
-                </div>
-
-                <div class="dropdown">
-                    <button class="btn btn-light dropdown-toggle" type="button" id="temaMenu" data-bs-toggle="dropdown">
-                        <i class="bi bi-circle-half"></i> Tema
+            <div class="d-flex align-items-center ms-auto gap-2 admin-navbar-actions">
+                <!-- No mobile, o perfil fica somente dentro do menu hamburger. -->
+                <div class="dropdown admin-theme-dropdown">
+                    <button class="btn btn-light dropdown-toggle admin-theme-button" type="button" id="temaMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-circle-half"></i><span class="admin-theme-label"> Tema</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" onclick="setTheme('light')"><i class="bi bi-sun-fill me-2"></i>Claro</a></li>
@@ -41,7 +31,7 @@
                     </ul>
                 </div>
 
-                <button class="btn text-white d-lg-none" type="button" data-bs-target="#menuMobile" data-bs-toggle="offcanvas" aria-controls="menuMobile">
+                <button class="btn text-white d-lg-none admin-menu-button" type="button" data-bs-target="#menuMobile" data-bs-toggle="offcanvas" aria-controls="menuMobile" aria-label="Abrir menu">
                     <i class="bi bi-list fs-2"></i>
                 </button>
             </div>

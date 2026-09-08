@@ -13,6 +13,23 @@ $resultado = $conexao->query(
 
 $destinos = $resultado ? $resultado->fetch_all(MYSQLI_ASSOC) : [];
 $total = count($destinos);
+
+// *carrega todas as reservas para o administrador acompanhar pagamentos*
+$resultadoReservas = $conexao->query(
+    "SELECT
+        r.id_reserva, r.id_usuario, r.id_destino, r.data_viagem, r.data_volta,
+        r.quantidade_passageiros, r.transporte, r.classe, r.valor_total,
+        r.status, r.status_pagamento, r.valor_reembolso, r.data_cancelamento, r.data_reembolso,
+        u.nome AS nome_usuario, u.email AS email_usuario,
+        d.nome_destino, d.cidade_destino, d.pais_destino
+     FROM reservas r
+     INNER JOIN usuarios u ON u.id = r.id_usuario
+     INNER JOIN destinos d ON d.id_destino = r.id_destino
+     ORDER BY r.id_reserva DESC"
+);
+$reservasAdmin = $resultadoReservas ? $resultadoReservas->fetch_all(MYSQLI_ASSOC) : [];
+$totalReservas = count($reservasAdmin);
+$pendentesPagamento = count(array_filter($reservasAdmin, fn($r) => strtolower((string)$r['status_pagamento']) === 'pendente'));
 $conexao->close();
 
 $sucesso = trim($_GET['sucesso'] ?? '');
@@ -62,7 +79,7 @@ $erro = trim($_GET['erro'] ?? '');
             <?php endif; ?>
 
             <div class="row g-4 mb-4">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="admin-card">
                         <div class="admin-stat">
                             <div class="admin-stat-icon"><i class="bi bi-geo-alt"></i></div>
@@ -73,7 +90,7 @@ $erro = trim($_GET['erro'] ?? '');
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="admin-card">
                         <div class="admin-stat">
                             <div class="admin-stat-icon"><i class="bi bi-person-badge"></i></div>
@@ -84,7 +101,7 @@ $erro = trim($_GET['erro'] ?? '');
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="admin-card">
                         <div class="admin-stat">
                             <div class="admin-stat-icon"><i class="bi bi-images"></i></div>
@@ -95,6 +112,99 @@ $erro = trim($_GET['erro'] ?? '');
                         </div>
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <div class="admin-card">
+                        <div class="admin-stat">
+                            <div class="admin-stat-icon"><i class="bi bi-calendar-check"></i></div>
+                            <div>
+                                <div class="text-muted small">Reservas</div>
+                                <strong class="fs-3"><?= $totalReservas ?></strong>
+                                <?php if ($pendentesPagamento > 0): ?>
+                                    <div class="small text-warning fw-semibold"><?= $pendentesPagamento ?> pendente(s)</div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-card mb-4" id="reservas">
+                <div class="d-flex justify-content-between align-items-center mb-3 gap-2 flex-wrap">
+                    <div>
+                        <h2 class="h4 mb-0">Reservas dos usuários</h2>
+                        <p class="text-muted mb-0 small">Consulte as reservas e atualize o status do pagamento. Tudo funciona como simulação.</p>
+                    </div>
+                    <span class="badge text-bg-secondary"><?= $totalReservas ?> reservas</span>
+                </div>
+
+                <?php if (!$reservasAdmin): ?>
+                    <div class="admin-empty-state">
+                        <i class="bi bi-calendar-x"></i>
+                        <p class="mb-0">Ainda não existem reservas cadastradas.</p>
+                    </div>
+                <?php else: ?>
+                    <div class="table-responsive">
+                        <table class="table admin-table align-middle admin-reservas-table">
+                            <thead>
+                                <tr>
+                                    <th>Reserva</th>
+                                    <th>Usuário</th>
+                                    <th>Destino</th>
+                                    <th>Viagem</th>
+                                    <th>Valor</th>
+                                    <th>Reserva</th>
+                                    <th>Pagamento</th>
+                                    <th class="text-end">Atualizar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($reservasAdmin as $reserva): ?>
+                                    <?php
+                                        $statusReserva = strtolower((string)($reserva['status'] ?? 'confirmada'));
+                                        $statusPagamento = strtolower((string)($reserva['status_pagamento'] ?? 'pendente'));
+                                        $statusReservaLabel = $statusReserva === 'cancelada' ? 'Cancelada' : 'Confirmada';
+                                        $statusPagamentoLabel = match ($statusPagamento) {
+                                            'pago' => 'Pago',
+                                            'reembolsado' => 'Reembolsado',
+                                            default => 'Pendente'
+                                        };
+                                    ?>
+                                    <tr>
+                                        <td data-label="Reserva"><strong>#<?= (int)$reserva['id_reserva'] ?></strong></td>
+                                        <td data-label="Usuário">
+                                            <strong><?= htmlspecialchars($reserva['nome_usuario'] ?? 'Usuário') ?></strong>
+                                            <small class="d-block text-muted"><?= htmlspecialchars($reserva['email_usuario'] ?? '') ?></small>
+                                        </td>
+                                        <td data-label="Destino">
+                                            <strong><?= htmlspecialchars($reserva['nome_destino'] ?? 'Destino') ?></strong>
+                                            <small class="d-block text-muted"><?= htmlspecialchars(($reserva['cidade_destino'] ?? '') . (!empty($reserva['pais_destino']) ? ', ' . $reserva['pais_destino'] : '')) ?></small>
+                                        </td>
+                                        <td data-label="Viagem">
+                                            <?= date('d/m/Y', strtotime($reserva['data_viagem'])) ?>
+                                            <?php if (!empty($reserva['data_volta'])): ?>
+                                                <small class="d-block text-muted">volta: <?= date('d/m/Y', strtotime($reserva['data_volta'])) ?></small>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td data-label="Valor"><strong>R$ <?= number_format((float)$reserva['valor_total'], 2, ',', '.') ?></strong></td>
+                                        <td data-label="Reserva"><span class="admin-status admin-status-<?= $statusReserva === 'cancelada' ? 'cancelada' : 'confirmada' ?>"><?= $statusReservaLabel ?></span></td>
+                                        <td data-label="Pagamento"><span class="admin-status admin-status-pagamento-<?= htmlspecialchars($statusPagamento) ?>"><?= $statusPagamentoLabel ?></span></td>
+                                        <td data-label="Atualizar">
+                                            <form method="post" action="../../php/admin/atualizar-pagamento.php" class="admin-payment-form">
+                                                <input type="hidden" name="id_reserva" value="<?= (int)$reserva['id_reserva'] ?>">
+                                                <select name="status_pagamento" class="form-select form-select-sm" aria-label="Status do pagamento da reserva #<?= (int)$reserva['id_reserva'] ?>">
+                                                    <option value="pendente" <?= $statusPagamento === 'pendente' ? 'selected' : '' ?>>Pendente</option>
+                                                    <option value="pago" <?= $statusPagamento === 'pago' ? 'selected' : '' ?>>Pago</option>
+                                                    <option value="reembolsado" <?= $statusPagamento === 'reembolsado' ? 'selected' : '' ?>>Reembolsado</option>
+                                                </select>
+                                                <button type="submit" class="btn btn-sm btn-custom">Salvar</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
             </div>
 
             <div class="admin-card">

@@ -27,6 +27,7 @@ $stmtReservas = $conexao->prepare("SELECT
     r.id_reserva, r.id_destino, r.data_viagem, r.data_volta, r.tipo_viagem, r.quantidade_passageiros,
     r.transporte, r.classe, r.assento, r.tipo_assento, r.pagamento, r.parcelas, r.taxa_juros_percentual,
     r.horario_ida, r.horario_volta, r.duracao_voo_minutos, r.valor_total,
+    r.status_pagamento, r.valor_reembolso, r.data_cancelamento, r.data_reembolso,
     CASE WHEN LOWER(r.status) = 'cancelada' THEN 'cancelada' ELSE 'confirmada' END AS status,
     d.nome_destino, d.cidade_destino, d.pais_destino, d.img_destino
     FROM reservas r
@@ -139,7 +140,7 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                         </h4>
                         <?php if (isset($_GET["sucesso"]) || isset($_GET["sucesso_cancelamento"])): ?>
                             <div class="alert alert-success d-flex align-items-center gap-2" role="alert">
-                                <i class="bi bi-check-circle-fill"></i> Dados atualizados com sucesso.
+                                <i class="bi bi-check-circle-fill"></i> <?= isset($_GET['reembolso']) ? 'Reserva cancelada e reembolso simulado realizado com sucesso.' : 'Dados atualizados com sucesso.' ?>
                             </div>
                         <?php elseif (isset($_GET["erro"])): ?>
                             <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
@@ -268,10 +269,10 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                                                 <div class="col-6 col-md-3 reserva-dashboard-info-item"><span class="reserva-dashboard-info-label">Data</span><span class="reserva-dashboard-info-value"><i class="bi bi-calendar3 me-1"></i><?= date('d/m/Y', strtotime($reserva['data_viagem'])) ?></span></div>
                                                 <div class="col-6 col-md-3 reserva-dashboard-info-item"><span class="reserva-dashboard-info-label">Horário</span><span class="reserva-dashboard-info-value"><i class="bi bi-clock-fill me-1"></i><?= htmlspecialchars(substr((string)($reserva['horario_ida'] ?? ''),0,5) ?: 'Não informado', ENT_QUOTES, 'UTF-8') ?></span></div>
                                                 <div class="col-6 col-md-3 reserva-dashboard-info-item"><span class="reserva-dashboard-info-label">Passageiros</span><span class="reserva-dashboard-info-value"><i class="bi bi-people-fill me-1"></i><?= (int)$reserva['quantidade_passageiros'] ?></span></div>
-                                                <div class="col-6 col-md-3 reserva-dashboard-info-item"><span class="reserva-dashboard-info-label">Valor</span><span class="reserva-dashboard-info-value"><i class="bi bi-cash-coin me-1"></i><?= number_format((float)$reserva['valor_total'],2,',','.') ?></span></div>
+                                                <div class="col-6 col-md-3 reserva-dashboard-info-item"><span class="reserva-dashboard-info-label">Valor</span><span class="reserva-dashboard-info-value"><i class="bi bi-cash-coin me-1"></i>R$ <?= number_format((float)$reserva['valor_total'],2,',','.') ?></span></div>
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap mt-3">
-                                                <small class="text-muted">Reserva #<?= (int)$reserva['id_reserva'] ?> · <?= htmlspecialchars($reserva['transporte'] ?? '', ENT_QUOTES, 'UTF-8') ?> · <?= htmlspecialchars($reserva['classe'] ?? '', ENT_QUOTES, 'UTF-8') ?></small>
+                                                <small class="text-muted">Reserva #<?= (int)$reserva['id_reserva'] ?> · <?= htmlspecialchars($reserva['transporte'] ?? '', ENT_QUOTES, 'UTF-8') ?> · <?= htmlspecialchars($reserva['classe'] ?? '', ENT_QUOTES, 'UTF-8') ?><?php if ($statusCancelada && strtolower((string)($reserva['status_pagamento'] ?? '')) === 'reembolsado'): ?> · <span class="text-success fw-semibold">Reembolso: R$ <?= number_format((float)($reserva['valor_reembolso'] ?? 0),2,',','.') ?></span><?php endif; ?></small>
                                                 <div class="d-flex gap-2">
                                                     <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalDetalhes<?= (int)$reserva['id_reserva'] ?>"><i class="bi bi-eye me-1"></i>Detalhes</button>
                                                     <?php if ($cancelavel): ?>
@@ -299,7 +300,11 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                                                 <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Transporte</span><span class="reserva-detalhe-valor"><?= htmlspecialchars($reserva['transporte'] ?? '', ENT_QUOTES, 'UTF-8') ?></span></div>
                                                 <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Classe</span><span class="reserva-detalhe-valor"><?= htmlspecialchars($reserva['classe'] ?? '', ENT_QUOTES, 'UTF-8') ?></span></div>
                                                 <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Assento</span><span class="reserva-detalhe-valor"><?= htmlspecialchars($reserva['assento'] ?? '', ENT_QUOTES, 'UTF-8') ?> — <?= htmlspecialchars($reserva['tipo_assento'] ?? '', ENT_QUOTES, 'UTF-8') ?></span></div>
-                                                <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Pagamento</span><span class="reserva-detalhe-valor"><?= htmlspecialchars($reserva['pagamento'] ?? '', ENT_QUOTES, 'UTF-8') ?> (simulação)</span></div>
+                                                <?php $statusPagamentoUsuario = strtolower((string)($reserva['status_pagamento'] ?? 'pendente')); ?>
+                                                <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Pagamento</span><span class="reserva-detalhe-valor"><?= htmlspecialchars($reserva['pagamento'] ?? '', ENT_QUOTES, 'UTF-8') ?> (simulação) — <?= $statusPagamentoUsuario === 'reembolsado' ? 'Reembolsado' : ($statusPagamentoUsuario === 'pago' ? 'Pago' : 'Pendente') ?></span></div>
+                                                <?php if (strtolower((string)($reserva['status_pagamento'] ?? '')) === 'reembolsado' && $reserva['valor_reembolso'] !== null): ?>
+                                                    <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Reembolso</span><span class="reserva-detalhe-valor" style="color: #198754;">R$ <?= number_format((float)$reserva['valor_reembolso'],2,',','.') ?> — realizado</span></div>
+                                                <?php endif; ?>
                                                 <?php if (($reserva['pagamento'] ?? '') === 'Cartão'): ?><div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Parcelamento</span><span class="reserva-detalhe-valor"><?= (int)($reserva['parcelas'] ?? 1) ?>x · juros <?= number_format((float)($reserva['taxa_juros_percentual'] ?? 0),1,',','.') ?>%</span></div><?php endif; ?>
                                                 <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Saída</span><span class="reserva-detalhe-valor"><?= htmlspecialchars(substr((string)($reserva['horario_ida'] ?? ''),0,5) ?: 'Não informado', ENT_QUOTES, 'UTF-8') ?></span></div>
                                                 <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Chegada estimada</span><span class="reserva-detalhe-valor"><?= $chegada ?></span></div>
@@ -432,7 +437,7 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                 </div>
                 <div class="modal-body p-4">
                     <p class="mb-2">Tem certeza que deseja cancelar esta reserva?</p>
-                    <p class="text-muted small mb-0" id="cancelamentoResumo">Esta ação alterará o status da sua reserva para cancelada.</p>
+                    <p class="text-muted small mb-0" id="cancelamentoResumo">A reserva será cancelada e o valor pago será registrado como reembolso integral (simulação).</p>
                 </div>
                 <div class="modal-footer px-4">
                     <button type="button" class="btn btn-reserva-outline rounded-pill px-4" data-bs-dismiss="modal">Voltar</button>

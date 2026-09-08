@@ -350,6 +350,7 @@ $descontoPix = $pagamento === 'Pix' ? 0.05 : 0;
 $valorTotal = round($totalAntesPagamento * (1 + $taxaJuros / 100) * (1 - $descontoPix), 2);
 
 $status = 'confirmada';
+$statusPagamento = 'pago'; // pagamento é uma simulação, então a reserva já nasce como paga.
 $horarioIda = $programacao['saida'];
 $horarioVolta = $tipoViagem === 'ida_volta' ? $programacao['volta'] : null;
 $duracao = (int) $programacao['duracao'];
@@ -358,8 +359,8 @@ $sql = "INSERT INTO reservas
     (id_usuario, id_destino, data_viagem, data_volta, tipo_viagem,
      quantidade_passageiros, transporte, classe, assento, tipo_assento,
      pagamento, parcelas, taxa_juros_percentual, horario_ida, horario_volta,
-     duracao_voo_minutos, valor_total, status)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+     duracao_voo_minutos, valor_total, status, status_pagamento)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $stmt = $conexao->prepare($sql);
 if (!$stmt) {
@@ -367,7 +368,7 @@ if (!$stmt) {
 }
 
 $stmt->bind_param(
-    'iisssisssssidssids',
+    'iisssisssssidssidss',
     $idUsuario,
     $idDestino,
     $dataViagem,
@@ -385,7 +386,8 @@ $stmt->bind_param(
     $horarioVolta,
     $duracao,
     $valorTotal,
-    $status
+    $status,
+    $statusPagamento
 );
 
 if (!$stmt->execute()) {

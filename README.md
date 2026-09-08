@@ -518,3 +518,15 @@ O projeto foi desenvolvido com foco em uma aplicação web de turismo, integrand
 
 Projeto Integrador **TopTurismo**.
 
+
+## Cancelamento e reembolso simulado
+
+O TopTurismo possui pagamento apenas para fins de simulação. Ao cancelar uma reserva, o sistema:
+- altera o status da reserva para `cancelada`;
+- altera o status do pagamento para `reembolsado`;
+- registra o valor integral da reserva em `valor_reembolso`;
+- registra a data do cancelamento e do reembolso.
+
+Nenhum valor financeiro real é movimentado.
+
+Se o banco já estiver criado, execute `sql/migracao_reembolso.sql`. Se for importar o banco do zero, o `sql/topturismo.sql` já contém as novas colunas.

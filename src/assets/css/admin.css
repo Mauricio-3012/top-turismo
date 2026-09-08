@@ -402,3 +402,360 @@
         white-space: nowrap;
     }
 }
+
+
+/* =========================================================
+   ADMIN — RESERVAS E STATUS DE PAGAMENTO
+   ========================================================= */
+.admin-reservas-table {
+    min-width: 1050px;
+}
+
+@media (max-width: 767.98px) {
+    .admin-reservas-table {
+        min-width: 0;
+    }
+}
+
+.admin-payment-form {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    min-width: 205px;
+}
+
+.admin-payment-form .form-select {
+    min-width: 125px;
+}
+
+.admin-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: .78rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.admin-status-confirmada {
+    background: rgba(25, 135, 84, .12);
+    color: #198754;
+}
+
+.admin-status-cancelada {
+    background: rgba(220, 53, 69, .12);
+    color: #dc3545;
+}
+
+.admin-status-pagamento-pago {
+    background: rgba(25, 135, 84, .12);
+    color: #198754;
+}
+
+.admin-status-pagamento-pendente {
+    background: rgba(255, 193, 7, .16);
+    color: #9a6700;
+}
+
+.admin-status-pagamento-reembolsado {
+    background: rgba(13, 110, 253, .12);
+    color: #0d6efd;
+}
+
+.admin-empty-state {
+    padding: 35px 15px;
+    text-align: center;
+    color: var(--admin-muted, #6b7280);
+}
+
+.admin-empty-state i {
+    display: block;
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+@media (max-width: 767.98px) {
+    .admin-payment-form {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .admin-payment-form .form-select {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+
+/* =========================================================
+   ADMIN — CORREÇÃO DEFINITIVA DE OVERFLOW NO MOBILE
+   ========================================================= */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.admin-page,
+.admin-page > .container {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.admin-page .row,
+.admin-page .row > * {
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+@media (max-width: 767.98px) {
+    /* Evita que tabelas/elementos internos criem uma largura maior que a tela. */
+    .admin-reservas-table {
+        min-width: 0 !important;
+        width: 100% !important;
+        table-layout: fixed;
+    }
+
+    .admin-table {
+        max-width: 100%;
+    }
+
+    .admin-table tbody td,
+    .admin-table tbody td > *,
+    .admin-table tbody td strong,
+    .admin-table tbody td small {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .admin-table tbody td {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    .admin-payment-form {
+        flex-wrap: wrap;
+    }
+
+    .admin-payment-form .form-select,
+    .admin-payment-form .btn {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    /* Navbar compacta no celular: nada pode ultrapassar a viewport. */
+    header .navbar {
+        width: 100%;
+        max-width: 100vw;
+        overflow: hidden;
+    }
+
+    header .navbar > .container-fluid {
+        width: 100%;
+        max-width: 100%;
+        flex-wrap: nowrap !important;
+        min-width: 0;
+        gap: 8px;
+    }
+
+    header .navbar > .container-fluid > .d-flex:first-child {
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+    header .navbar .logo-texto {
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    header .navbar > .container-fluid > .d-flex.align-items-center.ms-auto {
+        flex: 0 0 auto;
+        min-width: 0;
+        gap: 4px !important;
+    }
+
+    header .navbar .btn-light {
+        padding: 6px 9px;
+        font-size: .82rem;
+    }
+
+    header .navbar .user-icon {
+        font-size: 1.35rem !important;
+    }
+
+    header .navbar .btn.text-white.d-lg-none {
+        padding: 3px 5px;
+        margin: 0;
+    }
+
+    /* Cards nunca podem ultrapassar a largura disponível. */
+    .admin-header-card,
+    .admin-card {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .admin-header-card .d-flex {
+        min-width: 0;
+    }
+
+    .admin-header-card h1,
+    .admin-header-card p {
+        overflow-wrap: anywhere;
+    }
+}
+
+
+/* =========================================================
+   ADMIN — CABEÇALHO MOBILE / DROPDOWNS
+   ========================================================= */
+header {
+    position: relative;
+    z-index: 1100;
+}
+
+header .navbar.fixed-top {
+    z-index: 1100;
+    overflow: visible !important;
+}
+
+header .navbar .container-fluid {
+    min-width: 0;
+    overflow: visible;
+}
+
+header .dropdown-menu {
+    z-index: 1200 !important;
+}
+
+.admin-navbar-actions,
+.admin-theme-dropdown {
+    position: relative;
+    z-index: 1201;
+}
+
+.admin-theme-button,
+.admin-menu-button {
+    flex-shrink: 0;
+}
+
+.offcanvas {
+    z-index: 1150 !important;
+}
+
+.offcanvas-backdrop {
+    z-index: 1140 !important;
+}
+
+@media (max-width: 991.98px) {
+    header .navbar {
+        padding: 10px !important;
+    }
+
+    header .navbar > .container-fluid {
+        flex-wrap: nowrap !important;
+        min-width: 0;
+    }
+
+    header .navbar > .container-fluid > .d-flex:first-child {
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+    header .navbar .logo-texto {
+        display: none;
+    }
+
+    /* O perfil não aparece no topo do celular; ele está no hamburger. */
+    header .user-icon,
+    header .navbar .user-icon,
+    header .navbar .user-icon + .dropdown-menu {
+        display: none !important;
+    }
+
+    .admin-navbar-actions {
+        flex: 0 0 auto;
+        gap: 6px !important;
+    }
+
+    .admin-theme-button {
+        width: 48px;
+        height: 40px;
+        padding: 0 !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .admin-theme-button .admin-theme-label {
+        display: none;
+    }
+
+    header .navbar .dropdown-toggle::after {
+        margin-left: 3px;
+    }
+
+    .admin-theme-dropdown .dropdown-menu {
+        position: absolute;
+        right: 0;
+        left: auto;
+        min-width: 145px;
+        margin-top: 8px;
+    }
+
+    .admin-menu-button {
+        width: 44px;
+        height: 40px;
+        padding: 0 !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Garante que o conteúdo nunca cubra o menu fixo. */
+    body > header,
+    body > header .navbar {
+        isolation: isolate;
+    }
+
+    .admin-page {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Evita que cards/tabelas criem uma camada acima do header. */
+    .admin-page .admin-card,
+    .admin-page .admin-header-card,
+    .admin-page .table-responsive {
+        position: relative;
+        z-index: 1;
+        max-width: 100%;
+    }
+
+    .admin-page .row,
+    .admin-page .container,
+    .admin-page .container-fluid {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 420px) {
+    header .navbar > .container-fluid {
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+    }
+
+    header .navbar img {
+        width: 48px;
+        height: 48px;
+    }
+
+    .admin-navbar-actions {
+        gap: 3px !important;
+    }
+}
