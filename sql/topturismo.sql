@@ -86,7 +86,11 @@ CREATE TABLE `reservas` (
   `horario_volta` time DEFAULT NULL,
   `duracao_voo_minutos` int DEFAULT NULL,
   `valor_total` decimal(10,2) NOT NULL,
-  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'confirmada'
+  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'confirmada',
+  `status_pagamento` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pendente',
+  `valor_reembolso` decimal(10,2) DEFAULT NULL,
+  `data_cancelamento` datetime DEFAULT NULL,
+  `data_reembolso` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------

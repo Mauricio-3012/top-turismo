@@ -1,8 +1,8 @@
 <?php
+// exclui um destino
 
 require_once __DIR__ . '/auth.php';
 
-// *remove o destino somente depois de confirmar que ele existe*
 
 require_once __DIR__ . '/../conexao.php';
 
@@ -49,3 +49,4 @@ if (is_dir($pasta)) @rmdir($pasta);
 
 header('Location: ../../pages/admin/dashboard.php?sucesso=Destino+excluído+com+sucesso.');
 exit;
+?>

@@ -1,4 +1,5 @@
 <?php
+// retorna os dados do usuário logado
 
 session_start();
 header("Content-Type: application/json; charset=UTF-8");

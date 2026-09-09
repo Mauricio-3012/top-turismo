@@ -1,4 +1,5 @@
 <?php
+// cadastra o usuário e salva seus dados
 
 session_start();
 $erro = "";
@@ -95,7 +96,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if ($erro === "") {
             $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
-            // Normaliza a resposta antes de criar o hash, igual ao fluxo de recuperação.
             $resposta_normalizada = mb_strtolower(preg_replace('/\s+/', ' ', trim($resposta_recuperacao)), 'UTF-8');
             $resposta_hash = password_hash($resposta_normalizada, PASSWORD_DEFAULT);
 
@@ -154,3 +154,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 header("Location: ../pages/cadastro.php");
 exit;
+?>

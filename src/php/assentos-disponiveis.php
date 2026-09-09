@@ -1,6 +1,6 @@
 <?php
+// consulta os assentos ocupados
 header("Content-Type: application/json; charset=UTF-8");
-// *retorna os assentos ocupados para impedir escolhas duplicadas*
 
 function responderAssentos(int $status, bool $sucesso, string $mensagem, array $extra = []): never
 {
@@ -65,3 +65,4 @@ $conexao->close();
 responderAssentos(200, true, "Assentos consultados.", [
     "ocupados" => array_values(array_unique($ocupados))
 ]);
+?>

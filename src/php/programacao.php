@@ -1,6 +1,6 @@
 <?php
+// retorna a programação dos destinos
 header("Content-Type: application/json; charset=UTF-8");
-// *consulta os horários da programação usada na reserva*
 require_once __DIR__ . "/programacao-dados.php";
 
 $idDestino = filter_input(INPUT_GET, "id_destino", FILTER_VALIDATE_INT);
@@ -27,3 +27,4 @@ $programacao["data_minima"] = $hoje->format("Y-m-d");
 $programacao["data_maxima"] = $maximo->format("Y-m-d");
 
 echo json_encode(["sucesso" => true, "programacao" => $programacao], JSON_UNESCAPED_UNICODE);
+?>

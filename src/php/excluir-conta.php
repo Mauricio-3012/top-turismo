@@ -1,4 +1,5 @@
 <?php
+// processa a exclusão da conta
 
 session_start();
 require_once "conexao.php";

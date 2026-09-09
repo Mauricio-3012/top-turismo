@@ -1,7 +1,7 @@
 <?php
+// protege o formulário de reservas
 session_start();
 
-// *garante que somente usuários logados possam abrir o formulário de reserva*
 if (!isset($_SESSION["usuario_id"])) {
     header("Location: login.php");
     exit;
@@ -89,7 +89,6 @@ $limiteData = date("Y-m-d", strtotime("+9 months"));
             <select id="destino" class="form-select" required>
                 <option value="">Selecione o destino</option>
 <?php foreach ($destinos as $destino):
-    // *o PHP define o horário de cada destino, inclusive os novos destinos*
     $aviao = programacaoPorId((int)$destino['id_destino'], 'Avião');
     $onibus = programacaoPorId((int)$destino['id_destino'], 'Ônibus');
 ?>

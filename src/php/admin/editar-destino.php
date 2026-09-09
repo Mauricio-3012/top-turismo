@@ -1,8 +1,8 @@
 <?php
+// atualiza um destino existente
 
 require_once __DIR__ . '/auth.php';
 
-// *recebe as alterações e atualiza somente o destino escolhido*
 
 require_once __DIR__ . '/../conexao.php';
 
@@ -69,3 +69,4 @@ $stmt->close();
 $conexao->close();
 header('Location: ../../pages/admin/dashboard.php?sucesso=Destino+atualizado+com+sucesso.');
 exit;
+?>

@@ -1,8 +1,4 @@
 <?php
-/**
- * Carrega os destinos do banco.
- * Se a conexão ainda não estiver configurada, usa os dados do SQL base.
- */
 function buscarDestinos(): array
 {
     $colunas = 'id_destino, nome_destino, descricao_destino, cidade_destino, estado_destino, pais_destino, regiao_destino, img_destino, img_destino_2, img_destino_3, preco_destino, avaliacao_destino, popularidade_destino';
@@ -31,8 +27,6 @@ function buscarDestinos(): array
             return $destinos;
         }
 
-        // Compatibilidade com bancos antigos que ainda não possuem as colunas
-        // de avaliação/popularidade/imagens extras.
         $resultadoBasico = $conexao->query(
             "SELECT id_destino, nome_destino, descricao_destino, cidade_destino,
                     estado_destino, pais_destino, regiao_destino, img_destino,
@@ -84,3 +78,4 @@ function buscarDestinosPadrao(): array
         ['id_destino'=>16,'nome_destino'=>'Porto Alegre','descricao_destino'=>'A capital gaúcha reúne tradição, gastronomia, cultura e belas áreas ao ar livre.','cidade_destino'=>'Porto Alegre','estado_destino'=>'RS','pais_destino'=>'Brasil','regiao_destino'=>'sul','img_destino'=>'assets/imagens/porto-alegre.jpg','img_destino_2'=>'assets/imagens/destinos/porto-alegre/foto-2.png','img_destino_3'=>'assets/imagens/destinos/porto-alegre/foto-3.jpg','preco_destino'=>700,'avaliacao_destino'=>4.5,'popularidade_destino'=>4],
     ];
 }
+?>

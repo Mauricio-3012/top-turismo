@@ -1,5 +1,5 @@
 <?php
-// *este menu aparece somente nas páginas protegidas do administrador*
+// monta o menu do administrador
 ?>
 <header>
     <nav class="navbar fixed-top navbar-expand-lg custom-bg p-3">

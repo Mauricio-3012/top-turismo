@@ -1,10 +1,5 @@
 <?php
-/*
- * TopTurismo - cria uma reserva.
- *
- * O navegador envia os dados em JSON e este arquivo responde sempre em JSON.
- * O banco continua sendo a fonte oficial dos destinos, preços e reservas.
- */
+// valida e salva uma nova reserva
 
 ob_start();
 session_start();
@@ -32,7 +27,6 @@ function responder(int $status, bool $sucesso, string $mensagem, array $dados = 
     exit;
 }
 
-// Impede avisos do PHP de misturarem HTML com o JSON enviado ao JavaScript.
 set_error_handler(function (int $nivel, string $mensagem, string $arquivo, int $linha): bool {
     if (!(error_reporting() & $nivel)) {
         return false;
@@ -46,7 +40,6 @@ set_exception_handler(function (Throwable $erro): void {
     responder(500, false, 'Não foi possível concluir a reserva. Verifique a conexão com o banco e a estrutura da tabela reservas.');
 });
 
-// Se acontecer um erro fatal antes do nosso tratamento, ainda devolvemos JSON.
 register_shutdown_function(function (): void {
     global $respostaEnviada;
 
@@ -84,7 +77,6 @@ if ($conexao->connect_errno) {
     responder(500, false, 'Não foi possível conectar ao banco de dados.');
 }
 
-// Não deixa o mysqli lançar mensagens HTML automaticamente.
 mysqli_report(MYSQLI_REPORT_OFF);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -153,7 +145,6 @@ if ($pagamento === 'Pix') {
     responder(400, false, 'Parcelamento inválido.');
 }
 
-// Datas
 $data = DateTime::createFromFormat('!Y-m-d', $dataViagem);
 if (!$data || $data->format('Y-m-d') !== $dataViagem) {
     responder(400, false, 'Data de viagem inválida.');
@@ -188,8 +179,6 @@ if ($tipoViagem === 'ida_volta') {
     $dataVolta = null;
 }
 
-// Destino: primeiro tenta pelo ID. Se um link antigo enviar somente o nome,
-// procura pelo nome para manter compatibilidade.
 $destino = null;
 
 if ($idDestino) {
@@ -240,7 +229,6 @@ if (!$destino) {
 $idDestino = $destino['id_destino'];
 $precoBase = $destino['preco_destino'];
 
-// Assentos
 $assentos = array_values(array_filter(array_map('trim', preg_split('/\s*,\s*/', $assentosTexto))));
 
 if (count($assentos) !== $passageiros || count(array_unique(array_map('strtoupper', $assentos))) !== count($assentos)) {
@@ -282,7 +270,6 @@ foreach ($assentos as $assento) {
 $assentoBanco = implode(', ', $assentosValidos);
 $tipoAssento = implode(', ', array_values(array_unique($tiposAssento)));
 
-// *busca a programação centralizada; destinos novos recebem horário padrão*
 require_once __DIR__ . '/programacao-dados.php';
 $programacao = programacaoPorId($idDestino, $transporte);
 
@@ -290,7 +277,6 @@ if (!$programacao) {
     responder(400, false, 'A programação desta viagem não está disponível.');
 }
 
-// Confere os assentos novamente no servidor.
 $stmt = $conexao->prepare(
     "SELECT assento FROM reservas
      WHERE id_destino = ?
@@ -325,7 +311,6 @@ if (array_intersect($assentosValidos, $ocupados)) {
     responder(409, false, 'Um dos assentos selecionados acabou de ser ocupado. Volte e escolha outro.');
 }
 
-// Cálculo oficial no servidor.
 $subtotal = $precoBase * $passageiros;
 if ($tipoViagem === 'ida_volta') {
     $subtotal *= 2;
@@ -350,7 +335,7 @@ $descontoPix = $pagamento === 'Pix' ? 0.05 : 0;
 $valorTotal = round($totalAntesPagamento * (1 + $taxaJuros / 100) * (1 - $descontoPix), 2);
 
 $status = 'confirmada';
-$statusPagamento = 'pago'; // pagamento é uma simulação, então a reserva já nasce como paga.
+$statusPagamento = 'pago'; // registra o pagamento como simulação
 $horarioIda = $programacao['saida'];
 $horarioVolta = $tipoViagem === 'ida_volta' ? $programacao['volta'] : null;
 $duracao = (int) $programacao['duracao'];
@@ -419,3 +404,4 @@ responder(201, true, 'Reserva confirmada com sucesso!', [
     'duracao_voo_minutos' => $duracao,
     'taxa_juros_percentual' => $taxaJuros
 ]);
+?>

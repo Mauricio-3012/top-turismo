@@ -1,4 +1,5 @@
 <?php
+// prepara o fluxo de recuperação de senha
 session_start();
 require_once __DIR__ . '/../php/conexao.php';
 
@@ -7,7 +8,6 @@ $erro = $_GET['erro'] ?? '';
 $token = trim((string) ($_GET['token'] ?? ''));
 $pergunta = '';
 
-// Na etapa da pergunta, o token identifica a recuperação no banco.
 if ($etapa === 'pergunta' && preg_match('/^[a-f0-9]{64}$/', $token)) {
     $tokenHash = hash('sha256', $token);
     $stmt = $conexao->prepare(

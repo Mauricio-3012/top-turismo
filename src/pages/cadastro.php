@@ -118,7 +118,6 @@
 
     <script src="../assets/js/validacoes.js"></script>
     <script>
-        // *aplica máscaras e validações rápidas para melhorar o preenchimento*
         const formCadastro = document.getElementById("formCadastro");
         const campoNome = document.getElementById("nome");
         const campoCpf = document.getElementById("cpf");

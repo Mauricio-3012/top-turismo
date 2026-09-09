@@ -1,11 +1,8 @@
 <?php
-// *confere se o usuário logado realmente é administrador*
 require_once __DIR__ . '/../../php/admin/auth.php';
 
-// *abre a conexão para carregar os destinos cadastrados*
 require_once __DIR__ . '/../../php/conexao.php';
 
-// *busca os destinos que serão exibidos no painel administrativo*
 $resultado = $conexao->query(
     'SELECT id_destino, nome_destino, cidade_destino, estado_destino, preco_destino, avaliacao_destino, img_destino
      FROM destinos ORDER BY id_destino DESC'
@@ -14,7 +11,6 @@ $resultado = $conexao->query(
 $destinos = $resultado ? $resultado->fetch_all(MYSQLI_ASSOC) : [];
 $total = count($destinos);
 
-// *carrega todas as reservas para o administrador acompanhar pagamentos*
 $resultadoReservas = $conexao->query(
     "SELECT
         r.id_reserva, r.id_usuario, r.id_destino, r.data_viagem, r.data_volta,
@@ -59,7 +55,7 @@ $erro = trim($_GET['erro'] ?? '');
                         <h1 class="fw-bold mb-1">Gerenciar destinos</h1>
                         <p class="mb-0 text-muted">Adicione, edite ou remova destinos que aparecem automaticamente no site.</p>
                     </div>
-                    <!-- *leva diretamente ao formulário de cadastro de destino* -->
+                    <!-- abre o formulário de novo destino -->
                     <a href="adicionar-destino.php" class="btn btn-custom btn-lg">
                         <i class="bi bi-plus-circle me-2"></i>Novo destino
                     </a>

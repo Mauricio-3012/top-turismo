@@ -1,5 +1,5 @@
 <?php
-// Última etapa: valida o token e grava a nova senha.
+// valida o token e atualiza a senha
 session_start();
 require_once __DIR__ . '/conexao.php';
 
@@ -18,7 +18,6 @@ if (!preg_match('/^[a-f0-9]{64}$/', $token)) {
 
 $tokenHash = hash('sha256', $token);
 
-// Garante compatibilidade com um banco criado antes desta versão.
 $conexao->query("\n    CREATE TABLE IF NOT EXISTS recuperacoes_senha (\n        id INT NOT NULL AUTO_INCREMENT,\n        id_usuario INT NOT NULL,\n        token_hash CHAR(64) NOT NULL,\n        expira_em DATETIME NOT NULL,\n        verificado TINYINT(1) NOT NULL DEFAULT 0,\n        criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n        PRIMARY KEY (id),\n        UNIQUE KEY uk_recuperacao_token (token_hash),\n        KEY idx_recuperacao_usuario (id_usuario),\n        CONSTRAINT fk_recuperacao_usuario\n            FOREIGN KEY (id_usuario) REFERENCES usuarios(id)\n            ON DELETE CASCADE ON UPDATE CASCADE\n    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci\n");
 
 $stmt = $conexao->prepare(
@@ -79,7 +78,6 @@ if ($novoHash === false) {
     erroReset($token, 'Não foi possível criar a nova senha.');
 }
 
-// Atualiza a senha somente do usuário ligado ao token verificado.
 $stmt = $conexao->prepare('UPDATE usuarios SET senha = ? WHERE id = ? LIMIT 1');
 
 if (!$stmt) {
@@ -99,7 +97,6 @@ if (!$ok) {
     erroReset($token, 'Não foi possível atualizar a senha da conta.');
 }
 
-// Confirma no mesmo banco que recebeu o UPDATE.
 $stmt = $conexao->prepare('SELECT senha FROM usuarios WHERE id = ? LIMIT 1');
 
 if (!$stmt) {
@@ -118,7 +115,6 @@ if (!$encontrouSenha || !is_string($hashBanco) || !password_verify($senha, $hash
     erroReset($token, 'A nova senha não pôde ser confirmada. Tente novamente.');
 }
 
-// Token de uso único.
 $stmt = $conexao->prepare('DELETE FROM recuperacoes_senha WHERE id = ?');
 if ($stmt) {
     $idRec = (int) $idRecuperacao;
@@ -131,3 +127,4 @@ $conexao->close();
 
 header('Location: ../pages/login.php?sucesso=senha');
 exit;
+?>

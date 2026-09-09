@@ -1,10 +1,4 @@
 <?php
-/**
- * Horários da simulação da TopTurismo.
- *
- * Mantemos os horários em um único arquivo para evitar repetir as mesmas
- * tabelas no JavaScript e em vários endpoints PHP.
- */
 
 function todasProgramacoes(): array
 {
@@ -56,14 +50,12 @@ function programacaoPorId(int $idDestino, string $transporte): ?array
         return null;
     }
 
-    // Os 16 destinos originais possuem horários próprios.
     if (isset($programacoes[$transporte][$idDestino])) {
         return $programacoes[$transporte][$idDestino];
     }
 
-    // Destinos adicionados pelo administrador também podem ser reservados.
-    // Eles recebem uma programação padrão da simulação.
     return $transporte === "Avião"
         ? ["saida" => "09:00", "volta" => "18:00", "duracao" => 120]
         : ["saida" => "07:00", "volta" => "19:00", "duracao" => 480];
 }
+?>

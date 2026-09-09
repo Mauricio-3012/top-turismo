@@ -58,7 +58,6 @@
 
     <script src="../assets/js/validacoes.js"></script>
     <script>
-        // *mostra na tela a mensagem retornada pelo PHP após uma tentativa de login*
         document.addEventListener("DOMContentLoaded", () => {
             const params = new URLSearchParams(window.location.search);
             const erro = params.get("erro");
@@ -77,7 +76,6 @@
             mensagemErro.style.display = "block";
         });
 
-        // *valida os campos antes de enviar o formulário ao servidor*
         const formLogin = document.getElementById("formLogin");
         const campoEmailLogin = document.getElementById("email");
         const campoSenhaLogin = document.getElementById("senha");

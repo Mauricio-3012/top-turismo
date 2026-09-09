@@ -1,5 +1,5 @@
 <?php
-// *protege o formulário para que somente administradores possam criar destinos*
+// protege o cadastro de novos destinos
 require_once __DIR__ . '/../../php/admin/auth.php';
 
 $erro = trim($_GET['erro'] ?? '');

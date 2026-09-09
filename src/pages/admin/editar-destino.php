@@ -1,11 +1,10 @@
 <?php
-// *confere o acesso antes de carregar os dados do destino*
+// protege a edição de destinos
 require_once __DIR__ . '/../../php/admin/auth.php';
 require_once __DIR__ . '/../../php/conexao.php';
 
 $id = (int) ($_GET['id'] ?? 0);
 
-// *busca no banco o destino que será editado*
 $stmt = $conexao->prepare('SELECT * FROM destinos WHERE id_destino = ? LIMIT 1');
 $stmt->bind_param('i', $id);
 $stmt->execute();

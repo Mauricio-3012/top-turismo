@@ -1,8 +1,8 @@
 <?php
+// atualiza os dados do usuário logado
 session_start();
 require_once "conexao.php";
 
-// *somente usuários autenticados podem alterar seus dados*
 
 if (!isset($_SESSION["usuario_id"])) {
     header("Location: ../pages/login.php");

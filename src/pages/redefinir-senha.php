@@ -1,4 +1,5 @@
 <?php
+// prepara o fluxo de redefinição de senha
 session_start();
 require_once __DIR__ . '/../php/conexao.php';
 

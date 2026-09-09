@@ -1,6 +1,5 @@
 <?php
-// Recuperação de senha do TopTurismo.
-// O fluxo usa um token salvo no banco, e não depende da sessão do navegador.
+// inicia e valida a recuperação de senha
 session_start();
 require_once __DIR__ . '/conexao.php';
 
@@ -17,8 +16,6 @@ function respostaNormalizada(string $valor): string
     return mb_strtolower($valor, 'UTF-8');
 }
 
-// Garante que a tabela usada pela recuperação exista mesmo se o banco antigo
-// ainda estiver sendo usado. Isso evita depender de uma migração manual.
 $criarTabela = $conexao->query("\n    CREATE TABLE IF NOT EXISTS recuperacoes_senha (\n        id INT NOT NULL AUTO_INCREMENT,\n        id_usuario INT NOT NULL,\n        token_hash CHAR(64) NOT NULL,\n        expira_em DATETIME NOT NULL,\n        verificado TINYINT(1) NOT NULL DEFAULT 0,\n        criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,\n        PRIMARY KEY (id),\n        UNIQUE KEY uk_recuperacao_token (token_hash),\n        KEY idx_recuperacao_usuario (id_usuario),\n        CONSTRAINT fk_recuperacao_usuario\n            FOREIGN KEY (id_usuario) REFERENCES usuarios(id)\n            ON DELETE CASCADE ON UPDATE CASCADE\n    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci\n");
 
 if (!$criarTabela) {
@@ -28,9 +25,6 @@ if (!$criarTabela) {
 
 $acao = (string) ($_POST['acao'] ?? '');
 
-// =========================================================
-// ETAPA 1: recebe o e-mail
-// =========================================================
 if ($acao === 'email') {
     $email = mb_strtolower(trim((string) ($_POST['email'] ?? '')), 'UTF-8');
 
@@ -59,7 +53,6 @@ if ($acao === 'email') {
         redirecionar('../pages/esqueci-senha.php?erro=' . urlencode('Não encontramos uma conta com esse e-mail.'));
     }
 
-    // Um token novo invalida recuperações anteriores daquele usuário.
     $stmt = $conexao->prepare('DELETE FROM recuperacoes_senha WHERE id_usuario = ?');
     if ($stmt) {
         $id = (int) $idUsuario;
@@ -96,9 +89,6 @@ if ($acao === 'email') {
     redirecionar('../pages/esqueci-senha.php?etapa=pergunta&token=' . urlencode($token));
 }
 
-// =========================================================
-// ETAPA 2: valida a pergunta de segurança
-// =========================================================
 if ($acao === 'resposta') {
     $token = trim((string) ($_POST['token'] ?? ''));
     $resposta = respostaNormalizada((string) ($_POST['resposta_recuperacao'] ?? ''));
@@ -165,3 +155,4 @@ if ($acao === 'resposta') {
 
 $conexao->close();
 redirecionar('../pages/esqueci-senha.php?erro=' . urlencode('Etapa de recuperação inválida.'));
+?>

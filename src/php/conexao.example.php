@@ -1,16 +1,10 @@
 <?php
-/**
- * TopTurismo - conexão com o banco de dados MySQL.
- *
- * Copie este arquivo e renomeie para "conexao.php".
- * Não envie o conexao.php para o GitHub.
- */
 
-$servidor = '[nome do servidor]'; // Servidor do banco. Geralmente "localhost".
-$usuario = '[nome do usuário]'; // Usuário do banco. Geralmente "root".
-$senha = '[senha do banco]'; // Senha do banco.
-$banco = '[nome do banco]'; // Nome do banco de dados.
-$porta = '[porta do MySQL]'; // Porta do MySQL.
+$servidor = '[NOME DO SERVIDOR]'; // Servidor do banco. Geralmente "localhost".
+$usuario = '[USUARIO DO BANCO]'; // Usuário do banco. Geralmente "root".
+$senha = '[SENHA DO BANCO]'; // Senha do banco.
+$banco = '[NOME DO BANCO]'; // Nome do banco de dados.
+$porta = '[PORTA DO MYSQL]'; // Porta do MySQL.
 
 mysqli_report(MYSQLI_REPORT_OFF);
 
@@ -29,3 +23,4 @@ if ($conexao->connect_errno) {
 }
 
 $conexao->set_charset('utf8mb4');
+?>

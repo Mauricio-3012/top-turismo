@@ -529,4 +529,4 @@ O TopTurismo possui pagamento apenas para fins de simulação. Ao cancelar uma r
 
 Nenhum valor financeiro real é movimentado.
 
-Se o banco já estiver criado, execute `sql/migracao_reembolso.sql`. Se for importar o banco do zero, o `sql/topturismo.sql` já contém as novas colunas.
+Se o banco já estiver criado, execute `sql/migracao_reembolso.sql`. Se for importar o banco do zero, o `sql/topturismo.sql` já contém as colunas de pagamento e reembolso.

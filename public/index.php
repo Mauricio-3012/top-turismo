@@ -1,7 +1,7 @@
 <?php
+// carrega a página inicial e os destinos
 session_start();
 
-// *identifica se a sessão atual pertence a um administrador*
 $siteBase = '../';
 
 $isAdmin = (($_SESSION["usuario_tipo"] ?? "cliente") === "admin");
@@ -257,9 +257,7 @@ $isAdmin = (($_SESSION["usuario_tipo"] ?? "cliente") === "admin");
                     </div>
                     <div class="row">
 <?php
-// *carrega a função que consulta os destinos no banco de dados*
 require_once __DIR__ . '/../src/php/destinos-data.php';
-// *busca os destinos antes de montar os cards da página*
 $destinos = buscarDestinos();
 foreach ($destinos as $destino):
     $nome = htmlspecialchars($destino['nome_destino'], ENT_QUOTES, 'UTF-8');

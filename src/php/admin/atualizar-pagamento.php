@@ -1,5 +1,5 @@
 <?php
-// *somente administradores podem alterar o status de pagamento das reservas*
+// atualiza o pagamento da reserva
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/../conexao.php';
 
@@ -62,3 +62,4 @@ if ($ok) {
 
 header('Location: ../../pages/admin/dashboard.php?erro=' . urlencode('Não foi possível atualizar o pagamento.') . '#reservas');
 exit;
+?>

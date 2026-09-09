@@ -1,7 +1,6 @@
 <?php
+// cancela a reserva e registra o reembolso simulado
 session_start();
-// Permite cancelar somente uma reserva pertencente ao usuário logado.
-// Como o pagamento é uma SIMULAÇÃO, o cancelamento também simula o reembolso integral.
 require_once __DIR__ . '/conexao.php';
 
 if (!isset($_SESSION['usuario_id'])) {
@@ -56,7 +55,6 @@ if (strtotime((string)$reserva['data_viagem']) < strtotime('today')) responder(f
 
 $valorReembolso = (float)$reserva['valor_total'];
 
-// O projeto não processa dinheiro real. O valor é registrado como reembolso integral simulado.
 $stmt = $conexao->prepare("UPDATE reservas
     SET status = 'cancelada',
         status_pagamento = 'reembolsado',
@@ -84,3 +82,4 @@ responder(true, 'Reserva cancelada com sucesso. Reembolso integral simulado real
     'valor_reembolso' => $valorReembolso,
     'status_pagamento' => 'reembolsado'
 ]);
+?>

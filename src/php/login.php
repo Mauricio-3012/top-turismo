@@ -1,5 +1,5 @@
 <?php
-// Autentica o usuário e cria a sessão.
+// autentica o usuário e cria a sessão
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -60,3 +60,4 @@ if ($tipo === 'admin') {
     header('Location: ../pages/dashboard.php');
 }
 exit;
+?>
