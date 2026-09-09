@@ -673,13 +673,10 @@ a:hover {
 }
 
 .menu-mobile-item {
-  color: inherit;
+  background-color: transparent;
+  color: var(--text);
   text-decoration: none;
   transition: background-color 0.2s;
-}
-
-.menu-mobile-item:hover {
-  background-color: var(--surface-soft);
 }
 
 /* =========================================================
@@ -1911,4 +1908,84 @@ a:hover {
 .dark-mode .reserva-confirmacao .reserva-titulo-kicker,
 .dark-mode .reserva-confirmacao .reserva-titulo-kicker + h4 {
   color: var(--btn-bg) !important;
+}
+
+/* =========================================================
+   MENU MOBILE PÚBLICO — CORREÇÃO DE CONTRASTE
+   O menu público permanece branco mesmo no modo escuro,
+   portanto seus textos e ícones devem permanecer pretos.
+   ========================================================= */
+.dark-mode #menuMobile.menu-mobile-publico {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.dark-mode #menuMobile.menu-mobile-publico .menu-mobile-item,
+.dark-mode #menuMobile.menu-mobile-publico .menu-mobile-item i,
+.dark-mode #menuMobile.menu-mobile-publico #menuMobileLabel {
+  color: #000000 !important;
+}
+
+.dark-mode #menuMobile.menu-mobile-publico .menu-mobile-item:hover {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+  color: #000000 !important;
+}
+
+
+
+/* =========================================================
+   CORREÇÕES GERAIS — MENU MOBILE E MODO ESCURO
+   ========================================================= */
+html.dark-mode,
+body.dark-mode {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+/* O menu público e o menu administrativo têm temas independentes. */
+.dark-mode #menuMobile:not(.menu-mobile-publico) {
+  background-color: var(--card-bg) !important;
+  color: var(--text) !important;
+  border-left: 1px solid var(--border-subtle);
+  box-shadow: -12px 0 35px rgba(0, 0, 0, .28);
+}
+
+.dark-mode #menuMobile:not(.menu-mobile-publico) .offcanvas-header {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.dark-mode #menuMobile:not(.menu-mobile-publico) .menu-mobile-item,
+.dark-mode #menuMobile:not(.menu-mobile-publico) .menu-mobile-item i,
+.dark-mode #menuMobile:not(.menu-mobile-publico) #menuMobileLabel {
+  color: var(--text) !important;
+}
+
+.dark-mode #menuMobile:not(.menu-mobile-publico) .menu-mobile-item:hover,
+.dark-mode #menuMobile:not(.menu-mobile-publico) .menu-mobile-item:focus {
+  background-color: var(--surface-soft) !important;
+  color: var(--btn-bg) !important;
+}
+
+.dark-mode #menuMobile:not(.menu-mobile-publico) .menu-mobile-item:hover i,
+.dark-mode #menuMobile:not(.menu-mobile-publico) .menu-mobile-item:focus i {
+  color: var(--btn-bg) !important;
+}
+
+.dark-mode #menuMobile:not(.menu-mobile-publico) hr {
+  border-color: var(--border-subtle);
+  opacity: 1;
+}
+
+.dark-mode #menuMobile:not(.menu-mobile-publico) .btn-close {
+  filter: invert(1) grayscale(1) brightness(2);
+  opacity: .85;
+}
+
+/* Componentes nativos (select, date etc.) acompanham o tema. */
+.dark-mode {
+  color-scheme: dark;
+}
+
+body:not(.dark-mode) {
+  color-scheme: light;
 }

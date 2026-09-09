@@ -11,8 +11,8 @@ $erro = trim($_GET['erro'] ?? '');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar destino - TopTurismo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../assets/css/style.css">
-    <link rel="stylesheet" href="../../assets/css/admin.css">
+    <link rel="stylesheet" href="../../assets/css/style.css?v=20260909">
+    <link rel="stylesheet" href="../../assets/css/admin.css?v=20260909">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <script>window.TOP_TURISMO_BASE = "../../../";</script>
 </head>
@@ -115,6 +115,6 @@ $erro = trim($_GET['erro'] ?? '');
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../assets/js/script.js"></script>
+    <script src="../../assets/js/script.js?v=20260909"></script>
 </body>
 </html>
