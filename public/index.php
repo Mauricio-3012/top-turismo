@@ -524,7 +524,7 @@ foreach ($destinos as $destino):
         </div>
 
         <!-- menu mobile -->
-        <div aria-labelledby="menuMobileLabel" class="offcanvas offcanvas-end" id="menuMobile" tabindex="-1">
+        <div aria-labelledby="menuMobileLabel" class="offcanvas offcanvas-end menu-mobile-publico" id="menuMobile" tabindex="-1">
             <div class="offcanvas-header">
                 <div class="d-flex align-items-center">
                     <img alt="Logo" height="35" src="../src/assets/imagens/logo-favicon.ico" width="35" />

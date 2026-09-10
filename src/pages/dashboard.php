@@ -158,11 +158,11 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
     </div>
     <div class="col-md-6">
         <label class="form-label">Telefone</label>
-        <input type="text" class="form-control" id="campoTelefone" name="telefone" value="<?= htmlspecialchars(($usuarioLogado["telefone"] ?? ""), ENT_QUOTES, "UTF-8") ?>" placeholder="Digite seu telefone" required>
+        <input type="text" class="form-control" id="campoTelefone" name="telefone" placeholder="(00) 00000-0000" maxlength="12"  value="<?= htmlspecialchars(($usuarioLogado["telefone"] ?? ""), ENT_QUOTES, "UTF-8") ?>" placeholder="Digite seu telefone" required>
     </div>
     <div class="col-md-6">
     <label class="form-label">Cidade</label>
-    <input type="text" class="form-control" id="campoCidade" name="cidade" value="<?= htmlspecialchars(($usuarioLogado["cidade"] ?? ""), ENT_QUOTES, "UTF-8") ?>" placeholder="Digite sua cidade" required>
+    <input type="text" class="form-control" id="campoCidade" name="cidade" placeholder="Digite sua cidade" value="<?= htmlspecialchars(($usuarioLogado["cidade"] ?? ""), ENT_QUOTES, "UTF-8") ?>" required>
     </div>
     <div class="col-12 mt-3">
         <div class="alterar-senha-box">

@@ -17,7 +17,6 @@
 // ============================================================
 // *acessa os elementos usados pelo controle de tema*
 const body = document.body;
-const dropdownButton = document.getElementById("temaMenu");
 
 document.addEventListener("DOMContentLoaded", () => {
   const savedTheme = localStorage.getItem("theme") || "light";
@@ -221,6 +220,8 @@ document.addEventListener("DOMContentLoaded", () => {
 // *aplica o tema escolhido e salva a preferência no navegador*
 function setTheme(theme) {
   const modoEscuro = theme === "dark";
+  const dropdownButton = document.getElementById("temaMenu");
+
   body.classList.toggle("dark-mode", modoEscuro);
   document.documentElement.classList.toggle("dark-mode", modoEscuro);
   if (dropdownButton) {

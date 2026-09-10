@@ -759,3 +759,223 @@ header .dropdown-menu {
         gap: 3px !important;
     }
 }
+
+
+/* =========================================================
+   CORREÇÃO FINAL DO PAINEL ADMINISTRATIVO
+   ========================================================= */
+.admin-page {
+    min-height: 100vh;
+    padding: 96px 0 48px;
+    background: var(--bg) !important;
+    color: var(--text);
+}
+
+.admin-page > .container {
+    width: min(1400px, calc(100% - 32px));
+    max-width: 1400px !important;
+    margin-inline: auto;
+}
+
+.admin-header-card,
+.admin-card {
+    background: var(--card-bg) !important;
+    color: var(--text) !important;
+    border: 1px solid var(--border-subtle) !important;
+    box-shadow: var(--shadow-card);
+}
+
+.admin-header-card {
+    padding: 24px 26px;
+}
+
+.admin-card {
+    padding: 22px;
+}
+
+/* Estatísticas: 4 colunas no desktop, 2 em tablets e 1 no celular. */
+.admin-page .admin-stats-row > .col-md-3 {
+    min-width: 0;
+}
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+    .admin-page .admin-stats-row > .col-md-3 {
+        width: 50%;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .admin-page .admin-stats-row > .col-md-3 {
+        width: 100%;
+    }
+}
+
+.admin-stat {
+    min-width: 0;
+}
+
+.admin-stat > div:last-child {
+    min-width: 0;
+}
+
+.admin-stat strong,
+.admin-stat .text-muted {
+    overflow-wrap: anywhere;
+}
+
+/* Evita o visual branco do Bootstrap dentro do painel escuro. */
+.dark-mode .admin-page,
+.dark-mode .admin-page .admin-header-card,
+.dark-mode .admin-page .admin-card {
+    background-color: var(--card-bg) !important;
+    color: var(--text) !important;
+}
+
+.dark-mode .admin-page {
+    background-color: var(--bg) !important;
+}
+
+.dark-mode .admin-page .form-control,
+.dark-mode .admin-page .form-select,
+.dark-mode .admin-page textarea {
+    background-color: var(--input-bg) !important;
+    color: var(--text) !important;
+    border-color: var(--border-subtle) !important;
+    color-scheme: dark;
+}
+
+.dark-mode .admin-page .form-control:focus,
+.dark-mode .admin-page .form-select:focus,
+.dark-mode .admin-page textarea:focus {
+    border-color: var(--btn-bg) !important;
+    box-shadow: 0 0 0 .2rem rgba(255, 107, 0, .16) !important;
+}
+
+.dark-mode .admin-page .form-select option {
+    background: var(--input-bg);
+    color: var(--text);
+}
+
+.dark-mode .admin-page .admin-table,
+.dark-mode .admin-page .admin-table > :not(caption) > * > * {
+    background-color: var(--card-bg) !important;
+    color: var(--text) !important;
+    border-color: var(--border-subtle) !important;
+}
+
+.dark-mode .admin-page .admin-table tbody tr:hover > * {
+    background-color: #222838 !important;
+}
+
+.dark-mode .admin-page .admin-table .text-muted {
+    color: var(--text-soft) !important;
+}
+
+/* Cabeçalho e botão ficam lado a lado em tablets/desktop. */
+@media (min-width: 576px) {
+    .admin-header-card .btn {
+        width: auto !important;
+        white-space: nowrap;
+    }
+}
+
+/* Menu lateral administrativo: contraste, espaçamento e largura consistentes. */
+#menuMobile:not(.menu-mobile-publico) {
+    width: min(390px, 92vw);
+    background: var(--card-bg) !important;
+    color: var(--text) !important;
+    border-left: 1px solid var(--border-subtle);
+    box-shadow: -14px 0 40px rgba(0, 0, 0, .22);
+}
+
+#menuMobile:not(.menu-mobile-publico) .offcanvas-header {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+#menuMobile:not(.menu-mobile-publico) .offcanvas-body {
+    padding: 20px;
+}
+
+#menuMobile:not(.menu-mobile-publico) .menu-mobile-item {
+    color: var(--text) !important;
+    background: transparent;
+    font-weight: 500;
+}
+
+#menuMobile:not(.menu-mobile-publico) .menu-mobile-item:hover,
+#menuMobile:not(.menu-mobile-publico) .menu-mobile-item:focus {
+    background: var(--surface-soft);
+    color: var(--btn-bg) !important;
+}
+
+#menuMobile:not(.menu-mobile-publico) .menu-mobile-item:hover i,
+#menuMobile:not(.menu-mobile-publico) .menu-mobile-item:focus i {
+    color: var(--btn-bg) !important;
+}
+
+#menuMobile:not(.menu-mobile-publico) hr {
+    border-color: var(--border-subtle);
+    opacity: 1;
+    margin: 18px 0;
+}
+
+/* Reserva administrativa não deve quebrar a página em telas estreitas. */
+.admin-reservas-table {
+    min-width: 1050px;
+}
+
+@media (max-width: 991.98px) and (min-width: 768px) {
+    .admin-reservas-table {
+        min-width: 980px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .admin-page {
+        padding: 84px 0 30px;
+    }
+
+    .admin-page > .container {
+        width: min(100% - 20px, 680px);
+    }
+
+    .admin-header-card {
+        padding: 18px;
+    }
+
+    .admin-header-card .d-flex {
+        gap: 16px !important;
+    }
+
+    .admin-header-card h1 {
+        font-size: clamp(1.45rem, 6vw, 1.8rem);
+    }
+
+    .admin-card {
+        padding: 16px;
+    }
+
+    .admin-page .row.g-4 {
+        --bs-gutter-x: 1rem;
+        --bs-gutter-y: 1rem;
+    }
+
+    .admin-table tbody td[data-label="Ações"] .admin-actions {
+        width: 100%;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .admin-header-card .d-flex {
+        align-items: stretch !important;
+    }
+
+    .admin-header-card .btn {
+        width: 100% !important;
+    }
+
+    #menuMobile:not(.menu-mobile-publico) {
+        width: min(360px, 92vw);
+    }
+}
