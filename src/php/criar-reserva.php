@@ -151,14 +151,23 @@ if (!$data || $data->format('Y-m-d') !== $dataViagem) {
 }
 
 $hoje = new DateTime('today');
+$dataMinima = (clone $hoje)->modify('+1 month');
 $dataMaxima = (clone $hoje)->modify('+9 months');
 
-if ($data < $hoje) {
-    responder(400, false, 'A data da viagem não pode estar no passado.');
+if ($data < $dataMinima) {
+    responder(
+        400,
+        false,
+        'A reserva deve ser realizada com pelo menos 1 mês de antecedência.'
+    );
 }
 
 if ($data > $dataMaxima) {
-    responder(400, false, 'A data máxima para a viagem é de 9 meses a partir de hoje.');
+    responder(
+        400,
+        false,
+        'A data máxima para a viagem é de 9 meses a partir de hoje.'
+    );
 }
 
 if ($tipoViagem === 'ida_volta') {
