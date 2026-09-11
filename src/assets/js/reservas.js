@@ -10,8 +10,15 @@ document.addEventListener("DOMContentLoaded", () => {
     let totalReserva = 0;
     let programacao = null;
     let consulta = 0;
+
     const hoje = form.dataset.hoje;
     const limite = form.dataset.limite;
+    const dataMinima = form.dataset.minima;
+
+    $("dataIda").min = dataMinima;
+    $("dataIda").max = limite;
+    $("dataVolta").min = dataMinima;
+    $("dataVolta").max = limite;
 
     // formata valores para reais
     const moeda = valor => Number(valor || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -215,8 +222,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if (invalido) { erroCampo(campo, mensagem); valido = false; }
         });
 
-        if (!$("dataIda").value || $("dataIda").value < hoje || $("dataIda").value > limite) {
-            erroCampo($("dataIda"), "Escolha uma data válida dentro do período disponível.");
+        if (!$("dataIda").value || $("dataIda").value < dataMinima || $("dataIda").value > limite
+        ) {
+            erroCampo(
+                $("dataIda"),
+                `A data de ida deve ser entre ${dataMinima.split("-").reverse().join("/")} e ${limite.split("-").reverse().join("/")}.`
+            );
             valido = false;
         }
         if ($("tipoViagem").value === "ida_volta" && (!$('dataVolta').value || $('dataVolta').value < $('dataIda').value || $('dataVolta').value > limite)) {

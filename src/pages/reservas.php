@@ -11,6 +11,7 @@ require_once __DIR__ . "/../php/destinos-data.php";
 require_once __DIR__ . "/../php/programacao-dados.php";
 $destinos = buscarDestinos();
 $hoje = date("Y-m-d");
+$dataMinima = date("Y-m-d", strtotime("+1 month"));
 $limiteData = date("Y-m-d", strtotime("+9 months"));
 ?>
 <!DOCTYPE html>
@@ -59,8 +60,7 @@ $limiteData = date("Y-m-d", strtotime("+9 months"));
 </header>
 
 <main class="reserva-main">
-    <!-- *o JavaScript cuida da interação e o PHP faz a validação definitiva* -->
-    <form id="reservaForm" class="shadow-lg w-100 p-3 rounded-3" style="max-width: 760px;" data-hoje="<?= $hoje ?>" data-limite="<?= $limiteData ?>">
+    <form id="reservaForm"  class="shadow-lg w-100 p-3 rounded-3" style="max-width: 760px;" data-hoje="<?= $hoje ?>" data-minima="<?= $dataMinima ?>" data-limite="<?= $limiteData ?>">
         <div class="p-2 form-info"><a href="../../public/index.php" class="btn-voltar"><i class="bi bi-arrow-left-circle"></i> Voltar</a></div>
         <div class="p-2">
             <h2>Reserve sua Viagem</h2>
@@ -127,13 +127,15 @@ $limiteData = date("Y-m-d", strtotime("+9 months"));
                 <div class="col-12 col-md-6">
                     <label for="dataIda" class="form-label">Data de ida</label>
                     <input type="date" id="dataIda" class="form-control" required>
-                    <small class="form-text text-muted" id="limiteDataIda">Disponibilidade: hoje até 9 meses.</small>
+                    <small class="form-text text-muted" id="limiteDataIda">
+                        Disponibilidade: a partir de 1 mês até 9 meses.
+                    </small>
                     <div class="campo-erro" id="erro-dataIda"></div>
                 </div>
                 <div class="col-12 col-md-6 d-none" id="campoDataVolta">
                     <label for="dataVolta" class="form-label">Data de volta</label>
                     <input type="date" id="dataVolta" class="form-control">
-                    <small class="form-text text-muted" id="limiteDataVolta">Disponibilidade: hoje até 9 meses.</small>
+                    <small class="form-text text-muted" id="limiteDataVolta">Disponibilidade: a partir de 1 mês até 9 meses.</small>
                     <div class="campo-erro" id="erro-dataVolta"></div>
                 </div>
             </div>

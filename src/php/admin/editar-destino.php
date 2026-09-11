@@ -2,8 +2,6 @@
 // atualiza um destino existente
 
 require_once __DIR__ . '/auth.php';
-
-
 require_once __DIR__ . '/../conexao.php';
 
 $id = (int) ($_POST['id_destino'] ?? 0);
