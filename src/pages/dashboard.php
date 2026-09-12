@@ -221,6 +221,7 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                     <div class="card border-0 shadow-sm p-3 p-md-4 mb-3 minhas-viagens-card">
                         <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap mb-4">
                             <div>
+
                                 <h4 class="fw-bold mb-1" style="color: var(--text);">
                                     <i class="bi bi-suitcase-lg me-2" style="color: var(--btn-bg);"></i>Minhas Viagens
                                 </h4>
@@ -303,7 +304,7 @@ $reservasJson = json_encode($reservasIniciais, JSON_UNESCAPED_UNICODE | JSON_UNE
                                                 <?php $statusPagamentoUsuario = strtolower((string)($reserva['status_pagamento'] ?? 'pendente')); ?>
                                                 <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Pagamento</span><span class="reserva-detalhe-valor"><?= htmlspecialchars($reserva['pagamento'] ?? '', ENT_QUOTES, 'UTF-8') ?> (simulação) — <?= $statusPagamentoUsuario === 'reembolsado' ? 'Reembolsado' : ($statusPagamentoUsuario === 'pago' ? 'Pago' : 'Pendente') ?></span></div>
                                                 <?php if (strtolower((string)($reserva['status_pagamento'] ?? '')) === 'reembolsado' && $reserva['valor_reembolso'] !== null): ?>
-                                                    <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Reembolso</span><span class="reserva-detalhe-valor" style="color: #198754;">R$ <?= number_format((float)$reserva['valor_reembolso'],2,',','.') ?> — realizado</span></div>
+                                                    <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Reembolso</span><span class="reserva-detalhe-valor" style="color: #198754;">R$ <?= number_format((float)$reserva['valor_reembolso'],2,',','.') ?> — realizado<?php if (!empty($reserva['data_reembolso'])): ?> em <?= date('d/m/Y \à\s H:i', strtotime($reserva['data_reembolso'])) ?><?php endif; ?></span></div>
                                                 <?php endif; ?>
                                                 <?php if (($reserva['pagamento'] ?? '') === 'Cartão'): ?><div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Parcelamento</span><span class="reserva-detalhe-valor"><?= (int)($reserva['parcelas'] ?? 1) ?>x · juros <?= number_format((float)($reserva['taxa_juros_percentual'] ?? 0),1,',','.') ?>%</span></div><?php endif; ?>
                                                 <div class="reserva-detalhe-linha"><span class="reserva-detalhe-label">Saída</span><span class="reserva-detalhe-valor"><?= htmlspecialchars(substr((string)($reserva['horario_ida'] ?? ''),0,5) ?: 'Não informado', ENT_QUOTES, 'UTF-8') ?></span></div>

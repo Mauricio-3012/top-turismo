@@ -50,11 +50,23 @@ if (!$reserva) responder(false, 'Reserva não encontrada.', 404);
 if (strtolower(trim((string)$reserva['status'])) === 'cancelada') responder(false, 'Esta reserva já está cancelada.', 409);
 if (strtotime((string)$reserva['data_viagem']) < strtotime('today')) responder(false, 'Não é possível cancelar uma viagem que já passou.', 409);
 
-$stmt = $conexao->prepare("UPDATE reservas SET status = 'cancelada' WHERE id_reserva = ? AND id_usuario = ? AND status <> 'cancelada'");
+$stmt = $conexao->prepare("
+    UPDATE reservas
+    SET
+        status = 'cancelada',
+        status_pagamento = 'reembolsado',
+        valor_reembolso = valor_total,
+        data_cancelamento = NOW(),
+        data_reembolso = NOW()
+    WHERE id_reserva = ?
+      AND id_usuario = ?
+      AND status <> 'cancelada'
+");
 if (!$stmt) responder(false, 'Erro ao preparar o cancelamento.', 500);
 $stmt->bind_param('ii', $idReserva, $idUsuario);
 $ok = $stmt->execute() && $stmt->affected_rows > 0;
 $stmt->close();
+
 $conexao->close();
 
 responder($ok, $ok ? 'Reserva cancelada com sucesso.' : 'Não foi possível cancelar a reserva.', $ok ? 200 : 500);
