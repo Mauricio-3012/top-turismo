@@ -1,17 +1,21 @@
--- TopTurismo - banco de dados limpo
--- Importe este arquivo para criar/recriar o banco completo.
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:3307
+-- Tempo de geração: 14/09/2026 às 19:49
+-- Versão do servidor: 8.0.44
+-- Versão do PHP: 8.2.12
 
-CREATE DATABASE IF NOT EXISTS `topturismo`
-  DEFAULT CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
-USE `topturismo`;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
-SET NAMES utf8mb4;
-SET FOREIGN_KEY_CHECKS = 0;
-DROP TABLE IF EXISTS `reservas`;
-DROP TABLE IF EXISTS `usuarios`;
-DROP TABLE IF EXISTS `destinos`;
-SET FOREIGN_KEY_CHECKS = 1;
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Banco de dados: `topturismo`
@@ -25,15 +29,15 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE `destinos` (
   `id_destino` int NOT NULL,
-  `nome_destino` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descricao_destino` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `cidade_destino` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `estado_destino` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `pais_destino` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Brasil',
-  `regiao_destino` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'sudeste',
-  `img_destino` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `img_destino_2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `img_destino_3` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nome_destino` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descricao_destino` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cidade_destino` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `estado_destino` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `pais_destino` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Brasil',
+  `regiao_destino` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'sudeste',
+  `img_destino` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `img_destino_2` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `img_destino_3` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `preco_destino` decimal(10,2) NOT NULL,
   `avaliacao_destino` decimal(2,1) NOT NULL DEFAULT '5.0',
   `popularidade_destino` tinyint NOT NULL DEFAULT '3'
@@ -64,6 +68,21 @@ INSERT INTO `destinos` (`id_destino`, `nome_destino`, `descricao_destino`, `cida
 -- --------------------------------------------------------
 
 --
+-- Estrutura para tabela `recuperacoes_senha`
+--
+
+CREATE TABLE `recuperacoes_senha` (
+  `id` int NOT NULL,
+  `id_usuario` int NOT NULL,
+  `token_hash` char(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expira_em` datetime NOT NULL,
+  `verificado` tinyint(1) NOT NULL DEFAULT '0',
+  `criado_em` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura para tabela `reservas`
 --
 
@@ -73,21 +92,21 @@ CREATE TABLE `reservas` (
   `id_destino` int NOT NULL,
   `data_viagem` date NOT NULL,
   `data_volta` date DEFAULT NULL,
-  `tipo_viagem` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ida',
+  `tipo_viagem` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ida',
   `quantidade_passageiros` int NOT NULL,
-  `transporte` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `classe` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `assento` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tipo_assento` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pagamento` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `transporte` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `classe` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `assento` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tipo_assento` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pagamento` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `parcelas` tinyint NOT NULL DEFAULT '1',
   `taxa_juros_percentual` decimal(5,2) NOT NULL DEFAULT '0.00',
   `horario_ida` time DEFAULT NULL,
   `horario_volta` time DEFAULT NULL,
   `duracao_voo_minutos` int DEFAULT NULL,
   `valor_total` decimal(10,2) NOT NULL,
-  `status` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'confirmada',
-  `status_pagamento` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pendente',
+  `status` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'confirmada',
+  `status_pagamento` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pendente',
   `valor_reembolso` decimal(10,2) DEFAULT NULL,
   `data_cancelamento` datetime DEFAULT NULL,
   `data_reembolso` datetime DEFAULT NULL
@@ -101,18 +120,25 @@ CREATE TABLE `reservas` (
 
 CREATE TABLE `usuarios` (
   `id` int NOT NULL,
-  `nome` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cpf` varchar(14) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `nome` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cpf` varchar(14) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `data_nascimento` date DEFAULT NULL,
-  `genero` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `telefone` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cidade` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `senha` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pergunta_recuperacao` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `resposta_recuperacao_hash` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tipo` enum('admin','cliente') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'cliente'
+  `genero` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `telefone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cidade` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `senha` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pergunta_recuperacao` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `resposta_recuperacao_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tipo` enum('admin','cliente') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'cliente'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `usuarios`
+--
+
+INSERT INTO `usuarios` (`id`, `nome`, `cpf`, `data_nascimento`, `genero`, `email`, `telefone`, `cidade`, `senha`, `pergunta_recuperacao`, `resposta_recuperacao_hash`, `tipo`) VALUES
+(3, 'Admin TopTurismo', '08697979137', '2001-01-01', 'Masculino', 'topturismo@gmail.com', '6199694737', 'Brasília', '$2y$10$viBcpftp/PGpk17SfHIwtO.Cm5HM8qFcFPwe/6hjhSIo14c9LHp0a', 'comida', '$2y$10$Vr9huj0UKSwbofiEVnRxU.Iywws6sHaVb6LP8BklkaKBQ0S.pqhyC', 'admin');
 
 --
 -- Índices para tabelas despejadas
@@ -123,6 +149,14 @@ CREATE TABLE `usuarios` (
 --
 ALTER TABLE `destinos`
   ADD PRIMARY KEY (`id_destino`);
+
+--
+-- Índices de tabela `recuperacoes_senha`
+--
+ALTER TABLE `recuperacoes_senha`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uk_recuperacao_token` (`token_hash`),
+  ADD KEY `idx_recuperacao_usuario` (`id_usuario`);
 
 --
 -- Índices de tabela `reservas`
@@ -152,6 +186,12 @@ ALTER TABLE `destinos`
   MODIFY `id_destino` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
+-- AUTO_INCREMENT de tabela `recuperacoes_senha`
+--
+ALTER TABLE `recuperacoes_senha`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de tabela `reservas`
 --
 ALTER TABLE `reservas`
@@ -161,11 +201,17 @@ ALTER TABLE `reservas`
 -- AUTO_INCREMENT de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restrições para tabelas despejadas
 --
+
+--
+-- Restrições para tabelas `recuperacoes_senha`
+--
+ALTER TABLE `recuperacoes_senha`
+  ADD CONSTRAINT `fk_recuperacao_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Restrições para tabelas `reservas`
@@ -173,24 +219,8 @@ ALTER TABLE `usuarios`
 ALTER TABLE `reservas`
   ADD CONSTRAINT `fk_reserva_destino` FOREIGN KEY (`id_destino`) REFERENCES `destinos` (`id_destino`) ON DELETE RESTRICT ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_reserva_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- --------------------------------------------------------
--- Tabela de recuperação de senha
--- --------------------------------------------------------
-
-CREATE TABLE `recuperacoes_senha` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `id_usuario` int NOT NULL,
-  `token_hash` char(64) NOT NULL,
-  `expira_em` datetime NOT NULL,
-  `verificado` tinyint(1) NOT NULL DEFAULT 0,
-  `criado_em` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_recuperacao_token` (`token_hash`),
-  KEY `idx_recuperacao_usuario` (`id_usuario`),
-  CONSTRAINT `fk_recuperacao_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 COMMIT;
 
-SET FOREIGN_KEY_CHECKS = 1;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
